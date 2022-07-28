@@ -1,38 +1,24 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "ESSSSDA22-3K",
-    "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n{r, echo=FALSE} knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)\n\n\n\n\n\n\nAug 6, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n{r, echo=FALSE} knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)\n\n\n\n\n\n\nAug 6, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nnews\n\n\n\n\nThis is the first post in a Quarto blog. Welcome!\n\n\n\n\n\n\nJul 25, 2022\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
-    "section": "",
-    "text": "Since this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
-  },
-  {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Simulation under ARIMA Models",
-    "section": "",
-    "text": "knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)\nlibrary(fpp3)\n\n── Attaching packages ──────────────────────────────────────────── fpp3 0.4.0 ──\n\n\n✔ tibble      3.1.7     ✔ tsibble     1.1.1\n✔ dplyr       1.0.9     ✔ tsibbledata 0.4.0\n✔ tidyr       1.2.0     ✔ feasts      0.2.2\n✔ lubridate   1.8.0     ✔ fable       0.3.1\n✔ ggplot2     3.3.6     \n\n\n── Conflicts ───────────────────────────────────────────────── fpp3_conflicts ──\n✖ lubridate::date()    masks base::date()\n✖ dplyr::filter()      masks stats::filter()\n✖ tsibble::intersect() masks base::intersect()\n✖ tsibble::interval()  masks lubridate::interval()\n✖ dplyr::lag()         masks stats::lag()\n✖ tsibble::setdiff()   masks base::setdiff()\n✖ tsibble::union()     masks base::union()"
-  },
-  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "Robert W. Walker has been Associate Professor of Quantitative Methods in the Atkinson Graduate School of Management at Willamette University. He earned a Ph. D. in political science from the University of Rochester in 2005 and has previously held teaching positions at Dartmouth College, Rice University, Texas A&M University, and Washington University in Saint Louis. His current research develops and applies semi-Markov processes to time-series, cross-section data in international relations and international/comparative political economy. He teaches courses in quantitative methods/applied statistics and microeconomic strategy and previously taught four iterations in the U. S. National Science Foundation funded Empirical Implications of Theoretical Models sequence at Washington University in Saint Louis."
+    "text": "Harold D. Clarke was Ashbel Smith Professor in the School of Economic, Political and Policy Sciences, University of Texas at Dallas, and adjunct Professor, Department of Government, University of Essex. His current research interests focus on the political economy of party support. He has published widely on this topic in journals such as the American Journal of Political Science, American Political Science Review, and British Journal of Political Science. He is chief editor of Electoral Studies. He has been a principal investigator for the 2001, 2005 and 2010 British Election Study (University of Essex and University of Texas at Dallas), the 2011 Political Support in Canada Study, and the 2012 Political Support in America Study. His most recent books are Brexit—Why Britain Voted to Leave the European Union (Cambridge University Press, 2017), Affluence, Austerity and Electoral Change in Britain (Cambridge University Press, 2013), and Austerity and Political Choice in Britain (Palgrave Macmillan, 2015).\nRobert W. Walker is Associate Professor of Quantitative Methods in the Atkinson Graduate School of Management at Willamette University. He earned a Ph. D. in political science from the University of Rochester in 2005 and has previously held teaching positions at Dartmouth College, Rice University, Texas A&M University, and Washington University in Saint Louis. His current research develops and applies semi-Markov processes to time-series, cross-section data in international relations and international/comparative political economy. He teaches courses in quantitative methods/applied statistics and microeconomic strategy and previously taught four iterations in the U. S. National Science Foundation funded Empirical Implications of Theoretical Models sequence at Washington University in Saint Louis. His work with Curt Signorino and Muhammet Bas was awarded the Miller Prize for the best article in Political Analysis in 2009."
   },
   {
-    "objectID": "posts/post-with-code/index.html#arima-models",
-    "href": "posts/post-with-code/index.html#arima-models",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ESSSSDA22-3K",
+    "section": "",
+    "text": "time series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 6, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 6, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nAug 1, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/arima-models/index.html#arima-models",
+    "href": "posts/arima-models/index.html#arima-models",
     "title": "Simulation under ARIMA Models",
     "section": "ARIMA Models",
-    "text": "ARIMA Models\n\nlibrary(fpp3)\nn <- 100\nmy.data <- data.frame(\n  x=arima.sim(n = n, \n              model=list(order = c(1, 1, 1), ar=c(0.7), ma=c(-0.5)), n.start=20), \n  dtime = seq(1,n+1))\nlibrary(magrittr)\nmy.data %<>% as_tsibble(index=dtime) \nmy.data %>% autoplot()\n\n\n\n\n\nlibrary(patchwork)\n{my.data %>% ACF(x, lag_max=20) %>% \n    autoplot() } + \n  {my.data %>% PACF(x, lag_max=20) %>% \n      autoplot() }\n\n\n\n\n\n{my.data %>% ACF(diff(x), lag_max=20) %>% \n    autoplot() } + \n  {my.data %>% PACF(diff(x), lag_max=20) %>% \n      autoplot() }"
+    "text": "ARIMA Models\nWe want to simulate data under an ARIMA (p, d, q) model. arima.sim wants inputs as a list where the expected length of the ar and ma vectors that will hold the actual values of the ar and ma parameters. Here, I ask for a series that is I(1) with a first-order ar=0.1 and a first-order ma=-0.5. Let me start by generating it and plotting the time series.\n\nlibrary(fpp3)\nn <- 100\nmy.data <- data.frame(\n  x=arima.sim(n = n, \n              model=list(order = c(1, 1, 1), ar=c(0.7), ma=c(-0.5)), n.start=20), \n  dtime = seq(1,n+1))\nlibrary(magrittr)\nmy.data %<>% as_tsibble(index=dtime) \nmy.data %>% autoplot() + labs(title=\"A (1, 1, 1) Series\", x=\"Time\")\n\n\n\n\nNow I want to display the ACF and PACF in levels.\n\nlibrary(patchwork)\n{my.data %>% ACF(x, lag_max=20) %>% \n    autoplot() } + \n  {my.data %>% PACF(x, lag_max=20) %>% \n      autoplot() }\n\n\n\n\nFinally, let me display the ACF and PACF with differenced data.\n\n{my.data %>% ACF(diff(x), lag_max=20) %>% \n    autoplot() } + \n  {my.data %>% PACF(diff(x), lag_max=20) %>% \n      autoplot() }"
   },
   {
     "objectID": "posts/day-1/index.html",
@@ -42,10 +28,10 @@
     "text": "A link to the slides.\nSlides"
   },
   {
-    "objectID": "posts/arima-models/index.html#arima-models",
-    "href": "posts/arima-models/index.html#arima-models",
-    "title": "Simulation under ARIMA Models",
-    "section": "ARIMA Models",
-    "text": "ARIMA Models\n\nlibrary(fpp3)\nn <- 100\nmy.data <- data.frame(\n  x=arima.sim(n = n, \n              model=list(order = c(1, 1, 1), ar=c(0.7), ma=c(-0.5)), n.start=20), \n  dtime = seq(1,n+1))\nlibrary(magrittr)\nmy.data %<>% as_tsibble(index=dtime) \nmy.data %>% autoplot()\n\n\n\n\n\nlibrary(patchwork)\n{my.data %>% ACF(x, lag_max=20) %>% \n    autoplot() } + \n  {my.data %>% PACF(x, lag_max=20) %>% \n      autoplot() }\n\n\n\n\n\n{my.data %>% ACF(diff(x), lag_max=20) %>% \n    autoplot() } + \n  {my.data %>% PACF(diff(x), lag_max=20) %>% \n      autoplot() }"
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To 3K: Dynamics and Heterogeneity",
+    "section": "",
+    "text": "I hope you are ready; in the next two weeks we will set forth as comprehensive a treatment as I can in time series and panel data in ten sessions. With coffee in hand and the computer getting ready; soon we can kick off."
   }
 ]

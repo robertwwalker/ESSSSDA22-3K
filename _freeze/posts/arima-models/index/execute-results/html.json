@@ -1,16 +1,16 @@
 {
-  "hash": "d0b643f397ecc368c55c728454b104af",
+  "hash": "334ad3ad4dc9f2f727e691823b4eac3c",
   "result": {
-    "markdown": "---\ntitle: \"Simulation under ARIMA Models\"\nauthor: \"Robert W. Walker\"\ndate: \"08/06/2022\"\ncategories: [time series, code, analysis]\nimage: \"image.jpg\"\n---\n\n::: {.cell}\n\n:::\n\n## ARIMA Models\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(fpp3)\nn <- 100\nmy.data <- data.frame(\n  x=arima.sim(n = n, \n              model=list(order = c(1, 1, 1), ar=c(0.7), ma=c(-0.5)), n.start=20), \n  dtime = seq(1,n+1))\nlibrary(magrittr)\nmy.data %<>% as_tsibble(index=dtime) \nmy.data %>% autoplot()\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(patchwork)\n{my.data %>% ACF(x, lag_max=20) %>% \n    autoplot() } + \n  {my.data %>% PACF(x, lag_max=20) %>% \n      autoplot() }\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\n{my.data %>% ACF(diff(x), lag_max=20) %>% \n    autoplot() } + \n  {my.data %>% PACF(diff(x), lag_max=20) %>% \n      autoplot() }\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-4-1.png){width=672}\n:::\n:::\n",
+    "markdown": "---\ntitle: \"Simulation under ARIMA Models\"\nauthor: \"Robert W. Walker\"\ndate: \"08/06/2022\"\ncategories: [time series, code, analysis]\nimage: \"image.jpg\"\n---\n\n::: {.cell}\n\n:::\n\n\n## ARIMA Models\n\nWe want to simulate data under an ARIMA `(p, d, q)` model.  `arima.sim` wants inputs as a list where the expected length of the `ar` and `ma` vectors that will hold the actual values of the `ar` and `ma` parameters.  Here, I ask for a series that is I(1) with a first-order ar=0.1 and a first-order ma=-0.5.  Let me start by generating it and plotting the time series.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(fpp3)\nn <- 100\nmy.data <- data.frame(\n  x=arima.sim(n = n, \n              model=list(order = c(1, 1, 1), ar=c(0.7), ma=c(-0.5)), n.start=20), \n  dtime = seq(1,n+1))\nlibrary(magrittr)\nmy.data %<>% as_tsibble(index=dtime) \nmy.data %>% autoplot() + labs(title=\"A (1, 1, 1) Series\", x=\"Time\")\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n:::\n\n\nNow I want to display the ACF and PACF in levels.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(patchwork)\n{my.data %>% ACF(x, lag_max=20) %>% \n    autoplot() } + \n  {my.data %>% PACF(x, lag_max=20) %>% \n      autoplot() }\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n\n\nFinally, let me display the ACF and PACF with differenced data.\n\n\n::: {.cell}\n\n```{.r .cell-code}\n{my.data %>% ACF(diff(x), lag_max=20) %>% \n    autoplot() } + \n  {my.data %>% PACF(diff(x), lag_max=20) %>% \n      autoplot() }\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-4-1.png){width=672}\n:::\n:::\n",
     "supporting": [
       "index_files"
     ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],
-    "includes": [],
+    "includes": {},
     "engineDependencies": {},
     "preserve": {},
-    "postProcess": null
+    "postProcess": true
   }
 }

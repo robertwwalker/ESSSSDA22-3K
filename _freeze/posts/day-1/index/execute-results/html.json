@@ -1,14 +1,14 @@
 {
   "hash": "c5373aea722ecbe9048cc9947d81922d",
   "result": {
-    "markdown": "---\ntitle: \"Day 1\"\nauthor: \"Robert W. Walker\"\ndate: \"08/06/2022\"\ncategories: [time series, code, analysis]\nimage: \"image.jpg\"\n---\n\n::: {.cell}\n\n:::\n\nA link to the slides.\n\n[Slides](./slidesDay1.pdf)",
+    "markdown": "---\ntitle: \"Day 1\"\nauthor: \"Robert W. Walker\"\ndate: \"08/06/2022\"\ncategories: [time series, code, analysis]\nimage: \"image.jpg\"\n---\n\n::: {.cell}\n\n:::\n\n\nA link to the slides.\n\n[Slides](./slidesDay1.pdf)",
     "supporting": [],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],
-    "includes": [],
+    "includes": {},
     "engineDependencies": {},
     "preserve": {},
-    "postProcess": null
+    "postProcess": true
   }
 }

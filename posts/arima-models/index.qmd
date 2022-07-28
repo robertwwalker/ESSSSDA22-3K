@@ -12,6 +12,8 @@ knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
 
 ## ARIMA Models
 
+We want to simulate data under an ARIMA `(p, d, q)` model.  `arima.sim` wants inputs as a list where the expected length of the `ar` and `ma` vectors that will hold the actual values of the `ar` and `ma` parameters.  Here, I ask for a series that is I(1) with a first-order ar=0.1 and a first-order ma=-0.5.  Let me start by generating it and plotting the time series.
+
 ```{r}
 library(fpp3)
 n <- 100
@@ -21,8 +23,10 @@ my.data <- data.frame(
   dtime = seq(1,n+1))
 library(magrittr)
 my.data %<>% as_tsibble(index=dtime) 
-my.data %>% autoplot()
+my.data %>% autoplot() + labs(title="A (1, 1, 1) Series", x="Time")
 ```
+
+Now I want to display the ACF and PACF in levels.
 
 ```{r}
 library(patchwork)
@@ -31,6 +35,8 @@ library(patchwork)
   {my.data %>% PACF(x, lag_max=20) %>% 
       autoplot() }
 ```
+
+Finally, let me display the ACF and PACF with differenced data.
 
 ```{r}
 {my.data %>% ACF(diff(x), lag_max=20) %>% 

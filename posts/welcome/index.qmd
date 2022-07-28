@@ -1,12 +1,12 @@
 ---
-title: "Welcome To My Blog"
-author: "Tristan O'Malley"
-date: "7/25/2022"
+title: "Welcome To 3K: Dynamics and Heterogeneity"
+author: "Robert W. Walker"
+date: "08/01/2022"
 categories: [news]
 ---
 
-This is the first post in a Quarto blog. Welcome!
+Welcome to 3K: Dynamics and Heterogeneity!
 
 ![](thumbnail.jpg)
 
-Since this post doesn't specify an explicit `image`, the first image in the post will be used in the listing page of posts.
+I hope you are ready; in the next two weeks we will set forth as comprehensive a treatment as I can in time series and panel data in ten sessions.  With coffee in hand and the computer getting ready; soon we can kick off.
