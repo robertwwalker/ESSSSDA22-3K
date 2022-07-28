@@ -1,0 +1,15 @@
+---
+title: "Day 1"
+author: "Robert W. Walker"
+date: "08/06/2022"
+categories: [time series, code, analysis]
+image: "image.jpg"
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+```
+
+A link to the slides.
+
+[Slides](./slidesDay1.pdf)

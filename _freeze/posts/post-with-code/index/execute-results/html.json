@@ -1,0 +1,16 @@
+{
+  "hash": "d0b643f397ecc368c55c728454b104af",
+  "result": {
+    "markdown": "---\ntitle: \"Simulation under ARIMA Models\"\nauthor: \"Robert W. Walker\"\ndate: \"08/06/2022\"\ncategories: [time series, code, analysis]\nimage: \"image.jpg\"\n---\n\n::: {.cell}\n\n:::\n\n## ARIMA Models\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(fpp3)\nn <- 100\nmy.data <- data.frame(\n  x=arima.sim(n = n, \n              model=list(order = c(1, 1, 1), ar=c(0.7), ma=c(-0.5)), n.start=20), \n  dtime = seq(1,n+1))\nlibrary(magrittr)\nmy.data %<>% as_tsibble(index=dtime) \nmy.data %>% autoplot()\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(patchwork)\n{my.data %>% ACF(x, lag_max=20) %>% \n    autoplot() } + \n  {my.data %>% PACF(x, lag_max=20) %>% \n      autoplot() }\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\n{my.data %>% ACF(diff(x), lag_max=20) %>% \n    autoplot() } + \n  {my.data %>% PACF(diff(x), lag_max=20) %>% \n      autoplot() }\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-4-1.png){width=672}\n:::\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": [],
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": null
+  }
+}

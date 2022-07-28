@@ -1,0 +1,19 @@
+project:
+  type: website
+
+website:
+  title: "ESSSSDA 2022: Dynamics and Heterogeneity"
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/robertwwalker
+      - icon: twitter
+        href: https://twitter.com/PieRatio
+format:
+  html:
+    theme: slate
+    css: styles.css
+
+
+

@@ -1,0 +1,41 @@
+---
+title: "Simulation under ARIMA Models"
+author: "Robert W. Walker"
+date: "08/06/2022"
+categories: [time series, code, analysis]
+image: "image.jpg"
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+```
+
+## ARIMA Models
+
+```{r}
+library(fpp3)
+n <- 100
+my.data <- data.frame(
+  x=arima.sim(n = n, 
+              model=list(order = c(1, 1, 1), ar=c(0.7), ma=c(-0.5)), n.start=20), 
+  dtime = seq(1,n+1))
+library(magrittr)
+my.data %<>% as_tsibble(index=dtime) 
+my.data %>% autoplot()
+```
+
+```{r}
+library(patchwork)
+{my.data %>% ACF(x, lag_max=20) %>% 
+    autoplot() } + 
+  {my.data %>% PACF(x, lag_max=20) %>% 
+      autoplot() }
+```
+
+```{r}
+{my.data %>% ACF(diff(x), lag_max=20) %>% 
+    autoplot() } + 
+  {my.data %>% PACF(diff(x), lag_max=20) %>% 
+      autoplot() }
+```
+
