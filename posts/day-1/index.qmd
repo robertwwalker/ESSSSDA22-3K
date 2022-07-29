@@ -13,7 +13,7 @@ image: "image.jpg"
 
 # Code and Analysis
 
-[The data are in Stata format.](https://github.com/robertwwalker/Essex-Data/raw/master/ISQ99-Essex.dta)  The `github` for this course
+[The data are in Stata format.](https://github.com/robertwwalker/Essex-Data/raw/master/ISQ99-Essex.dta)  The `github` for this course.  There is also [a link here for a local copy](./slides/ISQ99-Essex.dta).
 
 ## Basic R commands
 
@@ -123,12 +123,14 @@ xttrans AINEW
 ```
 
 ![xttrans](./slides/xttrans.png)
+I want to rely on the `dplyr` version of lag so I am explicit here.  Take the data, group it by id, calculate the lag, ungroup them, and create a table.  The `janitor` library provides `tabyl` and it is explicit among missing values.
 
-```{r}
-library(magrittr)
+```{r, warning=FALSE, message=FALSE}
+library(janitor)
 HR.Data %>% 
   group_by(IDORIGIN) %>% 
-  mutate(Lag.AI = lag(AINEW, 1)) %$% 
-  table(AINEW, Lag.AI)
+  mutate(Lag.AI = dplyr::lag(AINEW, n=1L, order_by = YEAR)) %>%
+  ungroup() %>%
+  tabyl(Lag.AI, AINEW)
 ```
 

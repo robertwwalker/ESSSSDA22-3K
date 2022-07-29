@@ -49,17 +49,17 @@
     "text": "The Core Idea\nIn R, this is an essential group_by calculation in the tidyverse. The within data is the overall data with group means subtracted.\n\nHR.Data %>% \n  group_by(IDORIGIN) %>% \n  mutate(DEMOC.Centered = \n           DEMOC3 - mean(DEMOC3, na.rm=TRUE)) %>%\n  filter(IDORIGIN==42) %>% \n  select(IDORIGIN, YEAR, DEMOC3, DEMOC.Centered) \n\n# A tibble: 18 × 4\n# Groups:   IDORIGIN [1]\n   IDORIGIN  YEAR DEMOC3 DEMOC.Centered\n      <dbl> <dbl>  <dbl>          <dbl>\n 1       42  1976      1         -5.11 \n 2       42  1977      1         -5.11 \n 3       42  1978      6         -0.111\n 4       42  1979      6         -0.111\n 5       42  1980      6         -0.111\n 6       42  1981      6         -0.111\n 7       42  1982      7          0.889\n 8       42  1983      7          0.889\n 9       42  1984      7          0.889\n10       42  1985      7          0.889\n11       42  1986      7          0.889\n12       42  1987      7          0.889\n13       42  1988      7          0.889\n14       42  1989      7          0.889\n15       42  1990      7          0.889\n16       42  1991      7          0.889\n17       42  1992      7          0.889\n18       42  1993      7          0.889\n\n\nIn Stata, the key is to first load and declare the data.\nuse \"https://github.com/robertwwalker/Essex-Data/raw/main/ISQ99-Essex.dta\"\ndes\n\n\n\nStata Load\n\n\nxtset denotes two key features of the data, the \\(i\\) and \\(t\\).\nxtset IDORIGIN YEAR\n\n\n\nxtset\n\n\nStata has internal capabilities for summarising and describing xt data. A between and within summary is given by xtsum\nxtsum\n\n\n\nxtsum\n\n\nThe description can be deceptive because the indices are a complete grid.\nxtdes\n\n\n\nxtdes"
   },
   {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To 3K: Dynamics and Heterogeneity",
-    "section": "",
-    "text": "I hope you are ready!\nIn the next two weeks we will set forth as comprehensive a treatment as we can in time series and panel data in ten sessions. With coffee in hand and the computer getting ready, let’s dig in!\n\nA brief summary for the Instructor’s Presentation\n\nWeek 1: Time Series\n\nStationarity and Unit Roots\nARMA structures\nDynamic Linear Models\nCointegration topics\nEquation balance and recent controversies\n\nWeek 2: Panel Data\n\nFixed and random effects and Within/Between\nSTADL Up!\nMissing data\nGLM Extensions of Panel Models\nCausal Inference in Panel Data [TWFE/DID]"
-  },
-  {
     "objectID": "posts/day-1/index.html#qualitative-variables",
     "href": "posts/day-1/index.html#qualitative-variables",
     "title": "Day 1",
     "section": "Qualitative Variables",
-    "text": "Qualitative Variables\n\nxttab\n\nBetween: How many units received each category?\nWithin: Of all observations of units that received that category at least once, what percent of observations take this value?\n\nxttab AINEW\n\n\n\nxttab\n\n\n\n\nThe Between\n\nbetween.tally <- function(x) {\nHR.Data %>% select(IDORIGIN, AINEW) %>% filter(AINEW==x) %$% table(IDORIGIN) %>% length()\n}\nsapply(c(1:5), function(x) {between.tally(x)})\n\n[1]  96 121 113  86  43\n\n\n\n\nxttrans\nA first-order transition matrix.\nxttrans AINEW\n\n\n\nxttrans\n\n\n\nlibrary(magrittr)\n\n\nAttaching package: 'magrittr'\n\n\nThe following object is masked from 'package:purrr':\n\n    set_names\n\n\nThe following object is masked from 'package:tidyr':\n\n    extract\n\nHR.Data %>% \n  group_by(IDORIGIN) %>% \n  mutate(Lag.AI = lag(AINEW, 1)) %$% \n  table(AINEW, Lag.AI)\n\n     Lag.AI\nAINEW   1   2   3   4   5\n    1 705   0   0   0   0\n    2   0 769   0   0   0\n    3   0   0 782   0   0\n    4   0   0   0 350   0\n    5   0   0   0   0 148"
+    "text": "Qualitative Variables\n\nxttab\n\nBetween: How many units received each category?\nWithin: Of all observations of units that received that category at least once, what percent of observations take this value?\n\nxttab AINEW\n\n\n\nxttab\n\n\n\n\nThe Between\n\nbetween.tally <- function(x) {\nHR.Data %>% select(IDORIGIN, AINEW) %>% filter(AINEW==x) %$% table(IDORIGIN) %>% length()\n}\nsapply(c(1:5), function(x) {between.tally(x)})\n\n[1]  96 121 113  86  43\n\n\n\n\nxttrans\nA first-order transition matrix.\nxttrans AINEW\n\n\n\nxttrans\n\n\n\nlibrary(magrittr)\nHR.Data %>% \n  group_by(IDORIGIN) %>% \n  mutate(Lag.AI = lag(AINEW, 1)) %>%\n  ungroup() %$% \n  table(Lag.AI, AINEW) %>% prop.table(., 1)*100\n\n      AINEW\nLag.AI   1   2   3   4   5\n     1 100   0   0   0   0\n     2   0 100   0   0   0\n     3   0   0 100   0   0\n     4   0   0   0 100   0\n     5   0   0   0   0 100"
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To 3K: Dynamics and Heterogeneity",
+    "section": "",
+    "text": "Digital Resources\nDepending upon your software of choice, you will want to have a look over the relevant manuals. - For Stata ts and xt - For R there is timetk and fpp3 and plm along with panelr. - A github with the course data. - Robert W. Walker’s website"
   }
 ]
