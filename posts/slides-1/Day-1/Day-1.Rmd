@@ -1,0 +1,894 @@
+---
+title: "Day 1: Heterogeneity and Dynamics in Data"
+subtitle: "Linear Models and Summary"  
+author: "Robert W. Walker"
+date: 'August 8 2022'
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    nature:
+      slideNumberFormat: "%current%"
+      highlightStyle: github
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: true
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(
+  fig.width=9, fig.height=3.5, fig.retina=3,
+  out.width = "100%",
+  cache = FALSE,
+  echo = TRUE,
+  message = FALSE, 
+  warning = FALSE,
+  hiline = TRUE
+)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, comment=NA, prompt=FALSE, fig.height=6, fig.width=6.5, fig.retina = 3, dev = 'svg', dev.args = list(bg = "transparent"))
+library(xaringanthemer); library(kableExtra); library(tidyverse); library(skimr)
+# style_mono_accent(
+style_duo_accent(
+#style_solarized_light(
+primary_color = "#371142", 
+# header_color = "#ffffff",
+          secondary_color = "#1c5253", 
+          text_bold_color = "#FF00FF",
+          link_color = "#F97B64",
+          text_font_google   = google_font("EB Garamond"),
+          code_font_google   = google_font("Fira Mono")
+)
+```
+
+```{css, echo = FALSE, include=FALSE}
+.remark-slide-content p, il, ol, li {
+  font-size: 32px;
+  padding: 8px 16px 8px 16px;
+}
+code.r{
+  font-size: 18px;
+}
+pre {
+  font-size: 24px;
+}
+.red { 
+  color: red; 
+}
+.green { 
+  color: green; 
+}
+```
+
+## Core Details
+
+
+- Who am I?  *Why am I here?*  **What will I learn?**  
+
+--
+
+- How will we do this?  The course has a website.  [Built in R](https://ESSSSDA22-3K.netlify.app/).
+
+--
+
+- Information on backgrounds  
+
+--
+
+- Discussion of syllabus.  [It's all on the box](https://essexuniversity.account.box.com/).
+
+---
+
+## Preliminaries
+
+-  `An Ode to Harold`  
+
+--
+
+- *Reader*: We have a course textbook and essential articles for the course online.  The syllabus outlines issues from textbooks that have more detailed foundations.  One can learn a great deal from walking through fine details.  Each day, near the end, I will signpost what of the readings to focus for the following day.  
+
+--
+
+- *Questions*: Ask them.  Please.  
+
+--
+
+- *Diction*:  I speak (VERY) quickly.  Remind me when this is excessive (ALWAYS?); I will undoubtedly forget and this doesn't help anyone (including me as I burn through slides).  
+
+---
+
+## The course: One then Multiple Time Series
+
+- Data analysis is all about variation -- **random variables**.  
+
+--
+
+- We usually want **parameters** that usefully describe that variation in a social science world.
+
+--
+
+- *Sources of variation* are our key concern and their influence on our parameters. **This comes in two classes.**  
+
+--
+    + Uncorrelated with regressors.
+
+--
+    + Correlated with regressors.
+        + Pooling admits two obvious sources of variation: $i$ and $t$ (however defined).
+
+--
+
+- All our concerns follow from this.  **First $t$**.
+
+---
+
+## Data Examples
+
+**What sort of data do you work with that have multiple units observed over time?**
+
+--
+
+- The time series of Oregon's Bond rating. $\rightarrow$  Bond ratings among U. S. states.
+
+--
+
+- Nine justices vote on a case $\rightarrow$ US Supreme Court justices/votes
+
+--
+
+- a dyad fights $\rightarrow$ Wars/Military conflicts
+
+--
+
+- OECD countries/global samples in political economy.
+
+--
+
+- FDI inflows/outflows, etc.
+
+--
+
+- Voter turnout across nations or US states/counties/municipalities.
+
+---
+
+## Some Basic Things
+
+- Time is complicated.  
+
+--
+
+- Time-zones
+
+--
+
+- Daylight savings
+
+--
+
+- Irregular periodicity
+
+--
+
+Fortunately, the computer can sort of handle this but the structure has to be *declared*.  Stata has `ts` and R has the `tsibble` structure that I will use among many others.
+
+---
+
+## Panels and Related Data Structures
+
+- Balanced or unbalanced panels?
+
+--
+
+- Panels or rolling cross-sections?
+
+--
+
+- Asymptotics
+
+--
+    + Time dominant?  
+    + Unit dominant?  
+    + Both?
+
+--
+
+- Substantive question?  
+  + **What's your substantive interest in panel data?**
+
+
+
+---
+
+## Before We Start, A Review?
+
+- Matrix Algebra
+
+--
+   + What are matrices?
+
+--
+      + Matrix multiplication/addition/etc.
+      + Matrix Inversion?
+      + Trace, Kronecker Product, Eigenvalues, Determinants, and the like
+
+--
+- Statistics -- Expectations and Normal, $\chi^2$, $t$, and $F$
+- Linear Regression
+
+--
+   + What assumptions are necessary for the OLS estimator to be unbiased?
+
+--
+   + How about the asymptotic variance to be correct?
+
+--
+   + What about the Gauss-Markov conditions?
+
+---
+
+### Why Matrices?
+
+- A matrix is the natural structure for panel data/CSTS/TSCS.
+- Individuals/households/countries form rows.
+- Time points form columns.
+
+---
+
+## On Matrices
+
+A *matrix* is a rectangular array of real numbers.  If it has $m$ rows and $n$ columns, we say it is of *dimension* $m\times n$.
+
+$$A = \left( \begin{array}{ccccc}
+a_{11} & a_{12} & \ldots & a_{1n} \\
+a_{21} & a_{22} & \ldots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{m1} & a_{m2} & \ldots & a_{mn}
+\end{array} \right)$$
+
+A *vector* $(x_{1}, x_{2}, \ldots, x_{n}) \in \mathbb{R}^{n}$ can be thought as as a matrix with $n$ rows and one column or as a matrix with one row and $n$ columns.
+
+---
+
+## Products
+
+Periodicially, we will wish to make use of two types of vector products.
+
+
+- *Inner (or dot) product* 
+
+Let $\mathbf{u} = (u_{1}, \ldots, u_{n})$ and $\mathbf{v} = (v_{1}, \ldots, v_{n})$ be two vectors in $\mathbb{R}^{n}$.  The **Euclidean inner product** of $\mathbf{u}$ and $\mathbf{v}$, written as $\mathbf{u} \cdot \mathbf{v}$, is the number $$\mathbf{u}\cdot\mathbf{v} = u_{1}v_{1} + u_{2}v_{2} + \ldots + u_{n}v_{n}$$ which can also be written $\mathbf{u}^{\prime}\mathbf{v}$  
+
+--
+- *Outer product* $\mathbf{u}\mathbf{v}^{\prime}$ is the cross-product matrix where each row and column are the product of row u with column v.
+
+$$\mathbf{uv}^{\prime} = \left( \begin{array}{ccccc}
+u_{1}v_{1} & u_{1} v_{2} & \ldots & u_{1} v_{n} \\
+u_{2}v_{1} & u_{2}v_{2} & \ldots & u_{2}v_{n} \\
+\vdots & \vdots & \ddots & \vdots \\
+u_{m}v_{1} & u_{m}v_{2} & \ldots & u_{m} v_{n}
+\end{array} \right)$$
+
+---
+
+## Matrix Inversion
+
+There are two primary methods for inverting matrices.  The first is often referred to as Gauss-Jordan elimination and the second is known as Cramer's rule.  The former involves a series of *elementary row operations* undertaken on the matrix of interest and equally to $I$ while the latter relies on a **determinant** and the **adjoint** of the matrix of interest.
+
+---
+
+Let $A$ and $B$ be square invertible matrices.  It follows that:
+
+- $(A^{-1})^{-1} = A$
+- $(A^{T})^{-1} = (A^{-1})^{T}$
+- $AB$ is invertible and $(AB)^{-1} = B^{-1}A^{-1}$.
+
+---
+
+For a matrix $A$, the following are equivalent:
+
+--
+
+1. $A$ is invertible.
+2. $A$ is nonsingular.
+3. For all $y$, $Ax=y$ has a unique solution.
+4. $\det A \neq 0$ and $A$ is square.
+
+---
+
+## Definiteness
+
+Given a square matrix $A$ and a vector $\mathbf{x}$, we can claim that
+- $A$ is negative definite if, $\forall x \neq 0,\; x^{T}Ax < 0$
+- $A$ is positive definite if, $\forall x \neq 0,\; x^{T}Ax > 0$
+- $A$ is negative semi-definite if,  $\forall x \neq 0,\; x^{T}Ax \leq 0$
+- $A$ is positive semi-definite if, $\forall x \neq 0,\; x^{T}Ax \geq 0$
+
+**Brief diversion on principal submatrices and (leading) principal minors toward a sufficient condition for characterizing definiteness.**
+
+
+--
+**NB: The trace of a square matrix is the sum of its diagonal elements.**
+
+---
+class: inverse
+
+## Enough Matrices: To Statistics
+
+We needed this to:
+
+- Determine invertibility and the relation to definiteness.
+- A matrix version of the Cauchy-Schwartz inequality sets the characteristics of variance/covariance matrices for linear regression problems (avoiding equality).
+- To familiarize the idea because error matrices are nice to think on.
+- Linking time series properties through the previous to invertibility is key.  Especially because of block inversion
+
+---
+
+## Random Variables, Expectations, etc. etc.
+
+.pull-left[
+- Random Variables: 
+
+Real-valued function with domain: a sample space.
+
+- Mean (Expected Value): 
+
+$E[x] = \int_{x} x\; f(x)\; dx$ or $E[x] = \sum_{x} x\; p(x)$
+
+- Variance (Spread): 
+
+$V[x] = E(x^2) - [E(x)]^2$
+]
+
+--
+
+.pull-right[
+- Covariance: 
+
+$E[xy] = E[(x_{i} - [E(x)])(y_{i} - [E(y)])]$
+
+- Correlation: 
+
+$\rho = \frac{E[(x_{i} - [E(x)])(y_{i} - [E(y)])]}{\sigma_{x}\sigma_{y}} = \frac{Cov(XY)}{\sqrt{\sigma^{2}_{x}}\sqrt{\sigma^{2}_{y}}}$
+
+- Variance of Linear Combination: 
+
+$\sum_{i}\sum_{j} a_{i}a_{j}Cov(X_{i}X_{j})$
+]
+---
+
+## Some (Loosely Stated) Distributional Results
+
+- Self-reproducing property of $N$
+- The implications of Basu's Theorem (Independence of Mean and Variance of Normals)
+- $N^2 \sim \chi^2$
+- $\frac{\chi^2_m}{\chi^2_n} \sim F_{m,n}$
+- $t$ is given by $\frac{N}{\sqrt{\frac{\chi^2}{v}}}$
+
+---
+
+## Normal random variables
+
+A random variable $X$ has a \emph{normal distribution with mean $\mu$ and variance $\sigma^{2}$} ($\mu \in \mathbb{R}$ and $\sigma^{2} \in \mathbb{R}^{++}$) if $X$ has a continuous distribution for which the probability density function (p.d.f.) $f(x|\mu,\sigma^2 )$ is as follows (for finite $x$):
+$$f(x|\mu,\sigma^2 ) = \frac{1}{\sqrt{2\pi\sigma^{2}}} \exp \left[ -\frac{1}{2} \left(\frac{x - \mu}{\sigma}\right)^{2}\right]$$
+
+--
+
+- If $X \sim N(\mu,\sigma^2)$, Let $Y = aX + b$ ($a \neq 0$).  $Y \sim N(a\mu + b, a^{2}\sigma^{2})$.
+- $Z \sim N(0,1)$ allow the percentiles for any normal: $Z = \frac{x - \mu}{\sigma}$.
+- Sums of (independent) normals are normal.
+- Sums of affine transformations of (independent) normals are normal.
+
+---
+
+```{r, echo=FALSE, fig.width=6, fig.height=3.5}
+plot(density(rnorm(100000, sd=0.5)), xlab="Normal R.V.", main="Normals", bty="n", xlim=c(-10,10))
+lines(density(rnorm(100000, sd=1)), col=2)
+lines(density(rnorm(100000, sd=2)), col=3)
+lines(density(rnorm(100000, sd=3)), col=4)
+lines(density(rnorm(100000, sd=5)), col=5)
+legend(x=3, y=0.8, legend=c("0.5","1","2","3","5"), col=c(1,2,3,4,5), bty="n", lty=1)
+```
+
+## Basu's Theorem
+
+Let $X_1, X_2, \ldots, X_n$ be independent, identically distributed normal random variables with mean $\mu$ and variance $\sigma^2$. With respect to $\mu$, $$\widehat{\mu}=\frac{\sum X_i}{n},$$ the sample mean is a complete sufficient statistic -- it is informationally optimal to estimate $\mu$.   $$\widehat{\sigma}^2=\frac{\sum \left(X_i-\bar{X}\right)^2}{n-1},$$
+the sample variance, is an ancillary statistic – its distribution does not depend on $\mu$.
+These statistics are independent (also can be proven by Cochran's theorem). This property (that the sample mean and sample variance of the normal distribution are independent) characterizes the normal distribution; no other distribution has this property.
+
+---
+
+## $\chi^2$ random variables
+
+If a random variable $X$ has a \emph{$\chi^{2}$ distribution with $n$ degrees of freedom} then the probability density function of $X$ (given $x > 0$ is $$f(x) = \frac{1}{2^{\frac{n}{2}}\Gamma(\frac{n}{2})}x^{(\frac{n}{2}) - 1}\exp\left(\frac{-x}{2}\right)$$
+
+Two key properties:
+
+--
+
+1. If the random variables $X_{1},\ldots,X_{k}$ are independent and if $X_{i}$ has a $\chi^2$ distribution with $n_{i}$ degrees of freedom, then $\sum_{i=1}^{k} X_{i}$ has a $\chi^{2}$ distribution with $\sum_{i=1}^{k} n_{i}$ degrees of freedom.  
+
+--
+2. If the random variables $X_{1},\ldots,X_{k}$ are independent and, $\forall i: X_{i} \sim N(0,1)$, then $\sum_{i=1}^{k} X^{2}_{i}$ has a $\chi^{2}$ distribution with $k$ degrees of freedom.
+
+---
+
+```{r chisqplot2,echo=FALSE, fig.width=6, fig.height=3.5}
+plot(density(rchisq(100000,df=1)), xlab=expression(chi^2), main=paste(expression(chi^2),"density"), bty="n")
+lines(density(rchisq(100000, df=2)), col=2)
+lines(density(rchisq(100000, df=3)), col=3)
+lines(density(rchisq(100000, df=4)), col=4)
+lines(density(rchisq(100000, df=5)), col=5)
+lines(density(rchisq(100000, df=10)), col=6)
+lines(density(rchisq(100000, df=20)), col=8)
+legend(x=5, y=0.8, legend=c("1","2","3","4","5","10","20"), col=c(1,2,3,4,5,6,8), bty="n", lty=1)
+```
+
+---
+
+```{r chisqplot, echo=FALSE, fig.width=6, fig.height=3.5}
+plot(density(rchisq(100000,df=1)), xlab=expression(chi^2), main=paste(expression(chi^2),"density"), bty="n", xlim=c(0,10))
+lines(density(sqrt(rchisq(100000, df=2)/2)), col=2)
+lines(density(sqrt(rchisq(100000, df=3)/3)), col=3)
+lines(density(sqrt(rchisq(100000, df=4)/4)), col=4)
+lines(density(sqrt(rchisq(100000, df=5)/5)), col=5)
+lines(density(sqrt(rchisq(100000, df=10)/10)), col=6)
+lines(density(sqrt(rchisq(100000, df=20)/20)), col=8)
+legend(x=5, y=0.8, legend=c("1","2","3","4","5","10","20"), col=c(1,2,3,4,5,6,8), bty="n", lty=1)
+```
+
+---
+
+## Student's $t$ distributed random variables
+
+Consider two independent random variables $Y$ and $Z$, such that $Y$ has a $\chi^{2}$ distribution with $n$ degrees of freedom and $Z$ has a standard normal distribution.  If we define $$X = \frac{Z}{\sqrt{\frac{Y}{n}}}$$ then the distribution of $X$ is called the $t$ distribution with $n$ degrees of freedom.  The $t$ has density (for finite $x$) $$f(x) = \frac{\Gamma\left(\frac{n+1}{2}\right)}{(n\pi)^{\frac{1}{2}}\Gamma\left(\frac{n}{2}\right)}\left(1 + \frac{x^{2}}{n}\right)^{\frac{-(n+1)}{2}}$$
+
+---
+
+```{r echo=FALSE, fig.width=6, fig.height=3.5}
+plot(density(rnorm(100000)), xlab="t", main="t", bty="n", ylim=c(0,0.45), xlim=c(-2,2))
+lines(density(rt(100000, df=3)), col=2)
+lines(density(rt(100000, df=5)), col=4)
+lines(density(rt(100000, df=10)), col=5)
+lines(density(rt(100000, df=20)), col=6)
+legend(x=-0.6, y=0.15, legend=c("Infty","3","5","10","20"), col=c(1,2,4,5,6), bty="n", lty=1)
+```
+
+---
+
+## $F$ distributed random variables (Variance-Ratio)
+
+Consider two independent random variables $Y$ and $W$, such that $Y$ has a $\chi^{2}$ distribution with $m$ degrees of freedom and $W$ has a $\chi^{2}$ distribution with $n$ degrees of freedom, where $m, n \in \mathbb{R}^{++}$.  We can define a new random variable $X$ as follows: $$X = \frac{\frac{Y}{m}}{\frac{W}{n}} = \frac{nY}{mW}$$ then the distribution of $X$ is called an $F$ distribution with $m$ and $n$ degrees of freedom. 
+
+---
+
+```{r, echo=FALSE, fig.width=6, fig.height=3.5}
+plot(density(rf(100000, df1=1, df2=30)), xlab="F (df2=30)", main="", bty="n", xlim=c(0,5))
+lines(density(rf(100000, df1=2, df2=30)), col=2)
+lines(density(rf(100000, df1=5, df2=30)), col=3)
+lines(density(rf(100000, df1=10, df2=30)), col=4)
+lines(density(rf(100000, df1=30, df2=30)), col=5)
+legend(x=3, y=1, legend=c("1","2","5","10","30"), col=c(1,2,3,4,5), bty="n", lty=1)
+```
+
+---
+
+```{r, echo=FALSE,eval=TRUE, fig.width=6, fig.height=3.5}
+plot(density(rf(100000, df1=1, df2=5)), xlab="F (df1=1)", main="", bty="n", xlim=c(0,5))
+lines(density(rf(100000, df1=1, df2=10)), col=2)
+lines(density(rf(100000, df1=1, df2=30)), col=3)
+lines(density(rf(100000, df1=1, df2=50)), col=4)
+legend(x=3, y=1, legend=c("5","10","30","50"), col=c(1,2,3,4), bty="n", lty=1)
+```
+
+## Distributions and Matrices
+
+This gets us through the background to this point.  We will invoke parts of this as we go from here.  We have matrices and ther inverses.  We have some distributional results that link the normal, $\chi^2$, $t$, and $F$.  We have a theorem regarding \emph{separable moments} and the normal.  This gives us the intuition for Gauss-Markov.  Nevertheless,  let's begin the meat of it all: regression.
+
+---
+
+## The Orthogonal Projection
+
+One of the features of the Ordinary Least Squares Estimator is the orthogonality (independence) of the estimation space and the error space.
+
+- $E[\hat{e}_{i}\hat{y}_{i}] = 0$
+- $E[\hat{e}_{i}{x}_{i}] = 0$
+
+---
+
+## OLS: Assumptions
+
+1. Linearity:
+$$y = X\beta + \epsilon$$
+
+--
+2. Strict Exogeneity
+$$E[\epsilon | X] = 0$$
+
+--
+3. No [perfect] multicollinearity:\\ Rank of the $NxK$ data matrix $X$ is $K$ with probability 1 ($N > K$).
+
+--
+4. X is a nonstochastic matrix.
+
+--
+5. Homoskedasticity
+$$E[\epsilon\epsilon^{\prime}] = \sigma^2I s.t. \sigma^{2} > 0$$
+
+---
+
+## Returning to the Regression Model
+
+Now we want to reexamine the minimization of the sum of squared errors in a matrix setting.  We wish to minimize the **inner product** of $\epsilon^{\prime}\epsilon$.
+$$ \epsilon^{\prime}\epsilon  =  (y - X\beta)^{\prime}(y - X\beta)$$
+$$  =  y^{\prime}y - y^{\prime}X\beta - \beta^{\prime}X^{\prime}y + \beta^{\prime}X^{\prime}X\beta$$
+ 
+Take the derivative, set it equal to zero, and solve....
+$$\frac{\partial \epsilon^{\prime}\epsilon}{\partial \beta}  =  -2X^{\prime}y + 2X^{\prime}X\beta = 0$$
+$$X^{\prime}y  =  X^{\prime}X\beta $$  
+So we rearrange to obtain the solution in matrix form.
+
+$$\hat{\beta}_{OLS}  =  (X^{\prime}X)^{-1}X^{\prime}y$$
+
+---
+class: inverse
+
+## Properties of OLS Estimators
+
+- Unbiasedness $E[\hat{\beta} - \beta] = 0$
+
+--
+- Variance $E[(\hat{\beta} - \beta)(\hat{\beta} - \beta)^{\prime}]$
+
+--
+- The Gauss-Markov Theorem -- Minimum Variance Unbiased Estimator
+
+---
+
+## The first two
+
+Need nothing about the distribution other than the two moment defintions.  It is for number three that this starts to matter and, in many ways, this is directly a reflection of Basu's theorem.
+
+---
+## Unbiasedness
+
+With $\hat{\beta}=(X^{\prime}X)^{-1}X^{\prime}y$, $\mathbb{E}[\hat{\beta} - \beta] = 0$ requires, $$\mathbb{E}[(X^{\prime}X)^{-1}X^{\prime}y - \beta] = 0$$  We require an inverse already.  Invoking the definition of $y$, we get 
+
+$$\mathbb{E}[\mathbf{(X^{\prime}X)^{-1}X^{\prime}}(\mathbf{X}\beta + \epsilon) - \beta]  =  0$$ $$\mathbb{E}[\mathbf{(X^{\prime}X)^{-1}X^{\prime}}\mathbf{X}\beta + \mathbf{(X^{\prime}X)^{-1}X^{\prime}}\epsilon - \beta]   =  0$$ 
+
+Taking expectations and rearranging.
+
+$$\hat{\beta}  - \beta   =  -\mathbb{E}[\mathbf{(X^{\prime}X)^{-1}X^{\prime}}\epsilon]$$ 
+
+If the latter multiple is zero, all is well.
+
+
+---
+
+## Variance
+
+$\mathbb{E}[(\hat{\mathbf{\beta}} - \beta)(\hat{\mathbf{\beta}} - \beta)^{\prime}]$ can be derived as follows.
+
+$$\mathbb{E}[(\mathbf{(X^{\prime}X)^{-1}X^{\prime}}\mathbf{X}\beta + \mathbf{(X^{\prime}X)^{-1}X^{\prime}}\epsilon - \beta)(\mathbf{(X^{\prime}X)^{-1}X^{\prime}}\mathbf{X}\beta + \mathbf{(X^{\prime}X)^{-1}X^{\prime}}\epsilon - \beta)^{\prime}]$$ $$\mathbb{E}[(\mathbf{I}\beta + \mathbf{(X^{\prime}X)^{-1}X^{\prime}}\epsilon - \beta)(\mathbf{I}\beta + \mathbf{(X^{\prime}X)^{-1}X^{\prime}}\epsilon - \beta)^{\prime}]$$
+Recognizing the zero part from before, we are left with the manageable,
+
+$$\mathbb{E}[(\hat{\mathbf{\beta}} - \beta)(\hat{\mathbf{\beta}} - \beta)^{\prime}]$$  $$\mathbb{E}[\mathbf{(X^{\prime}X)^{-1}X^{\prime}}\epsilon\epsilon^{\prime}\mathbf{X(X^{\prime}X)^{-1}}]$$
+Nifty.  With nonstochastic $\mathbf{X}$, it's the structure of $\epsilon\epsilon^{\prime}$ and we know what that is.  By assumption, we have $\sigma^{2}\mathbf{I}$.  If stochastic, we need more steps to get to the same place.
+
+---
+
+Proving the Gauss-Markov theorem is not so instructive.  From what we already have, we are restricted to linear estimators, we add or subtract something.  So after computation, we get the OLS standard errors plus a positive semi-definite matrix.  OLS always wins.  From here, a natural place to go is corrections for non $\mathbf{I}$.  We will do plenty of that.  And we will eventually need Aitken.
+
+Beyond this, lets take up two special matrices (that will be your favorite matrices): 
+
+1. **Projection Matrix** \mathbf{P}: $\mathbf{X}(\mathbf{X}^{\prime}\mathbf{X})^{-1}\mathbf{X}^{\prime}$
+
+2. **Residual Maker** \mathbf{M}: $\mathbf{I} - \mathbf{X}(\mathbf{X}^{\prime}\mathbf{X})^{-1}\mathbf{X}^{\prime}$
+
+which are both symmetric and idempotent $(\mathbf{M}^{2}=\mathbf{M})$.
+
+---
+
+## On **M** and **P**
+
+
+.pull-left[
+**M** 
+$$\mathbf{M}  =  \mathbf{I} - \mathbf{X(X^\prime X)^{-1}X^\prime}$$
+$$\mathbf{My}  =  (\mathbf{I} - \mathbf{X(X^\prime X)^{-1}X^\prime})\mathbf{y}$$
+$$\mathbf{My}  =  \mathbf{Iy} - \mathbf{X\underbrace{(X^\prime X)^{-1}X^\prime \mathbf{y}}_{\hat{\beta}}}$$
+$$\mathbf{My} =  \mathbf{y} - \mathbf{X\hat{\beta}}$$
+$$\mathbf{My}  =  \hat{\epsilon}$$
+]
+.pull-right[
+**P**
+
+$$\mathbf{P}  =  \mathbf{I - M}$$
+$$\mathbf{P}  =  \mathbf{I - (I - X(X^\prime X)^{-1}X^\prime})$$
+$$\mathbf{P}  =  \mathbf{X(X^\prime X)^{-1}X^\prime}$$
+$$\mathbf{Py}  =  \mathbf{X\underbrace{(X^\prime X)^{-1}X^\prime\mathbf{y}}_{\hat{\beta}}}$$
+$$\mathbf{Py}  =  \mathbf{X\hat{\beta}}$$
+$$\mathbf{Py}  =  \hat{\mathbf{y}}$$
+]
+---
+
+## General Linear Regression Model: Multiple Regression
+
+$$y = X\beta  + \epsilon$$
+
+1. $X$ is a $n \times k$ matrix of regressors (where the first column is 1)  
+2. $\beta$ is a $k \times 1$ matrix of unknown (partial) slope coefficients 
+3. $\epsilon$ is an (unknown) residual
+
+-  A partial slope is the analog of our simple bivariate regression except that there are multiple regressors. 
+- Partial: it is the effect of $x_{k}$ when all other variables are held constant.
+
+---
+
+## Regression and Inference
+
+$$y = X\beta + \epsilon$$
+
+1. Linear regression model (or sort of): 
+   + Same tools for testing hypotheses 
+   + Tests work for multiple partial slopes 
+   + $t$ can test the hypothesis of no relationship between $x_k$ and $y$; $\beta_k = 0$
+   + $F$ can compare the fit of two models or the joint hypothesis that $\beta_1 = \beta_2 = \ldots = \beta_k = 0$. 
+   
+The latter $F$ test appears in standard regression output and the probability compares a model with only a constant to the model you have estimated with $H_0:$ Constant only. \\ \\ If we just like $F$ better than $t$, it happens that $(t_{\nu})^2 \sim F_{1,\nu}$, but $t$ has the advantage of being (potentially) one-sided.
+
+---
+
+```{r, fig.width=3.5, fig.height=6}
+plot(density(rt(100000,df=10)^2), xlab="t-squared/F", bty="n", main="")
+lines(density(rf(100000, 1, 10)), col=2)
+legend(x=20, y=0.8, legend=c(expression(t^2),expression(F[1-10])), col=c(1,2), bty="n", lty=1)
+```
+
+---
+
+## Confidence Intervals
+
+In forming confidence intervals, one must account for metrics.  $t$ is defined by a standard deviation metric and the standard deviation remains in a common metric with the parameter $\hat{\beta}$.  Variance represents a squared metric in terms of the units measured by $\hat{\beta}$.  As a result, we will form confidence intervals from standard deviations instead of variances.
+
+
+1. Prediction intervals: A future response: $$\hat{y}_{0} \pm t^{(\frac{\alpha}{2})}_{n-p}\hat{\sigma}\sqrt{1 + x^{\prime}_{0}(\mathbf{X^{\prime}X})^{-1}x_{0}}$$
+
+--
+2. A mean response: $$\hat{y}_{0} \pm t^{(\frac{\alpha}{2})}_{n-p}\hat{\sigma}\sqrt{x^{\prime}_{0}(\mathbf{X^{\prime}X})^{-1}x_{0}}$$
+
+---
+
+## $\hat{\beta}$ Confidence Intervals
+
+- Individual: $$\hat{\beta} \pm t^{(\frac{\alpha}{2})}_{n-p}\hat{\sigma}\sqrt{(\mathbf{X^{\prime}X})^{-1}_{ii}}$$  Unfortunately, unless the off-diagonal elements of the variance/covariance matrix of the estimates are zero, individual confidence intervals are/can be deceptive.  A better way is to construct a simultaneous confidence interval.
+- Simultaneous for $k$ regressors: $$(\mathbf{\hat{\beta} - \beta})^{\prime}\mathbf{X^{\prime}X}(\mathbf{\hat{\beta} - \beta}) \leq k \hat{\sigma}^{2}F^{(\alpha)}_{k,n-k}$$
+
+---
+
+### Omitted Variable Bias
+
+Suppose that a correct specification is $$\mathbf{y} = \mathbf{X_{1}\beta_{1}} + \mathbf{X_{2}\beta_{2}} + \mathbf{\epsilon}$$
+where $\mathbf{X_{1}}$ consists of $k_{1}$ columns and $\mathbf{X_{2}}$ consists of $k_{2}$ columns.  Regress just $\mathbf{X_{1}}$ on $\mathbf{y}$ without including $\mathbf{X_{2}}$, we can characterize $\mathbf{b_{1}}$,
+$$\mathbf{b_{1}}  =  (\mathbf{X_{1}^{\prime}X_{1}})^{-1}\mathbf{X_{1}y} \rightarrow (\mathbf{X_{1}^{\prime}X_{1}})^{-1}\mathbf{X^{\prime}_{1}}[\mathbf{X_{1}\beta} + \mathbf{X_{2}\beta_{2}} + \mathbf{\epsilon}]$$
+$$=   (\mathbf{X_{1}^{\prime}X_{1}})^{-1}\mathbf{X^{\prime}_{1}}\mathbf{X_{1}\beta} + (\mathbf{X_{1}^{\prime}X_{1}})^{-1}\mathbf{X^{\prime}_{1}}\mathbf{X_{2}\beta_{2}} + (\mathbf{X_{1}^{\prime}X_{1}})^{-1}\mathbf{X^{\prime}_{1}}\mathbf{\epsilon}$$
+$$=  \mathbf{\beta_{1}} + (\mathbf{X_{1}^{\prime}X_{1}})^{-1}\mathbf{X^{\prime}_{1}}\mathbf{X_{2}\beta_{2}} + (\mathbf{X_{1}^{\prime}X_{1}})^{-1}\mathbf{X^{\prime}_{1}}\mathbf{\epsilon}$$
+Two elements worthy of consideration.  
+1. If $\mathbf{\beta_{2}}=0$ everything is fine, assuming the standard assumptions hold.  The reason: we have not really misspecified the model.
+2. Also, if the standard assumptions hold and $\mathbf{X_{1}^{\prime}X_{2}}=0$ then the second term also vanishes (even though $\mathbf{\beta_{2}}\neq 0$).  If, on the other hand, neither of these conditions hold, but we estimate the regression in any case, the estimate of $\mathbf{b_{1}}$ will be biased by a factor of (defining $\mathbf{P}= (\mathbf{X_{1}^{\prime}X_{1}})^{-1}\mathbf{X^{\prime}_{1}}\mathbf{X_{2}}$) 
+
+$$\mathbf{P}_{X_{1}X_{2}}\mathbf{\beta_{2}}$$
+What is $\mathbf{P}_{X_{1}X_{2}}$?
+
+---
+
+## Structural Consistency
+
+In specifying a regression model, we assume that its assumptions apply equally well to all the observations in our sample. They may not.  Fortunately, we can test claims of `structural stability` using techniques that we already have encountered.  $H_0$ : Structural stability.
+
+1. Estimate a linear regression assuming away the structural instability.  Save the Residual Sum of Squares, call it $S_{1}$.
+2. Estimate whatever regressions you believe to be implied by the hypothesis of structural instability and obtain their combined Residual Sum of Squares. Call it $S_{4}$.
+3. Subtract the RSS obtained from step 2 $S_{4}$ from the RSS obtained in step 1 $S_{1}$.  Call it $S_{5}$.
+4. $$F_{(k, n_{1} + n_{2} - 2k)} = \frac{S_{5} / k}{S_{4}/(n_{1} + n_{2} - 2k)}$$
+
+---
+
+## Revisiting $\sigma^{2}I$
+
+Now we can move on to considering the properties of the residuals and there conformity with assumptions we have made about their properties.  
+
+1. Homoscedasticity
+2. Normality
+   + Jarque-Bera test [for regression, should be $n=N-k$] `(sum , detail)` $$JB = \frac{n}{6}\left(S^{2} + \frac{(K-3)^{2}}{4} \right)$$
+
+---
+
+## Comparing Regression Models
+
+Two types of models, in general 
+1. Nested models
+2. Nonnested models
+
+In layman's terms, nested models arise when one model is a special case of the other.  For example, $\mathbf{y} = \mathbf{\beta_{0}} + \mathbf{X_{1}\beta_{1}} + \mathbf{\epsilon}$ is nested in $\mathbf{y} = \mathbf{\beta_{0}} + \mathbf{X_{1}\beta_{1}} + \mathbf{X_{2}\beta_{2}} + \mathbf{\epsilon}$ using the restriction that $\mathbf{\beta_{2}} = 0$.  If models are nested, usual techniques can be used.  If not, we must turn to alternative tools. Technically, there is probably an intermediate class that would be appropriately named `overlapping`.  Practically, `overlapping` have some nested elements and some nonnested elements.  Almost always, we will need the nonnested tools for these.
+
+---
+
+## Influence Diagnostics
+
+1. dfbeta
+2. Cook's Distance
+3. Added-variable plots
+4. RESET
+
+---
+
+## A Natural Conception of Panel Data as an Array
+
+Consider $i \in N$ units observed at $t \in T$ points in time.  The normal cross-sectional data structure will use variables as columns and $i$ as rows.  Panel data then adds the complication of a third dimension, $t$.  If we were to take this third dimension and transform the array to two dimensions, we would end up with an $(N \times T)$ by $K$ matrix of covariates and (for a single outcome) an $NT$ vector.
+
+---
+
+## To Pool or Not to Pool?
+
+1. Virtues of Panel Data
+
+- More accurate inference and variety in asymptotics.
+- Control over complexity (Regressors and parameters).
+- Required to isolate short-run and long-run effects simultaneously. Policy and reaction functions?
+- The number of observations grows.  *More data can't really provide less information, with all the Berk/Freedman caveats.  Provable in straightforward fashion with important implications.*
+- Explicit characterizations of within- and between- variation.
+- Simplification of computation for complex problems.
+    + Non-stationary time series 
+    + Measurement error. 
+    + Computational tricks (dynamic tobit)
+
+---
+
+## Examining Pooling Assumptions
+
+- Data (What is an outlier in this setting?)
+   + $D_{M} (x) = \sqrt{(x - \mu)^{\prime}\Sigma^{-1}(x - \mu)}$: \\  Mahalanobis distance is a generalization of Euclidean distance ($\Sigma^{-1}=\Sigma=I$) with an explicit covariance matrix.  Ali Hadi's work on multivariate outliers uses something similar with reordering to maximize a two subset Mahalanobis distance.  *aside*...
+   + Jackknife summary statistics on one- or two-dimensions.
+   + The real worry seems to be classes/clusters/groups that are different/distinct.
+
+--
+- Models (Stability of a model? and Influence)
+   + Chow test: F-test on pooled against split sample regression.  Perhaps iterated Chow tests using combinatoric algorithms over sizes.
+   + Changepoint models, Regimes and Regime Switching and Mixtures
+---
+
+## Convenience Samples and the Like
+
+- Hsiao isolates many of the central issues in panel data from the view of an econometrician.  The argument is a bit broader in the sense of repetition.
+
+--
+- Berk and Freedman isolate important issues of particular relevance to the types of structures we will look at.
+   + Convenience samples are a fact of social scientific life.
+   + Treating the data as a population obviates inference.
+   + As-if and imaginary sampling mechanisms.  Uncertainty gets really hard.
+   + Imaginary populations and imaginary sampling designs: a fiction?
+   + What we do with them is our responsibility, but we should be fair.
+   + Getting more data gives us the ability, but also the need, to do much more.
+
+---
+
+---
+
+## The Dimensions of TSCS/CSTS and Summary
+
+- Presence of a time dimensions gives us a natural ordering.
+- Space is not irrelevant under the same circumstances as time -- nominal indices are irrelevant on some level.  Defining space is hard.  Ex. targeting of Foreign Direct Investment and defining proximity.
+- ANOVA is informative in this two-dimensional setting.
+- A part of any good data analysis is summary and characterization.  The same is true here; let's look at some examples of summary in panel data settings.
+
+---
+
+## A Primitive Question
+
+Given two-dimensional data, how should we break it down?  The most common method is unit-averages; we break each unit's time series on each element into deviations from their own mean.  This is called the within transform.  The between portion represents deviations between the unit's mean and the overall mean.  Stationarity considerations are generically implicit.  We will break this up later.
+
+---
+
+## Some Useful Variances and Notation
+
+- W(ithin) for unit $i$ (Thus the total within variance would be a summary over all $i \in N$): $$W_{i} = \sum_{t=1}^{T} (x_{it} - \overline{x}_{i})^{2}$$
+- B(etween): $$B_{T} = \sum_{i=1}^{N}  (\overline{x}_{i} - \overline{x})^{2}$$
+- T(otal): $$T = \sum_{i=1}^{N} \sum_{t=1}^{T} (x_{it} - \overline{x})^{2}$$
+
+---
+
+
+## Basic `xt` commands
+
+In Stata's language, \texttt{xt} is the way that one naturally refers to CSTS/TSCS data.  Consider $NT$ observations on some random variable $y_{it}$ where $i \in N$ and $t \in T$.  The TSCS/CSTS commands almost always have this prefix.
+
+- \texttt{xtset}: Declaring \texttt{xt} data
+- \texttt{xtdes}: Describing \texttt{xt} data structure
+- \texttt{xtsum}: Summarizing \texttt{xt} data
+- \texttt{xttab}: Summarizing categorical \texttt{xt} data.
+- \texttt{xttrans}: Transition matrix for \texttt{xt} data.
+
+
+---
+
+## Basic R commands
+
+```{r}
+library(haven)
+HR.Data <- read_dta(url("https://github.com/robertwwalker/DADMStuff/raw/master/ISQ99-Essex.dta"))
+library(skimr)
+skim(HR.Data) %>% kable() %>% scroll_box(width="80%", height="50%")
+```
+
+---
+## More R summary
+
+```{r}
+library(tidyverse)
+library(plm)
+source(url("https://raw.githubusercontent.com/robertwwalker/DADMStuff/master/xtsum.R"))
+# Be careful with the ID variable, the safest is to make it factor; this can go wildly wrong
+xtsum(IDORIGIN~., data=HR.Data) %>% kable() %>% scroll_box(width="80%", height="50%")
+```
+
+---
+## The Core Idea
+
+.pull-left[
+In R, this is an essential `group_by` calculation in the `tidyverse`.  The within data is the overall data with group means subtracted.
+
+```{r, eval=FALSE}
+HR.Data %>% 
+  group_by(IDORIGIN) %>% 
+  mutate(DEMOC.Centered = 
+           DEMOC3 - mean(DEMOC3, na.rm=TRUE)) %>%
+  filter(IDORIGIN==42) %>% 
+  select(IDORIGIN, YEAR, DEMOC3, DEMOC.Centered) 
+```
+]
+.pull-right[
+```{r, echo=FALSE}
+HR.Data %>% 
+  group_by(IDORIGIN) %>% 
+  mutate(DEMOC.Centered = 
+           DEMOC3 - mean(DEMOC3, na.rm=TRUE)) %>%
+  filter(IDORIGIN==42) %>% 
+  select(IDORIGIN, YEAR, DEMOC3, DEMOC.Centered) 
+```
+]
+
+---
+
+```{r, eval=FALSE, echo=TRUE}
+HR.Data %>% 
+  group_by(IDORIGIN) %>% 
+  mutate(DEMOC.Centered = DEMOC3 - mean(DEMOC3, na.rm=TRUE)) %>%
+  DT::datatable(., 10,
+fillContainer = FALSE, options = list(pageLength = 8)
+)
+```
+
+---
+
+```{r, eval=TRUE, echo=FALSE}
+HR.Data %>% 
+  group_by(IDORIGIN) %>% 
+  mutate(DEMOC.Centered = DEMOC3 - mean(DEMOC3, na.rm=TRUE)) %>%
+  DT::datatable(., options = list(pageLength = 8, scrollX = TRUE)
+)
+```
+
+---
+
+## Outline for Day 2
+
+**Big picture: Models for Single Time Series**
+
+- Stationarity and differencing
+- Spurious regressions: Yule (1926)
+- Autoregressive and moving average terms.
+- Unit-root testing
+- Event Studies
+- The model/substance interaction
