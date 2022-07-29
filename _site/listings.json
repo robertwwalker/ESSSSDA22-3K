@@ -2,8 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/arima-models/index.html",
       "/posts/day-1/index.html",
+      "/posts/arima-models/index.html",
       "/posts/welcome/index.html"
     ]
   }

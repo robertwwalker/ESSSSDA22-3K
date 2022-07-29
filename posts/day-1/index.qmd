@@ -1,15 +1,19 @@
 ---
 title: "Day 1"
 author: "Robert W. Walker"
-date: "08/06/2022"
+date: "08/08/2022"
 categories: [time series, code, analysis]
 image: "image.jpg"
 ---
 
-A link to the slides.
+## Slides
 
-[Slides in .pdf format](./slides/slidesDay1.pdf)
-[A Xaringan of the .pdf for presentation](https://rww.science/xaringan/ESSSSDA22-Day1/)
+- [Slides in .pdf format](./slides/slidesDay1.pdf)
+- [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day1/)
+
+# Code and Analysis
+
+[The data are in Stata format.](https://github.com/robertwwalker/Essex-Data/raw/master/ISQ99-Essex.dta)  The `github` for this course
 
 ## Basic R commands
 
@@ -36,7 +40,7 @@ xtsum(IDORIGIN~., data=HR.Data) %>% kable() %>% scroll_box(width="80%", height="
 
 In R, this is an essential `group_by` calculation in the `tidyverse`.  The within data is the overall data with group means subtracted.
 
-```{r, eval=FALSE}
+```{r}
 HR.Data %>% 
   group_by(IDORIGIN) %>% 
   mutate(DEMOC.Centered = 
@@ -44,3 +48,87 @@ HR.Data %>%
   filter(IDORIGIN==42) %>% 
   select(IDORIGIN, YEAR, DEMOC3, DEMOC.Centered) 
 ```
+
+In Stata, the key is to first load and declare the data.
+
+```
+use "https://github.com/robertwwalker/Essex-Data/raw/main/ISQ99-Essex.dta"
+des
+```
+
+![Stata Load](./slides/StataLoad.png)
+
+`xtset` denotes two key features of the data, the $i$ and $t$.
+
+```
+xtset IDORIGIN YEAR
+```
+
+![xtset](./slides/xtset.png)
+
+Stata has internal capabilities for summarising and describing `xt` data.  A between and within summary is given by `xtsum`
+
+```
+xtsum
+```
+
+![xtsum](./slides/xtsum.png)
+
+The description can be deceptive **because the indices are a complete grid.**
+
+```
+xtdes
+```
+
+![xtdes](./slides/xtdes.png)
+
+# Leads and Lags
+
+The core operators in Stata lead with a letter before `.`  With panel data, we will need to be cautious of the grouping.
+
+- F is forward, 
+- L is Lag, 
+- D is difference.
+
+![Operators](./slides/Operators.png)
+
+## Qualitative Variables
+
+### `xttab`
+
+- Between: How many units received each category?
+- Within: Of all observations of units that received that category at least once, what percent of observations take this value?
+
+```
+xttab AINEW
+```
+
+![xttab](./slides/xttab.png)
+
+### The Between
+
+```{r}
+between.tally <- function(x) {
+HR.Data %>% select(IDORIGIN, AINEW) %>% filter(AINEW==x) %$% table(IDORIGIN) %>% length()
+}
+sapply(c(1:5), function(x) {between.tally(x)})
+```
+
+### `xttrans`
+
+A first-order transition matrix.
+
+```
+xttrans AINEW
+```
+
+![xttrans](./slides/xttrans.png)
+
+```{r}
+library(magrittr)
+HR.Data %>% 
+  group_by(IDORIGIN) %>% 
+  mutate(Lag.AI = lag(AINEW, 1)) %$% 
+  table(AINEW, Lag.AI)
+```
+

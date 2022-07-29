@@ -1,12 +1,37 @@
 ---
 title: "Welcome To 3K: Dynamics and Heterogeneity"
 author: "Robert W. Walker"
-date: "08/01/2022"
+date: "08/05/2022"
 categories: [news]
 ---
 
-Welcome to 3K: Dynamics and Heterogeneity!
+# Welcome to 3K: Dynamics and Heterogeneity!
+
+I hope you are ready! 
+
+In the next two weeks we will set forth as comprehensive a treatment as we can in time series and panel data in ten sessions.  With coffee in hand and the computer getting ready, let's dig in!
 
 ![](thumbnail.jpg)
 
-I hope you are ready; in the next two weeks we will set forth as comprehensive a treatment as I can in time series and panel data in ten sessions.  With coffee in hand and the computer getting ready; soon we can kick off.
+A *brief* summary for the Instructor's Presentation
+
+- Week 1: Time Series
+  + Stationarity and Unit Roots
+  + ARMA structures
+  + Dynamic Linear Models and their Interpretation
+  + Cointegration topics
+  + Equation balance and recent controversies
+- Week 2: Panel Data
+  + Fixed and random effects and Within/Between
+  + STADL Up!
+  + Missing data
+  + GLM Extensions of Panel Models
+  + Causal Inference in Panel Data [TWFE/DID]
+
+# Digital Resources
+
+Depending upon your software of choice, you will want to have a look over the relevant manuals.
+- For Stata [ts](https://www.stata.com/manuals/ts.pdf) and [xt](https://www.stata.com/manuals/xt.pdf)
+- For R there is [timetk](https://business-science.github.io/timetk/) and [fpp3](https://otexts.com/fpp3/) and [plm](https://cran.r-project.org/web/packages/plm/vignettes/A_plmPackage.html) along with [panelr](https://cran.r-project.org/web/packages/panelr/vignettes/wbm.html).
+- [A `github` with the course data.](https://github.com/robertwwalker/Essex-Data)
+- [Robert W. Walker's website](https://rww.science)

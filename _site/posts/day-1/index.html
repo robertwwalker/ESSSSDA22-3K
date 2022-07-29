@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Robert W. Walker">
-<meta name="dcterms.date" content="2022-08-06">
+<meta name="dcterms.date" content="2022-08-08">
 
 <title>ESSSSDA 2022: Dynamics and Heterogeneity - Day 1</title>
 <style>
@@ -122,6 +122,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -185,7 +186,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">August 6, 2022</p>
+        <p class="date">August 8, 2022</p>
       </div>
     </div>
       
@@ -202,8 +203,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<p>A link to the slides.</p>
-<p><a href="./slides/slidesDay1.pdf">Slides in .pdf format</a> <a href="https://rww.science/xaringan/ESSSSDA22-Day1/">A Xaringan of the .pdf for presentation</a></p>
+<section id="slides" class="level2">
+<h2 class="anchored" data-anchor-id="slides">Slides</h2>
+<ul>
+<li><a href="./slides/slidesDay1.pdf">Slides in .pdf format</a></li>
+<li><a href="https://rww.science/xaringan/ESSSSDA22-Day1/">A xaringan for presentation</a></li>
+</ul>
+</section>
+<section id="code-and-analysis" class="level1">
+<h1>Code and Analysis</h1>
+<p><a href="https://github.com/robertwwalker/Essex-Data/raw/master/ISQ99-Essex.dta">The data are in Stata format.</a> The <code>github</code> for this course</p>
 <section id="basic-r-commands" class="level2">
 <h2 class="anchored" data-anchor-id="basic-r-commands">Basic R commands</h2>
 <div class="cell">
@@ -1007,9 +1016,152 @@ This message is displayed once per session.</code></pre>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>           DEMOC3 <span class="sc">-</span> <span class="fu">mean</span>(DEMOC3, <span class="at">na.rm=</span><span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(IDORIGIN<span class="sc">==</span><span class="dv">42</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(IDORIGIN, YEAR, DEMOC3, DEMOC.Centered) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 18 × 4
+# Groups:   IDORIGIN [1]
+   IDORIGIN  YEAR DEMOC3 DEMOC.Centered
+      &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;          &lt;dbl&gt;
+ 1       42  1976      1         -5.11 
+ 2       42  1977      1         -5.11 
+ 3       42  1978      6         -0.111
+ 4       42  1979      6         -0.111
+ 5       42  1980      6         -0.111
+ 6       42  1981      6         -0.111
+ 7       42  1982      7          0.889
+ 8       42  1983      7          0.889
+ 9       42  1984      7          0.889
+10       42  1985      7          0.889
+11       42  1986      7          0.889
+12       42  1987      7          0.889
+13       42  1988      7          0.889
+14       42  1989      7          0.889
+15       42  1990      7          0.889
+16       42  1991      7          0.889
+17       42  1992      7          0.889
+18       42  1993      7          0.889</code></pre>
+</div>
+</div>
+<p>In Stata, the key is to first load and declare the data.</p>
+<pre><code>use "https://github.com/robertwwalker/Essex-Data/raw/main/ISQ99-Essex.dta"
+des</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./slides/StataLoad.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Stata Load</figcaption><p></p>
+</figure>
+</div>
+<p><code>xtset</code> denotes two key features of the data, the <span class="math inline">\(i\)</span> and <span class="math inline">\(t\)</span>.</p>
+<pre><code>xtset IDORIGIN YEAR</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./slides/xtset.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">xtset</figcaption><p></p>
+</figure>
+</div>
+<p>Stata has internal capabilities for summarising and describing <code>xt</code> data. A between and within summary is given by <code>xtsum</code></p>
+<pre><code>xtsum</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./slides/xtsum.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">xtsum</figcaption><p></p>
+</figure>
+</div>
+<p>The description can be deceptive <strong>because the indices are a complete grid.</strong></p>
+<pre><code>xtdes</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./slides/xtdes.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">xtdes</figcaption><p></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="leads-and-lags" class="level1">
+<h1>Leads and Lags</h1>
+<p>The core operators in Stata lead with a letter before <code>.</code> With panel data, we will need to be cautious of the grouping.</p>
+<ul>
+<li>F is forward,</li>
+<li>L is Lag,</li>
+<li>D is difference.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./slides/Operators.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Operators</figcaption><p></p>
+</figure>
+</div>
+<section id="qualitative-variables" class="level2">
+<h2 class="anchored" data-anchor-id="qualitative-variables">Qualitative Variables</h2>
+<section id="xttab" class="level3">
+<h3 class="anchored" data-anchor-id="xttab"><code>xttab</code></h3>
+<ul>
+<li>Between: How many units received each category?</li>
+<li>Within: Of all observations of units that received that category at least once, what percent of observations take this value?</li>
+</ul>
+<pre><code>xttab AINEW</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./slides/xttab.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">xttab</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="the-between" class="level3">
+<h3 class="anchored" data-anchor-id="the-between">The Between</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>between.tally <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>HR.Data <span class="sc">%&gt;%</span> <span class="fu">select</span>(IDORIGIN, AINEW) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(AINEW<span class="sc">==</span>x) <span class="sc">%$%</span> <span class="fu">table</span>(IDORIGIN) <span class="sc">%&gt;%</span> <span class="fu">length</span>()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>), <span class="cf">function</span>(x) {<span class="fu">between.tally</span>(x)})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  96 121 113  86  43</code></pre>
+</div>
+</div>
+</section>
+<section id="xttrans" class="level3">
+<h3 class="anchored" data-anchor-id="xttrans"><code>xttrans</code></h3>
+<p>A first-order transition matrix.</p>
+<pre><code>xttrans AINEW</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./slides/xttrans.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">xttrans</figcaption><p></p>
+</figure>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'magrittr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:purrr':
+
+    set_names</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:tidyr':
+
+    extract</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>HR.Data <span class="sc">%&gt;%</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(IDORIGIN) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Lag.AI =</span> <span class="fu">lag</span>(AINEW, <span class="dv">1</span>)) <span class="sc">%$%</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>(AINEW, Lag.AI)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Lag.AI
+AINEW   1   2   3   4   5
+    1 705   0   0   0   0
+    2   0 769   0   0   0
+    3   0   0 782   0   0
+    4   0   0   0 350   0
+    5   0   0   0   0 148</code></pre>
+</div>
 </div>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
