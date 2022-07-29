@@ -10,3 +10,37 @@ A link to the slides.
 
 [Slides in .pdf format](./slides/slidesDay1.pdf)
 [A Xaringan of the .pdf for presentation](https://rww.science/xaringan/ESSSSDA22-Day1/)
+
+## Basic R commands
+
+```{r}
+library(haven); library(kableExtra)
+HR.Data <- read_dta(url("https://github.com/robertwwalker/DADMStuff/raw/master/ISQ99-Essex.dta"))
+library(skimr)
+skim(HR.Data) %>% kable() %>% scroll_box(width="80%", height="50%")
+```
+
+## More R summary
+
+A little function that I wrote up on `github`.
+
+```{r}
+library(tidyverse)
+library(plm)
+source(url("https://raw.githubusercontent.com/robertwwalker/DADMStuff/master/xtsum.R"))
+# Be careful with the ID variable, the safest is to make it factor; this can go wildly wrong
+xtsum(IDORIGIN~., data=HR.Data) %>% kable() %>% scroll_box(width="80%", height="50%")
+```
+
+## The Core Idea
+
+In R, this is an essential `group_by` calculation in the `tidyverse`.  The within data is the overall data with group means subtracted.
+
+```{r, eval=FALSE}
+HR.Data %>% 
+  group_by(IDORIGIN) %>% 
+  mutate(DEMOC.Centered = 
+           DEMOC3 - mean(DEMOC3, na.rm=TRUE)) %>%
+  filter(IDORIGIN==42) %>% 
+  select(IDORIGIN, YEAR, DEMOC3, DEMOC.Centered) 
+```
