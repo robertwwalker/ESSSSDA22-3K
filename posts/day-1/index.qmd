@@ -6,10 +6,7 @@ categories: [time series, code, analysis]
 image: "image.jpg"
 ---
 
-```{r, echo=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
-```
-
 A link to the slides.
 
-[Slides](./slidesDay1.pdf)
+[Slides in .pdf format](./slides/slidesDay1.pdf)
+[A Xaringan of the .pdf for presentation](https://rww.science/xaringan/ESSSSDA22-Day1/)
