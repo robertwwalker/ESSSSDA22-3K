@@ -1,0 +1,60 @@
+---
+title: "Spurious Regressions among I(1) Variables"
+author: "Robert W. Walker"
+date: "08/09/2022"
+categories: [time series, code, analysis]
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## An Example of Time Series Troubles
+
+Let me do this with a relatively simple regression.  Two variables: 
+
+$$ y = \alpha + \beta x + \epsilon $$
+
+Both are generated randomly.  Here's a basic plot.
+
+```{r}
+y <- cumsum(rnorm(100))
+x <- cumsum(rnorm(100))
+plot(x=seq(1:100), y=y, type="l", col="red", ylim=c(-15,15))
+lines(x=seq(1:100), y=x, col="blue")
+```
+
+Each time series contains 100 observations.  Because both x and y are random, the slopes should be 0, 95% of the time with 95% confidence because there is no underlying relationship.  In practice, let's look at the distribution of p-values for the probability of no relationship.
+
+```{r}
+SR <- function(n) {
+  Results <- NULL
+  for(i in 1:n) {
+y <- cumsum(rnorm(100))
+x <- cumsum(rnorm(100))
+Result <- summary(lm(y~x))$coefficients[2,4]
+Results <- append(Result,Results)
+  }
+  Results
+}
+```
+
+I replicate the process of random x and random y 1000 times and show the p-values below.  Because they are random, approximately 95% should be greater than 0.05.
+
+```{r}
+Res1 <- SR(1000)
+plot(density(Res1), main="Distribution of p-values from Trending x")
+```
+
+In practice,
+
+```{r}
+table(Res1 > 0.05)
+```
+
+The above table should show about 950 TRUE and 50 FALSE but because each is trended and they share variation from trend, the actual frequency of rejecting the claim of no relationship is far more common than 5%.

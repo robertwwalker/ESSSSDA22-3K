@@ -1,0 +1,16 @@
+{
+  "hash": "6cb1ef490b772aced993f1128df21000",
+  "result": {
+    "markdown": "---\ntitle: \"Spurious Regressions among I(1) Variables\"\nauthor: \"Robert W. Walker\"\ndate: \"08/09/2022\"\ncategories: [time series, code, analysis]\n---\n\n::: {.cell}\n\n:::\n\n\n\n\n## An Example of Time Series Troubles\n\nLet me do this with a relatively simple regression.  Two variables: \n\n\n$$ y = \\alpha + \\beta x + \\epsilon $$\n\n\nBoth are generated randomly.  Here's a basic plot.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ny <- cumsum(rnorm(100))\nx <- cumsum(rnorm(100))\nplot(x=seq(1:100), y=y, type=\"l\", col=\"red\", ylim=c(-15,15))\nlines(x=seq(1:100), y=x, col=\"blue\")\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n:::\n\n\nEach time series contains 100 observations.  Because both x and y are random, the slopes should be 0, 95% of the time with 95% confidence because there is no underlying relationship.  In practice, let's look at the distribution of p-values for the probability of no relationship.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nSR <- function(n) {\n  Results <- NULL\n  for(i in 1:n) {\ny <- cumsum(rnorm(100))\nx <- cumsum(rnorm(100))\nResult <- summary(lm(y~x))$coefficients[2,4]\nResults <- append(Result,Results)\n  }\n  Results\n}\n```\n:::\n\n\nI replicate the process of random x and random y 1000 times and show the p-values below.  Because they are random, approximately 95% should be greater than 0.05.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nRes1 <- SR(1000)\nplot(density(Res1), main=\"Distribution of p-values from Trending x\")\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-4-1.png){width=672}\n:::\n:::\n\n\nIn practice,\n\n\n::: {.cell}\n\n```{.r .cell-code}\ntable(Res1 > 0.05)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n\nFALSE  TRUE \n  752   248 \n```\n:::\n:::\n\n\nThe above table should show about 950 TRUE and 50 FALSE but because each is trended and they share variation from trend, the actual frequency of rejecting the claim of no relationship is far more common than 5%.\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

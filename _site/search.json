@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "ESSSSDA22-3K",
     "section": "",
-    "text": "time series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 8, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 6, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nAug 5, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\nNo matching items"
+    "text": "time series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 9, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 9, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 9, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 9, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 9, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 8, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 6, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nAug 5, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/arima-models/index.html#arima-models",
@@ -61,5 +61,61 @@
     "title": "Welcome To 3K: Dynamics and Heterogeneity",
     "section": "",
     "text": "Digital Resources\nDepending upon your software of choice, you will want to have a look over the relevant manuals. - For Stata ts and xt - For R there is timetk and fpp3 and plm along with panelr. - A github with the course data. - Robert W. Walker’s website"
+  },
+  {
+    "objectID": "posts/day-2/index.html",
+    "href": "posts/day-2/index.html",
+    "title": "Day 2",
+    "section": "",
+    "text": "Slides in .pdf format\nA xaringan for presentation"
+  },
+  {
+    "objectID": "posts/day-2/index.html#basic-r-commands",
+    "href": "posts/day-2/index.html#basic-r-commands",
+    "title": "Day 2",
+    "section": "Basic R commands",
+    "text": "Basic R commands\nThe first key will be to specify date/time formats. The list of available formats is quite large, thankfully, there are unified tools."
+  },
+  {
+    "objectID": "posts/spurious-regressions/index.html#an-example-of-time-series-troubles",
+    "href": "posts/spurious-regressions/index.html#an-example-of-time-series-troubles",
+    "title": "Spurious Regressions among I(1) Variables",
+    "section": "An Example of Time Series Troubles",
+    "text": "An Example of Time Series Troubles\nLet me do this with a relatively simple regression. Two variables:\n\\[ y = \\alpha + \\beta x + \\epsilon \\]\nBoth are generated randomly. Here’s a basic plot.\n\ny <- cumsum(rnorm(100))\nx <- cumsum(rnorm(100))\nplot(x=seq(1:100), y=y, type=\"l\", col=\"red\", ylim=c(-15,15))\nlines(x=seq(1:100), y=x, col=\"blue\")\n\n\n\n\nEach time series contains 100 observations. Because both x and y are random, the slopes should be 0, 95% of the time with 95% confidence because there is no underlying relationship. In practice, let’s look at the distribution of p-values for the probability of no relationship.\n\nSR <- function(n) {\n  Results <- NULL\n  for(i in 1:n) {\ny <- cumsum(rnorm(100))\nx <- cumsum(rnorm(100))\nResult <- summary(lm(y~x))$coefficients[2,4]\nResults <- append(Result,Results)\n  }\n  Results\n}\n\nI replicate the process of random x and random y 1000 times and show the p-values below. Because they are random, approximately 95% should be greater than 0.05.\n\nRes1 <- SR(1000)\nplot(density(Res1), main=\"Distribution of p-values from Trending x\")\n\n\n\n\nIn practice,\n\ntable(Res1 > 0.05)\n\n\nFALSE  TRUE \n  752   248 \n\n\nThe above table should show about 950 TRUE and 50 FALSE but because each is trended and they share variation from trend, the actual frequency of rejecting the claim of no relationship is far more common than 5%."
+  },
+  {
+    "objectID": "posts/day-3/index.html",
+    "href": "posts/day-3/index.html",
+    "title": "Day 3",
+    "section": "",
+    "text": "Slides in .pdf format\nA xaringan for presentation"
+  },
+  {
+    "objectID": "posts/day-5/index.html",
+    "href": "posts/day-5/index.html",
+    "title": "Day 2",
+    "section": "",
+    "text": "Slides in .pdf format\nA xaringan for presentation"
+  },
+  {
+    "objectID": "posts/day-5/index.html#basic-r-commands",
+    "href": "posts/day-5/index.html#basic-r-commands",
+    "title": "Day 2",
+    "section": "Basic R commands",
+    "text": "Basic R commands\nThe first key will be to specify date/time formats. The list of available formats is quite large, thankfully, there are unified tools."
+  },
+  {
+    "objectID": "posts/day-4/index.html",
+    "href": "posts/day-4/index.html",
+    "title": "Day 4",
+    "section": "",
+    "text": "Slides in .pdf format\nA xaringan for presentation"
+  },
+  {
+    "objectID": "posts/day-4/index.html#basic-r-commands",
+    "href": "posts/day-4/index.html#basic-r-commands",
+    "title": "Day 4",
+    "section": "Basic R commands",
+    "text": "Basic R commands\nThe first key will be to specify date/time formats. The list of available formats is quite large, thankfully, there are unified tools."
   }
 ]

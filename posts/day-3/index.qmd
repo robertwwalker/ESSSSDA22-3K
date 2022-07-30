@@ -1,0 +1,13 @@
+---
+title: "Day 3"
+author: "Robert W. Walker"
+date: "08/09/2022"
+categories: [time series, code, analysis]
+image: "image.jpg"
+---
+
+## Slides
+
+- [Slides in .pdf format](./slides/slidesDay3.pdf)
+- [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day3/)
+

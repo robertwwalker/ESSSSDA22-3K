@@ -1,0 +1,14 @@
+{
+  "hash": "dbe7a83fe9c0203ba65c30f1ffe47d4c",
+  "result": {
+    "markdown": "---\ntitle: \"Day 2\"\nauthor: \"Robert W. Walker\"\ndate: \"08/09/2022\"\ncategories: [time series, code, analysis]\nimage: \"image.jpg\"\n---\n\n\n## Slides\n\n- [Slides in .pdf format](./slides/slidesDay2.pdf)\n- [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day2/)\n\n# Code and Analysis\n\n[The data are in Stata format.](https://github.com/robertwwalker/Essex-Data/raw/master/ISQ99-Essex.dta)  The `github` for this course.  There is also [a link here for a local copy](./slides/ISQ99-Essex.dta).\n\n## Basic R commands\n\nThe first key will be to specify date/time formats.  The list of available formats is quite large, thankfully, there are unified tools.\n\n\n::: {.cell}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

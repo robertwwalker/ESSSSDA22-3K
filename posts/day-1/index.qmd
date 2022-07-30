@@ -123,7 +123,7 @@ xttrans AINEW
 ```
 
 ![xttrans](./slides/xttrans.png)
-I want to rely on the `dplyr` version of lag so I am explicit here.  Take the data, group it by id, calculate the lag, ungroup them, and create a table.  The `janitor` library provides `tabyl` and it is explicit among missing values.
+I want to rely on the `dplyr` version of lag so I am explicit here.  Take the data, group it by id, calculate the lag, ungroup them, and create a table.  I prefer to keep this explicit with `order_by`.  The `janitor` library provides `tabyl` and it is explicit among missing values.
 
 ```{r, warning=FALSE, message=FALSE}
 library(janitor)
