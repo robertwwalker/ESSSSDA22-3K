@@ -1,7 +1,7 @@
 ---
 title: "Simulation under ARIMA Models"
 author: "Robert W. Walker"
-date: "08/06/2022"
+date: "08/09/2022"
 categories: [time series, code, analysis]
 image: "image.jpg"
 ---

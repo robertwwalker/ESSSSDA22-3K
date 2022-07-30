@@ -1,21 +1,13 @@
 ---
-title: "Day 2"
+title: "Day 5"
 author: "Robert W. Walker"
-date: "08/09/2022"
+date: "08/12/2022"
 categories: [time series, code, analysis]
 image: "image.jpg"
 ---
 
 ## Slides
 
-- [Slides in .pdf format](./slides/slidesDay2.pdf)
-- [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day2/)
-
-# Code and Analysis
-
-[The data are in Stata format.](https://github.com/robertwwalker/Essex-Data/raw/master/ISQ99-Essex.dta)  The `github` for this course.  There is also [a link here for a local copy](./slides/ISQ99-Essex.dta).
-
-## Basic R commands
-
-The first key will be to specify date/time formats.  The list of available formats is quite large, thankfully, there are unified tools.
+- [Slides in .pdf format](./slides/slidesDay5.pdf)
+- [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day5/)
 

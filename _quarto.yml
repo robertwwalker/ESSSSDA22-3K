@@ -2,18 +2,35 @@ project:
   type: website
 
 website:
-  title: "ESSSSDA 2022: Dynamics and Heterogeneity"
+  title: "ESSSSDA 2022 3K: Dynamics and Heterogeneity"
   navbar:
     right:
+      - posts/welcome/index.qmd
       - about.qmd
       - icon: github
-        href: https://github.com/robertwwalker
-      - icon: twitter
-        href: https://twitter.com/PieRatio
+        href: https://github.com/robertwwalker/ESSSSDA22-3K/
+      - icon: github
+        href: https://github.com/robertwwalker/Essex-Data/
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - section: "Week 1"
+        contents:
+          - posts/day-1/index.qmd
+          - posts/day-2/index.qmd
+          - posts/day-3/index.qmd
+          - posts/day-4/index.qmd
+          - posts/day-5/index.qmd
+      - section: "Week 2"
+        contents:
+          - posts/day-/index.qmd
+          - posts/day-7/index.qmd
+
 format:
   html:
     theme: slate
     css: styles.css
-
+    toc: true
 
 

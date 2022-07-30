@@ -1,7 +1,8 @@
 ---
-title: "Welcome To 3K: Dynamics and Heterogeneity"
+title: "Welcome!"
+subtitle: "3K: Dynamics and Heterogeneity"
 author: "Robert W. Walker"
-date: "08/05/2022"
+date: "08/03/2022"
 categories: [news]
 ---
 
@@ -34,4 +35,5 @@ Depending upon your software of choice, you will want to have a look over the re
 - For Stata [ts](https://www.stata.com/manuals/ts.pdf) and [xt](https://www.stata.com/manuals/xt.pdf)
 - For R there is [timetk](https://business-science.github.io/timetk/) and [fpp3](https://otexts.com/fpp3/) and [plm](https://cran.r-project.org/web/packages/plm/vignettes/A_plmPackage.html) along with [panelr](https://cran.r-project.org/web/packages/panelr/vignettes/wbm.html).
 - [A `github` with the course data.](https://github.com/robertwwalker/Essex-Data)
+- [A `github` with this website.](https://github.com/robertwwalker/ESSSSDA22-3K/)
 - [Robert W. Walker's website](https://rww.science)

@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "ESSSSDA22-3K",
     "section": "",
-    "text": "time series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 9, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 9, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 9, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 9, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 9, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 8, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 6, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nAug 5, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\nNo matching items"
+    "text": "time series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 12, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 11, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 10, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 9, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 9, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 9, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ntime series\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nAug 8, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\n  \n\n\n\n\n\n3K: Dynamics and Heterogeneity\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nAug 3, 2022\n\n\nRobert W. Walker\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/arima-models/index.html#arima-models",
@@ -58,9 +58,9 @@
   {
     "objectID": "posts/welcome/index.html",
     "href": "posts/welcome/index.html",
-    "title": "Welcome To 3K: Dynamics and Heterogeneity",
+    "title": "Welcome!",
     "section": "",
-    "text": "Digital Resources\nDepending upon your software of choice, you will want to have a look over the relevant manuals. - For Stata ts and xt - For R there is timetk and fpp3 and plm along with panelr. - A github with the course data. - Robert W. Walker’s website"
+    "text": "Digital Resources\nDepending upon your software of choice, you will want to have a look over the relevant manuals. - For Stata ts and xt - For R there is timetk and fpp3 and plm along with panelr. - A github with the course data. - A github with this website. - Robert W. Walker’s website"
   },
   {
     "objectID": "posts/day-2/index.html",
@@ -93,16 +93,9 @@
   {
     "objectID": "posts/day-5/index.html",
     "href": "posts/day-5/index.html",
-    "title": "Day 2",
+    "title": "Day 5",
     "section": "",
     "text": "Slides in .pdf format\nA xaringan for presentation"
-  },
-  {
-    "objectID": "posts/day-5/index.html#basic-r-commands",
-    "href": "posts/day-5/index.html#basic-r-commands",
-    "title": "Day 2",
-    "section": "Basic R commands",
-    "text": "Basic R commands\nThe first key will be to specify date/time formats. The list of available formats is quite large, thankfully, there are unified tools."
   },
   {
     "objectID": "posts/day-4/index.html",
@@ -110,12 +103,5 @@
     "title": "Day 4",
     "section": "",
     "text": "Slides in .pdf format\nA xaringan for presentation"
-  },
-  {
-    "objectID": "posts/day-4/index.html#basic-r-commands",
-    "href": "posts/day-4/index.html#basic-r-commands",
-    "title": "Day 4",
-    "section": "Basic R commands",
-    "text": "Basic R commands\nThe first key will be to specify date/time formats. The list of available formats is quite large, thankfully, there are unified tools."
   }
 ]

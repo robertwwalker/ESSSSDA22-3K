@@ -3,7 +3,6 @@ title: "Day 2"
 author: "Robert W. Walker"
 date: "08/09/2022"
 categories: [time series, code, analysis]
-image: "image.jpg"
 ---
 
 ## Slides
@@ -11,15 +10,14 @@ image: "image.jpg"
 - [Slides in .pdf format](./slides/slidesDay2.pdf)
 - [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day2/)
 
-# Code and Analysis
-
-[The data are in Stata format.](https://github.com/robertwwalker/Essex-Data/raw/master/ISQ99-Essex.dta)  The `github` for this course.  There is also [a link here for a local copy](./slides/ISQ99-Essex.dta).
-
-## Basic R commands
-
-The first key will be to specify date/time formats.  The list of available formats is quite large, thankfully, there are unified tools.
-
 ```{r}
-
+library(fpp3)
+library(haven)
+br7983 <- read_dta(url("https://github.com/robertwwalker/Essex-Data/raw/main/br7983.dta")) %>% 
+  mutate(month = as.character(month)) %>% 
+  mutate(month = paste0("19",month, sep="")) %>% 
+  mutate(date = yearmonth(month, format="%Y%m"))
+br7983 <- br7983 %>% as_tsibble(index=date) 
+br7983 %>% gg_tsdisplay(govpopl, plot_type = "partial")
 ```
 
