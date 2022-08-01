@@ -32,10 +32,10 @@ ul.task-list{list-style: none;}
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -105,7 +105,7 @@ ul.task-list{list-style: none;}
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./posts/welcome/index.html">Welcome!</a>
+    <a class="nav-link active" href="./posts/welcome/index.html" aria-current="page">Welcome!</a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./about.html">About</a>
@@ -160,6 +160,11 @@ ul.task-list{list-style: none;}
       </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/welcome/index.html" class="sidebar-item-text sidebar-link">Welcome to 3K!</a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Week 1</a>
@@ -170,27 +175,27 @@ ul.task-list{list-style: none;}
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./posts/day-1/index.html" class="sidebar-item-text sidebar-link">Day 1</a>
+  <a href="./posts/day-1/index.html" class="sidebar-item-text sidebar-link">Day 1: Time, Decomposition, and Summaries</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./posts/day-2/index.html" class="sidebar-item-text sidebar-link">Day 2</a>
+  <a href="./posts/day-2/index.html" class="sidebar-item-text sidebar-link">Day 2: Time Series, Stationarity, and ARIMA Models</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./posts/day-3/index.html" class="sidebar-item-text sidebar-link">Day 3</a>
+  <a href="./posts/day-3/index.html" class="sidebar-item-text sidebar-link">Day 3: Dynamic Linear, ADL Models, and VARs</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./posts/day-4/index.html" class="sidebar-item-text sidebar-link">Day 4</a>
+  <a href="./posts/day-4/index.html" class="sidebar-item-text sidebar-link">Day 4: Cointegration</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./posts/day-5/index.html" class="sidebar-item-text sidebar-link">Day 5</a>
+  <a href="./posts/day-5/index.html" class="sidebar-item-text sidebar-link">Day 5: Equation Balance to Wrap Up Week 1</a>
   </div>
 </li>
       </ul>
@@ -204,11 +209,30 @@ ul.task-list{list-style: none;}
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
-  posts/day-/index.qmd
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="./posts/day-6/index.html" class="sidebar-item-text sidebar-link">Day 6: Panel Data</a>
+  </div>
+</li>
           <li class="sidebar-item">
-  posts/day-7/index.qmd
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="./posts/day-7/index.html" class="sidebar-item-text sidebar-link">Day 7: Missing Data</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/day-8/index.html" class="sidebar-item-text sidebar-link">Day 8: Panel Models for Limited Outcomes</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/day-9/index.html" class="sidebar-item-text sidebar-link">Day 9: GMM and GEE</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/day-10/index.html" class="sidebar-item-text sidebar-link">Day 10: Causal Inference in Panels and TWFE</a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -217,7 +241,7 @@ ul.task-list{list-style: none;}
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(8)</span></div><div class="category" data-category="analysis">analysis <span class="quarto-category-count">(7)</span></div><div class="category" data-category="code">code <span class="quarto-category-count">(7)</span></div><div class="category" data-category="news">news <span class="quarto-category-count">(1)</span></div><div class="category" data-category="time series">time series <span class="quarto-category-count">(7)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(11)</span></div><div class="category" data-category="analysis">analysis <span class="quarto-category-count">(10)</span></div><div class="category" data-category="code">code <span class="quarto-category-count">(10)</span></div><div class="category" data-category="news">news <span class="quarto-category-count">(1)</span></div><div class="category" data-category="panel data">panel data <span class="quarto-category-count">(6)</span></div><div class="category" data-category="time series">time series <span class="quarto-category-count">(5)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-body" id="quarto-document-content">
 
@@ -230,14 +254,219 @@ ul.task-list{list-style: none;}
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="time series,code,analysis" data-listing-date-sort="1660287600000" data-listing-file-modified-sort="1659201743020" data-listing-reading-time-sort="0.045">
+<div class="quarto-post image-right" data-index="0" data-categories="panel data,code,analysis" data-listing-date-sort="1660892400000" data-listing-file-modified-sort="1659371684890" data-listing-reading-time-sort="0.045">
+<div class="thumbnail">
+<p><a href="./posts/day-10/index.html"> <img src="./posts/day-10/image.jpg" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/day-10/index.html">
+<h3 class="no-anchor listing-title">
+Day 10: Causal Inference in Panels and TWFE
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('panel data'); return false;">
+panel data
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('code'); return false;">
+code
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('analysis'); return false;">
+analysis
+</div>
+</div>
+<a href="./posts/day-10/index.html">
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/day-10/index.html">
+<div class="listing-date">
+Aug 19, 2022
+</div>
+<div class="listing-author">
+Robert W. Walker
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="panel data,code,analysis" data-listing-date-sort="1660806000000" data-listing-file-modified-sort="1659371663390" data-listing-reading-time-sort="0.045">
+<div class="thumbnail">
+<p><a href="./posts/day-9/index.html"> <img src="./posts/day-9/image.jpg" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/day-9/index.html">
+<h3 class="no-anchor listing-title">
+Day 9: GMM and GEE
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('panel data'); return false;">
+panel data
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('code'); return false;">
+code
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('analysis'); return false;">
+analysis
+</div>
+</div>
+<a href="./posts/day-9/index.html">
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/day-9/index.html">
+<div class="listing-date">
+Aug 18, 2022
+</div>
+<div class="listing-author">
+Robert W. Walker
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="panel data,code,analysis" data-listing-date-sort="1660719600000" data-listing-file-modified-sort="1659371639080" data-listing-reading-time-sort="0.045">
+<div class="thumbnail">
+<p><a href="./posts/day-8/index.html"> <img src="./posts/day-8/image.jpg" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/day-8/index.html">
+<h3 class="no-anchor listing-title">
+Day 8: Panel Models for Limited Outcomes
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('panel data'); return false;">
+panel data
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('code'); return false;">
+code
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('analysis'); return false;">
+analysis
+</div>
+</div>
+<a href="./posts/day-8/index.html">
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/day-8/index.html">
+<div class="listing-date">
+Aug 17, 2022
+</div>
+<div class="listing-author">
+Robert W. Walker
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-categories="panel data,code,analysis" data-listing-date-sort="1660633200000" data-listing-file-modified-sort="1659371624030" data-listing-reading-time-sort="0.045">
+<div class="thumbnail">
+<p><a href="./posts/day-7/index.html"> <img src="./posts/day-7/image.jpg" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/day-7/index.html">
+<h3 class="no-anchor listing-title">
+Day 7: Missing Data
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('panel data'); return false;">
+panel data
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('code'); return false;">
+code
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('analysis'); return false;">
+analysis
+</div>
+</div>
+<a href="./posts/day-7/index.html">
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/day-7/index.html">
+<div class="listing-date">
+Aug 16, 2022
+</div>
+<div class="listing-author">
+Robert W. Walker
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="4" data-categories="panel data,code,analysis" data-listing-date-sort="1660546800000" data-listing-file-modified-sort="1659371610560" data-listing-reading-time-sort="0.045">
+<div class="thumbnail">
+<p><a href="./posts/day-6/index.html"> <img src="./posts/day-6/image.jpg" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/day-6/index.html">
+<h3 class="no-anchor listing-title">
+Day 6: Panel Data
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('panel data'); return false;">
+panel data
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('code'); return false;">
+code
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('analysis'); return false;">
+analysis
+</div>
+</div>
+<a href="./posts/day-6/index.html">
+<div class="listing-description">
+
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/day-6/index.html">
+<div class="listing-date">
+Aug 15, 2022
+</div>
+<div class="listing-author">
+Robert W. Walker
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="5" data-categories="time series,code,analysis" data-listing-date-sort="1660287600000" data-listing-file-modified-sort="1659285386870" data-listing-reading-time-sort="0.055">
 <div class="thumbnail">
 <p><a href="./posts/day-5/index.html"> <img src="./posts/day-5/image.jpg" class="thumnail-image"> </a></p>
 </div>
 <div class="body">
 <a href="./posts/day-5/index.html">
 <h3 class="no-anchor listing-title">
-Day 5
+Day 5: Equation Balance to Wrap Up Week 1
 </h3>
 <div class="listing-subtitle">
 
@@ -271,14 +500,14 @@ Robert W. Walker
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="time series,code,analysis" data-listing-date-sort="1660201200000" data-listing-file-modified-sort="1659201615900" data-listing-reading-time-sort="0.045">
+<div class="quarto-post image-right" data-index="6" data-categories="time series,code,analysis" data-listing-date-sort="1660201200000" data-listing-file-modified-sort="1659285016090" data-listing-reading-time-sort="0.045">
 <div class="thumbnail">
 <p><a href="./posts/day-4/index.html"> <img src="./posts/day-4/image.jpg" class="thumnail-image"> </a></p>
 </div>
 <div class="body">
 <a href="./posts/day-4/index.html">
 <h3 class="no-anchor listing-title">
-Day 4
+Day 4: Cointegration
 </h3>
 <div class="listing-subtitle">
 
@@ -312,14 +541,14 @@ Robert W. Walker
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="time series,code,analysis" data-listing-date-sort="1660114800000" data-listing-file-modified-sort="1659201622450" data-listing-reading-time-sort="0.045">
+<div class="quarto-post image-right" data-index="7" data-categories="time series,code,analysis" data-listing-date-sort="1660114800000" data-listing-file-modified-sort="1659284989920" data-listing-reading-time-sort="0.045">
 <div class="thumbnail">
 <p><a href="./posts/day-3/index.html"> <img src="./posts/day-3/image.jpg" class="thumnail-image"> </a></p>
 </div>
 <div class="body">
 <a href="./posts/day-3/index.html">
 <h3 class="no-anchor listing-title">
-Day 3
+Day 3: Dynamic Linear, ADL Models, and VARs
 </h3>
 <div class="listing-subtitle">
 
@@ -353,14 +582,14 @@ Robert W. Walker
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="time series,code,analysis" data-listing-date-sort="1660028400000" data-listing-file-modified-sort="1659201872380" data-listing-reading-time-sort="0.975">
+<div class="quarto-post image-right" data-index="8" data-categories="time series,code,analysis" data-listing-date-sort="1660028400000" data-listing-file-modified-sort="1659284940240" data-listing-reading-time-sort="3.865">
 <div class="thumbnail">
-<p><a href="./posts/arima-models/index.html"> <img src="./posts/arima-models/image.jpg" class="thumnail-image"> </a></p>
+<p><a href="./posts/day-2/index.html"> <img src="./posts/day-2/image1.png" class="thumnail-image"> </a></p>
 </div>
 <div class="body">
-<a href="./posts/arima-models/index.html">
+<a href="./posts/day-2/index.html">
 <h3 class="no-anchor listing-title">
-Simulation under ARIMA Models
+Day 2: Time Series, Stationarity, and ARIMA Models
 </h3>
 <div class="listing-subtitle">
 
@@ -377,58 +606,13 @@ code
 analysis
 </div>
 </div>
-<a href="./posts/arima-models/index.html">
+<a href="./posts/day-2/index.html">
 <div class="listing-description">
 We want to simulate data under an ARIMA <code>(p, d, q)</code> model. <code>arima.sim</code> wants inputs as a list where the expected length of the <code>ar</code> and <code>ma</code> vectors that will hold the actual values of the <code>ar</code> and <code>ma</code> parameters. Here, I ask for a series that is I(1) with a first-order ar=0.1 and a first-order ma=-0.5. Let me start by generating it and plotting the time series.
 </div>
 </a>
 </div>
 <div class="metadata">
-<a href="./posts/arima-models/index.html">
-<div class="listing-date">
-Aug 9, 2022
-</div>
-<div class="listing-author">
-Robert W. Walker
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="time series,code,analysis" data-listing-date-sort="1660028400000" data-listing-file-modified-sort="1659209593260" data-listing-reading-time-sort="0.205">
-<div class="thumbnail">
-<a href="./posts/day-2/index.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts/day-2/index.html"></a></p>
-</div>
-<div class="body">
-<a href="./posts/day-2/index.html">
-<h3 class="no-anchor listing-title">
-Day 2
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('time series'); return false;">
-time series
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('code'); return false;">
-code
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('analysis'); return false;">
-analysis
-</div>
-</div>
-<a href="./posts/day-2/index.html">
-<div class="listing-description">
-The data are in Stata format. The <code>github</code> for this course. There is also a link here for a local copy.
-</div>
-</a>
-</div>
-<div class="metadata">
 <a href="./posts/day-2/index.html">
 <div class="listing-date">
 Aug 9, 2022
@@ -439,65 +623,23 @@ Robert W. Walker
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="time series,code,analysis" data-listing-date-sort="1660028400000" data-listing-file-modified-sort="1659124301440" data-listing-reading-time-sort="0.98">
-<div class="thumbnail">
-<a href="./posts/spurious-regressions/index.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts/spurious-regressions/index.html"></a></p>
-</div>
-<div class="body">
-<a href="./posts/spurious-regressions/index.html">
-<h3 class="no-anchor listing-title">
-Spurious Regressions among I(1) Variables
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('time series'); return false;">
-time series
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('code'); return false;">
-code
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('analysis'); return false;">
-analysis
-</div>
-</div>
-<a href="./posts/spurious-regressions/index.html">
-<div class="listing-description">
-Let me do this with a relatively simple regression. Two variables:
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/spurious-regressions/index.html">
-<div class="listing-date">
-Aug 9, 2022
-</div>
-<div class="listing-author">
-Robert W. Walker
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="time series,code,analysis" data-listing-date-sort="1659942000000" data-listing-file-modified-sort="1659115245880" data-listing-reading-time-sort="1.805">
+<div class="quarto-post image-right" data-index="9" data-categories="panel data,time series,code,analysis" data-listing-date-sort="1659942000000" data-listing-file-modified-sort="1659371851340" data-listing-reading-time-sort="1.92">
 <div class="thumbnail">
 <p><a href="./posts/day-1/index.html"> <img src="./posts/day-1/image.jpg" class="thumnail-image"> </a></p>
 </div>
 <div class="body">
 <a href="./posts/day-1/index.html">
 <h3 class="no-anchor listing-title">
-Day 1
+Day 1: Time, Decomposition, and Summaries
 </h3>
 <div class="listing-subtitle">
 
 </div>
 </a>
 <div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('panel data'); return false;">
+panel data
+</div>
 <div class="listing-category" onclick="window.quartoListingCategory('time series'); return false;">
 time series
 </div>
@@ -525,7 +667,7 @@ Robert W. Walker
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="news" data-listing-date-sort="1659510000000" data-listing-file-modified-sort="1659206616630" data-listing-reading-time-sort="0.835">
+<div class="quarto-post image-right" data-index="10" data-categories="news" data-listing-date-sort="1659510000000" data-listing-file-modified-sort="1659206616630" data-listing-reading-time-sort="0.835">
 <div class="thumbnail">
 <p><a href="./posts/welcome/index.html"> <img src="./posts/welcome/thumbnail.jpg" class="thumnail-image"> </a></p>
 </div>

@@ -1,0 +1,13 @@
+---
+title: "Day 6: Panel Data"
+author: "Robert W. Walker"
+date: "08/15/2022"
+categories: [panel data, code, analysis]
+image: "image.jpg"
+---
+
+## Slides
+
+- [Slides in .pdf format](./slides/slidesDay6.pdf)
+- [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day6/)
+

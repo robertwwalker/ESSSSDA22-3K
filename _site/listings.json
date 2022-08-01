@@ -2,12 +2,15 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/day-10/index.html",
+      "/posts/day-9/index.html",
+      "/posts/day-8/index.html",
+      "/posts/day-7/index.html",
+      "/posts/day-6/index.html",
       "/posts/day-5/index.html",
       "/posts/day-4/index.html",
       "/posts/day-3/index.html",
-      "/posts/arima-models/index.html",
       "/posts/day-2/index.html",
-      "/posts/spurious-regressions/index.html",
       "/posts/day-1/index.html",
       "/posts/welcome/index.html"
     ]

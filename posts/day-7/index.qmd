@@ -1,0 +1,13 @@
+---
+title: "Day 7: Missing Data"
+author: "Robert W. Walker"
+date: "08/16/2022"
+categories: [panel data, code, analysis]
+image: "image.jpg"
+---
+
+## Slides
+
+- [Slides in .pdf format](./slides/slidesDay7.pdf)
+- [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day7/)
+

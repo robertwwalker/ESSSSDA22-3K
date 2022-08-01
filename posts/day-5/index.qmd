@@ -1,5 +1,5 @@
 ---
-title: "Day 5"
+title: "Day 5: Equation Balance to Wrap Up Week 1"
 author: "Robert W. Walker"
 date: "08/12/2022"
 categories: [time series, code, analysis]
@@ -10,4 +10,6 @@ image: "image.jpg"
 
 - [Slides in .pdf format](./slides/slidesDay5.pdf)
 - [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day5/)
+
+## Equation Balance
 

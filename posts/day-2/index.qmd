@@ -1,8 +1,9 @@
 ---
-title: "Day 2"
+title: "Day 2: Time Series, Stationarity, and ARIMA Models"
 author: "Robert W. Walker"
 date: "08/09/2022"
 categories: [time series, code, analysis]
+image: "image1.png"
 ---
 
 ## Slides
@@ -10,7 +11,103 @@ categories: [time series, code, analysis]
 - [Slides in .pdf format](./slides/slidesDay2.pdf)
 - [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day2/)
 
+## Simulating ARIMA processes
+
+We want to simulate data under an ARIMA `(p, d, q)` model.  `arima.sim` wants inputs as a list where the expected length of the `ar` and `ma` vectors that will hold the actual values of the `ar` and `ma` parameters.  Here, I ask for a series that is I(1) with a first-order ar=0.1 and a first-order ma=-0.5.  Let me start by generating it and plotting the time series.
+
 ```{r}
+library(fpp3)
+n <- 100
+my.data <- data.frame(
+  x=arima.sim(n = n, 
+              model=list(order = c(1, 1, 1), ar=c(0.7), ma=c(-0.5)), n.start=20), 
+  dtime = seq(1,n+1))
+library(magrittr)
+my.data %<>% as_tsibble(index=dtime) 
+my.data %>% autoplot() + labs(title="A (1, 1, 1) Series", x="Time")
+```
+
+Now I want to display the ACF and PACF in levels.
+
+```{r}
+library(patchwork)
+{my.data %>% ACF(x, lag_max=20) %>% 
+    autoplot() } + 
+  {my.data %>% PACF(x, lag_max=20) %>% 
+      autoplot() }
+```
+
+Finally, let me display the ACF and PACF with differenced data.
+
+```{r}
+{my.data %>% ACF(diff(x), lag_max=20) %>% 
+    autoplot() } + 
+  {my.data %>% PACF(diff(x), lag_max=20) %>% 
+      autoplot() }
+```
+
+
+## Nonsense Regressions of I(1) Series
+
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## An Example of Time Series Troubles
+
+Let me do this with a relatively simple regression.  Two variables: 
+
+$$ y = \alpha + \beta x + \epsilon $$
+
+Both are generated randomly.  Here's a basic plot.
+
+```{r}
+y <- cumsum(rnorm(100))
+x <- cumsum(rnorm(100))
+plot(x=seq(1:100), y=y, type="l", col="red", ylim=c(-15,15))
+lines(x=seq(1:100), y=x, col="blue")
+```
+
+Each time series contains 100 observations.  Because both x and y are random, the slopes should be 0, 95% of the time with 95% confidence because there is no underlying relationship.  In practice, let's look at the distribution of p-values for the probability of no relationship.
+
+```{r}
+SR <- function(n) {
+  Results <- NULL
+  for(i in 1:n) {
+y <- cumsum(rnorm(100))
+x <- cumsum(rnorm(100))
+Result <- summary(lm(y~x))$coefficients[2,4]
+Results <- append(Result,Results)
+  }
+  Results
+}
+```
+
+I replicate the process of random x and random y 1000 times and show the p-values below.  Because they are random, approximately 95% should be greater than 0.05.
+
+```{r}
+Res1 <- SR(1000)
+plot(density(Res1), main="Distribution of p-values from Trending x")
+```
+
+In practice,
+
+```{r}
+table(Res1 > 0.05)
+```
+
+The above table should show about 950 TRUE and 50 FALSE but because each is trended and they share variation from trend, the actual frequency of rejecting the claim of no relationship is far more common than 5%.
+
+
+## ARIMA Models with Government Popularity
+
+```{r, message=FALSE, warning=FALSE}
 library(fpp3)
 library(haven)
 br7983 <- read_dta(url("https://github.com/robertwwalker/Essex-Data/raw/main/br7983.dta")) %>% 
@@ -18,6 +115,110 @@ br7983 <- read_dta(url("https://github.com/robertwwalker/Essex-Data/raw/main/br7
   mutate(month = paste0("19",month, sep="")) %>% 
   mutate(date = yearmonth(month, format="%Y%m"))
 br7983 <- br7983 %>% as_tsibble(index=date) 
+br7983 %>% autoplot(govpopl) + hrbrthemes::theme_ipsum() + labs(y="logged Government Popularity")
+```
+
+## Time Series Features
+
+```{r}
 br7983 %>% gg_tsdisplay(govpopl, plot_type = "partial")
 ```
 
+```
+library(haven)
+# To install TSA, it works in three steps.
+# Link to package
+# https://cran.r-project.org/web/packages/TSA/index.html
+# The archive for the package is:
+# https://cran.r-project.org/src/contrib/Archive/TSA/
+# I grabbed the most recent one.
+# Then I used the RStudio: Tools > Install Packages > From a local archive
+# And installed it.
+# It had dependency chains to fix.
+# Those can be fixed with
+# install.packages(c("leaps", "locfit", "mgcv"))
+```
+
+```{r, message=FALSE, warning=FALSE}
+library(TSA)
+# Replicating the abrupt permanent in April
+arimax(br7983$govpopld, seasonal = list(order = c(0, 0, 1), period = 4), xreg=br7983$flandd)
+```
+
+```{r}
+# Replicating the abrupt permanent in May
+arimax(br7983$govpopld, seasonal = list(order = c(0, 0, 1), period = 4), xreg=br7983$flanddlag1)
+```
+
+```{r}
+# Replicating the gradual permanent April
+arimax(br7983$govpopld, seasonal = list(order = c(0, 0, 1), period = 4), xtransf = br7983$flandd, transfer = list(c(1,0)))
+```
+
+```{r}
+# Replicating the gradual permanent May
+# Does not work; degrees of freedom?
+# arimax(br7983$govpopld, seasonal = list(order = c(0, 0, 1), period = 4), xtransf = br7983$flanddlag1, transfer = list(c(1,0)))
+# Falklands - gradual temporary (pulse decay) effect - May 1982
+# Does not work; degrees of freedom?
+# arimax(br7983$govpopld, seasonal = list(order = c(0, 0, 1), period = 4), xtransf = br7983$flanddlag1, transfer = list(c(1,1)))
+# These are fairly demanding [of the data] models.
+arimax(br7983$govpopld, seasonal = list(order = c(0, 0, 1), period = 4), xtransf = br7983$flandd, transfer = list(c(1,0)))
+```
+
+### ARIMA
+
+Stata covers this [in the following link](https://www.stata.com/features/time-series/ts-arima.pdf).
+
+```
+wpi1 <- read_stata(url("http://www.stata-press.com/data/r12/wpi1.dta"))
+wpi1$date <- yearquarter(wpi1$t, fiscal_start = 1)-40
+```
+
+```{r}
+load(url("https://github.com/robertwwalker/Essex-Data/raw/main/wpi1.RData"))
+wpi1 %>% as_tsibble(index=date) %>% gg_tsdisplay(ln_wpi, plot_type = "partial") + labs(title="Log WPI")
+```
+
+### Stata
+
+```
+arima wpi, arima(1,1,1)
+```
+
+### R
+
+```{r}
+wpi1 %>% as_tsibble(index=date) %>% 
+  model(arima = ARIMA(wpi ~ 1 + pdq(1,1,1) + PDQ(0,0,0))) %>% 
+  report()
+```
+
+The help for ARIMA explains the alternative parameterization.
+
+```{r}
+# Using stats::arima
+arima(diff(wpi1$wpi), order=c(1,0,1), include.mean = TRUE)
+```
+
+## Seasonal
+
+```
+arima D.ln_wpi, ar(1) ma(1 4)
+```
+
+```{r}
+wpi1 %>% as_tsibble(index=date) %>% 
+  model(arima = ARIMA(ln_wpi ~ 1 + pdq(1,1,1) + PDQ(0,0,1))) %>% 
+  report()
+```
+There are also bits about seasonal arima -- `sarima` -- and arimax but Stata is fundamentally limited here.
+
+
+```{r}
+wpi1 %>% as_tsibble(index=date) %>% 
+  model(arima = ARIMA(ln_wpi ~ 1 + pdq(1,1,1) + PDQ(0,0,1))) %>% 
+  gg_tsresiduals()
+```
+
+That works.

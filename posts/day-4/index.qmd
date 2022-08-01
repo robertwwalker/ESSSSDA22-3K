@@ -1,5 +1,5 @@
 ---
-title: "Day 4"
+title: "Day 4: Cointegration"
 author: "Robert W. Walker"
 date: "08/11/2022"
 categories: [time series, code, analysis]

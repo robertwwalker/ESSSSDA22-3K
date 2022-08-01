@@ -1,8 +1,8 @@
 ---
-title: "Day 1"
+title: "Day 1: Time, Decomposition, and Summaries"
 author: "Robert W. Walker"
 date: "08/08/2022"
-categories: [time series, code, analysis]
+categories: [panel data, time series, code, analysis]
 image: "image.jpg"
 ---
 
@@ -11,11 +11,13 @@ image: "image.jpg"
 - [Slides in .pdf format](./slides/slidesDay1.pdf)
 - [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day1/)
 
-# Code and Analysis
+# The Data
 
 [The data are in Stata format.](https://github.com/robertwwalker/Essex-Data/raw/master/ISQ99-Essex.dta)  The `github` for this course.  There is also [a link here for a local copy](./slides/ISQ99-Essex.dta).
 
 ## Basic R commands
+
+Loading the data in R and a summary using `skimr::skim`.
 
 ```{r}
 library(haven); library(kableExtra)
@@ -24,7 +26,7 @@ library(skimr)
 skim(HR.Data) %>% kable() %>% scroll_box(width="80%", height="50%")
 ```
 
-## More R summary
+## An `xtsum` function for R
 
 A little function that I wrote up on `github`.
 
@@ -38,7 +40,7 @@ xtsum(IDORIGIN~., data=HR.Data) %>% kable() %>% scroll_box(width="80%", height="
 
 ## The Core Idea
 
-In R, this is an essential `group_by` calculation in the `tidyverse`.  The within data is the overall data with group means subtracted.
+In R, this is an essential `group_by` calculation in the `tidyverse`.  The between data are a summary table with units constituting the rows.  The within data is the overall data with group means subtracted.
 
 ```{r}
 HR.Data %>% 

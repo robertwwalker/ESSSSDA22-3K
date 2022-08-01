@@ -1,0 +1,13 @@
+---
+title: "Day 8: Panel Models for Limited Outcomes"
+author: "Robert W. Walker"
+date: "08/17/2022"
+categories: [panel data, code, analysis]
+image: "image.jpg"
+---
+
+## Slides
+
+- [Slides in .pdf format](./slides/slidesDay8.pdf)
+- [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day8/)
+

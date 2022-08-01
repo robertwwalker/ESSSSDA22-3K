@@ -1,0 +1,13 @@
+---
+title: "Day 9: GMM and GEE"
+author: "Robert W. Walker"
+date: "08/18/2022"
+categories: [panel data, code, analysis]
+image: "image.jpg"
+---
+
+## Slides
+
+- [Slides in .pdf format](./slides/slidesDay9.pdf)
+- [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day9/)
+

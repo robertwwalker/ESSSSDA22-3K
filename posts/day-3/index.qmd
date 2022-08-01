@@ -1,5 +1,5 @@
 ---
-title: "Day 3"
+title: "Day 3: Dynamic Linear, ADL Models, and VARs"
 author: "Robert W. Walker"
 date: "08/10/2022"
 categories: [time series, code, analysis]

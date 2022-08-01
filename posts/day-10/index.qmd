@@ -1,0 +1,13 @@
+---
+title: "Day 10: Causal Inference in Panels and TWFE"
+author: "Robert W. Walker"
+date: "08/19/2022"
+categories: [panel data, code, analysis]
+image: "image.jpg"
+---
+
+## Slides
+
+- [Slides in .pdf format](./slides/slidesDay10.pdf)
+- [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day10/)
+
