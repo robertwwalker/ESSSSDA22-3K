@@ -13,3 +13,5 @@ image: "image.jpg"
 
 ## Equation Balance
 
+The very recent article by Pickup and Kellstedt forms the basis for summary remarks on time series and a useful transition into the study of multiple time series formally for week two.
+

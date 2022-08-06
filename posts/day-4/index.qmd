@@ -3,7 +3,7 @@ title: "Day 4: Cointegration"
 author: "Robert W. Walker"
 date: "08/11/2022"
 categories: [time series, code, analysis]
-image: "image.jpg"
+image: "image.png"
 ---
 
 ## Slides
@@ -11,3 +11,51 @@ image: "image.jpg"
 - [Slides in .pdf format](./slides/slidesDay4.pdf)
 - [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day4/)
 
+## A replication
+
+This is an example with an ECM from a model presented by DeBoef and Keele in their excellent paper "Taking Time Seriously: Dynamic Regression." The data come from a paper Gilmour and Wolbrecht.
+
+```{r}
+library(haven); library(tidyverse); library(fpp3)
+dgw.data <- read_stata("https://github.com/robertwwalker/Essex-Data/raw/main/dgw.dta")
+dgw.data <- dgw.data %>% filter(!is.na(year))
+dgw.data <- dgw.data %>% mutate(date = paste0(year," Q",quarter, sep="")) %>% mutate(dateQ = yearquarter(date))
+dgw.ts <- dgw.data %>% as_tsibble(index=dateQ)
+# A dynamic linear model
+dgw.ts %>% model(TSLM(capp~lag(capp,1)+econexp+nytavg+kg+hb+vetoes+override+intrasum+mbills)) %>% report()
+```
+
+```{r}
+dgw.ts %>% model(TSLM(capp~lag(capp,1)+p_prap+econexp+nytavg+kg+hb+vetoes+override+intrasum+mbills)) %>% report()
+```
+```{r}
+dgw.ts %>% model(TSLM(capp~lag(capp, 1)+p_prap+lag(p_prap, 1)+econexp+lag(econexp,1)+nytavg+lag(nytavg, 1)+kg+hb+vetoes+override+intrasum+mbills)) %>% gg_tsresiduals()
+```
+
+
+
+```
+use "https://github.com/robertwwalker/Essex-Data/raw/main/dgw.dta", clear
+* These data have already been time set:
+tsset
+* The dependent variable in this example is Congressional Approval
+*Table 2
+reg capp l.capp econexp nytavg kg hb vetoes override intrasum mbill 
+bgodfrey, lag(1 2 3)
+*Table 2 with Pres. Approval
+reg capp l.capp p_prap econexp nytavg kg hb vetoes override intrasum mbill 
+bgodfrey, lag(1 2 3)
+* An Alternate Measure
+* ADL
+reg capp l.capp p_prap l.p_prap econexp l.econexp nytavg l.nytavg kg hb vetoes override intrasum mbill 
+fitstat
+bgodfrey, lag(1 2 3)
+reg capp l.capp p_prap l.p_prap econexp l.econexp nytavg l.nytavg l2.nytavg kg hb vetoes override intrasum mbill 
+fitstat
+test l.p_prap 
+*ECM
+reg d.capp l.capp d.p_prap l.p_prap d.econexp l.econexp d.nytavg l.nytavg kg hb vetoes override intrasum mbill 
+bgodfrey, lag(1 2 3)
+*Bewley
+ivreg capp p_prap d.p_prap econexp d.econexp nytavg d.nytavg kg hb vetoes override intrasum mbill (d.capp = l.capp p_prap l.p_prap econexp l.econexp nytavg l.nytavg)
+```

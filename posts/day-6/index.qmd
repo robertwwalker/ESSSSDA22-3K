@@ -3,7 +3,7 @@ title: "Day 6: Panel Data"
 author: "Robert W. Walker"
 date: "08/15/2022"
 categories: [panel data, code, analysis]
-image: "image.jpg"
+image: "image.png"
 ---
 
 ## Slides
@@ -11,3 +11,51 @@ image: "image.jpg"
 - [Slides in .pdf format](./slides/slidesDay6.pdf)
 - [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day6/)
 
+Starting the panel data, or the generalization to multiple time series, perhaps the most famous question in the generic literature is a question about fixed and random effects, more precisely, do we estimate specific unobserved constants or do we seek only the distribution of these constants.  The implications of this basic issue are substantial.
+
+## Some Simulated Data
+
+Random effects and pooled regressions can be terribly wrong when the pooled and random effects moment condition fails.  Let's show some data here to illustrate the point.  The true model here is $$ y_{it} = \alpha_{i} + X_{it}\beta + \epsilon_{it} $$ where the $\beta=1$ and $\alpha_{i}=\{6,0,-6\}$ and $\epsilon \sim \mathcal{N}(0,1)$.  Here is the plot.
+
+```{r SimData}
+X.FE <- c(seq(-2.5,-0.5,by=0.05),seq(-2,0,by=0.05),seq(-1.5,0.5,by=0.05))
+y.FE <- -3*c(rep(-2,41),rep(0,41),rep(2,41))+X.FE + rnorm(123,0,1)
+FE.data <- data.frame(y.FE,X.FE,unit=c(rep(1,41),rep(2,41),rep(3,41)), time=rep(seq(1,41,1),3))
+library(foreign)
+write.dta(FE.data, "FEData-2.dta")
+par(mfrow=c(1,2))
+with(FE.data, plot(X.FE,y.FE, bty="n", main="Pooled"))
+with(FE.data, abline(lm(y.FE~X.FE), lty=2, col="brown"))
+with(FE.data, plot(X.FE,y.FE, bty="n", col=unit, main="Fixed Effects"))
+abline(a=-6,b=1, col="blue")
+abline(a=0,b=1, col="blue")
+abline(a=6,b=1, col="blue")
+```
+
+## Three Models
+
+```{r Res1, message=FALSE}
+library(plm)
+FE.pdata <- pdata.frame(FE.data, c("unit","time"))
+mod.RE <- plm(y.FE~X.FE, data=FE.pdata, model="random")
+mod.RE2 <- plm(y.FE~X.FE, data=FE.pdata, model="random", random.method = "amemiya")
+mod.RE3 <- plm(y.FE~X.FE, data=FE.pdata, model="random", random.method = "walhus")
+mod.RE4 <- plm(y.FE~X.FE, data=FE.pdata, model="random", random.method = "nerlove")
+mod.FE <- plm(y.FE~X.FE, data=FE.pdata, model="within")
+mod.pool <- plm(y.FE~X.FE, data=FE.pdata, model="pooling")
+```
+
+## Omitted Fixed Effects can be Very Bad
+
+As we can see, the default random effects model in R [and Stata] is actually pretty horrible.  
+
+```{r Table, results='asis', message=FALSE}
+library(stargazer)
+stargazer(mod.RE,mod.RE2,mod.RE3,mod.RE4,mod.pool,mod.FE, type="html", column.labels=c("RE","RE-WalHus","RE-Amemiya","RE-Nerlove","Pooled","FE"))
+```
+
+### Discussion
+
+The random method matters quite a bit though; many of them are very close to the truth. Models containing much or all of the between information are wrong.  
+
+If the X and unit effects are dependent, then there are serious threats to proper inference.

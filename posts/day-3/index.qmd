@@ -3,11 +3,149 @@ title: "Day 3: Dynamic Linear, ADL Models, and VARs"
 author: "Robert W. Walker"
 date: "08/10/2022"
 categories: [time series, code, analysis]
-image: "image.jpg"
+image: "image.png"
 ---
 
 ## Slides
 
 - [Slides in .pdf format](./slides/slidesDay3.pdf)
 - [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day3/)
+
+## Dynamic Regression
+
+Regression techniques can be reexamined through the lens of dynamic linear models and systems of linear equations.  Whether autoregressive distributed lag models or VAR systems and structural time series, regression approaches to time series almost inevitably culminate in thinking about causation as conceived by Clive Granger -- Granger causality.
+
+Today we cover chapters 3 and 4 in **TSASS** spanning dynamic regression models and dynamic systems.  We will start with dynamic regression models by detailing how they are specified and interpreted with distributed lag and autoregressive distributed lag [ADL] models.  We also examine the crucial issue of consistency before turning to structural time series models for multiple equations and their counterparts -- VARs. 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  fig.width=9, fig.height=3.5, fig.retina=3,
+  out.width = "100%",
+  cache = FALSE,
+  echo = TRUE,
+  message = FALSE, 
+  warning = FALSE,
+  hiline = TRUE
+)
+```
+
+## VARs
+
+We will start with some data on lung deaths from Australia.
+
+```
+library(forecast)
+mdeaths
+fdeaths
+save(mdeaths, fdeaths, file = "./img/LungDeaths.RData")
+```
+
+```
+use "https://github.com/robertwwalker/Essex-Data/raw/main/Lung-Deaths.dta"
+```
+
+```{r, fig.width=6, fig.height=3.5}
+library(hrbrthemes); library(fpp3)
+load(url("https://github.com/robertwwalker/Essex-Data/raw/main/LungDeaths.RData"))
+Males <- mdeaths; Females <- fdeaths
+Lung.Deaths <- cbind(Males, Females) %>% as_tsibble()
+Lung.Deaths %>% autoplot() + theme_ipsum_rc() + labs(y="Lung Deaths", x="Month [1M]", title="Lung Deaths among Males and Females") + guides(color="none")
+```
+
+
+```{r}
+lung_deaths <- cbind(mdeaths, fdeaths) %>%
+  as_tsibble(pivot_longer = FALSE)
+lung_deaths <- cbind(mdeaths, fdeaths) %>%
+  as_tsibble(pivot_longer = FALSE)
+fit <- lung_deaths %>%
+  model(VAR(vars(mdeaths, fdeaths) ~ AR(3)))
+report(fit)
+```
+
+```
+var mdeaths fdeaths, lags(1 2 3)  
+```
+
+```{r}
+fit2 <- lung_deaths %>%
+  model(VAR(vars(mdeaths, fdeaths) ~ AR(2)))
+report(fit2)
+```
+
+```
+var mdeaths fdeaths, lags(1 2)  
+```
+
+Granger causation wants a non-tidy format.  I will use the conventional `VAR` syntax from `vars` that wants the collection of endogenous variables as inputs by themselves in a matrix form.  We can also specify exogenous variable for such systems with their data matrix in the argument `exogen=...`.
+
+
+```{r}
+library(bruceR)
+Varmf <- vars::VAR(lung_deaths[,c("mdeaths","fdeaths")], p=3, type="const")
+granger_causality(Varmf)
+```
+
+```
+vargranger
+```
+
+
+```{r, fig.width=6, fig.height=3}
+fit %>%
+  fabletools::forecast(h=12) %>%
+  autoplot(lung_deaths)
+```
+
+
+
+### Female
+
+```{r, fig.width=6, fig.height=3.5}
+lung_deaths %>%
+model(VAR(vars(mdeaths, fdeaths) ~ AR(3))) %>%
+  residuals() %>% 
+  pivot_longer(., cols = c(mdeaths,fdeaths)) %>% 
+  filter(name=="fdeaths") %>% 
+  as_tsibble(index=index) %>% 
+  gg_tsdisplay(plot_type = "partial") + labs(title="Female residuals")
+```
+
+### Male
+
+```{r, fig.width=6, fig.height=3.5}
+lung_deaths %>%
+model(VAR(vars(mdeaths, fdeaths) ~ AR(3))) %>%
+  residuals() %>% 
+  pivot_longer(., cols = c(mdeaths,fdeaths)) %>% 
+  filter(name=="mdeaths") %>% 
+  as_tsibble(index=index) %>% 
+  gg_tsdisplay(plot_type = "partial") + labs(title="Male residuals")
+```
+
+
+## Easy Impulse Response
+
+**What happens if I shock one of the series; how does it work through the system?**  
+
+The idea behind an impulse-response is core to counterfactual analysis with time series.  What does our future world look like and what predictions arise from it and the model we have deployed?
+
+
+Whether VARs or dynamic linear models or ADL models, these are key to interpreting a model **in the real world**.
+
+
+### Males
+
+```{r}
+VARMF <- cbind(Males,Females)
+mod1 <- vars::VAR(VARMF, p=3, type="const")
+plot(vars::irf(mod1, boot=TRUE, impulse="Males"))
+```
+
+
+### Females
+
+```{r}
+plot(vars::irf(mod1, boot=TRUE, impulse="Females"))
+```
 
