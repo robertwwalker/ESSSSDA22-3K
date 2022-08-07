@@ -13,5 +13,6 @@ image: "image.jpg"
 
 ## Equation Balance
 
-The very recent article by Pickup and Kellstedt forms the basis for summary remarks on time series and a useful transition into the study of multiple time series formally for week two.
+The [very recent article by Pickup and Kellstedt](https://www.cambridge.org/core/journals/political-analysis/article/abs/balance-as-a-preestimation-test-for-time-series-analysis/41D4D675F25E087A142CB04F27634CC1) forms the basis for summary remarks on time series and a useful transition into the study of multiple time series formally for week two.
 
+The lingering issue that does not get adequate treatment owing to time is fractional integration methods.  Indeed, [the article by Lebo and Grant (2016) summarising the issues in the 2016 special issue is worth digesting.](https://www.cambridge.org/core/journals/political-analysis/article/abs/equation-balance-and-dynamic-political-modeling/A6EBC3D683502460B9D7C1BE2B64C5F4)

@@ -11,7 +11,7 @@
     "href": "posts/day-5/index.html#equation-balance",
     "title": "Day 5: Equation Balance to Wrap Up Week 1",
     "section": "Equation Balance",
-    "text": "Equation Balance\nThe very recent article by Pickup and Kellstedt forms the basis for summary remarks on time series and a useful transition into the study of multiple time series formally for week two."
+    "text": "Equation Balance\nThe very recent article by Pickup and Kellstedt forms the basis for summary remarks on time series and a useful transition into the study of multiple time series formally for week two.\nThe lingering issue that does not get adequate treatment owing to time is fractional integration methods. Indeed, the article by Lebo and Grant (2016) summarising the issues in the 2016 special issue is worth digesting."
   },
   {
     "objectID": "posts/day-2/index.html",
@@ -109,7 +109,14 @@
     "href": "posts/welcome/index.html",
     "title": "Welcome!",
     "section": "",
-    "text": "Digital Resources\nDepending upon your software of choice, you will want to have a look over the relevant manuals. - For Stata ts and xt - For R there is timetk and fpp3 and plm along with panelr. - A github with the course data. - A github with this website. - Robert W. Walker’s website"
+    "text": "I hope you are ready!\nIn the next two weeks we will set forth as comprehensive a treatment as we can in time series and panel data in ten sessions. With coffee in hand and the computer getting ready, let’s dig in!\n\nA brief summary for the Instructor’s Presentation\n\nWeek 1: Time Series\n\nStationarity and Unit Roots\nARMA structures\nDynamic Linear Models and their Interpretation\nCointegration topics\nEquation balance and recent controversies\n\nWeek 2: Panel Data\n\nFixed and random effects and Within/Between\nSTADL Up!\nMissing data\nGLM Extensions of Panel Models\nCausal Inference in Panel Data [TWFE/DID]"
+  },
+  {
+    "objectID": "posts/welcome/index.html#topics-of-interest-cut-by-time",
+    "href": "posts/welcome/index.html#topics-of-interest-cut-by-time",
+    "title": "Welcome!",
+    "section": "Topics of Interest Cut by Time",
+    "text": "Topics of Interest Cut by Time\nWe will read selections from a broader controversy in Political Analysis on Time Series and error correction models; the full list of papers can be found here as a large part of the Winter 2016 issue 24(1).\nThere is a digital special issue of Political Analysis on Regression Discontinuity and Time Series Cross-Section data. For day 6 of the class, the paper by Plumper and Troeger (2019) about fixed effects regression is definitely worth considering.\nFactor augmented dynamic panel data models get an interesting treatment in Dynamic Panel Analysis under Cross-Sectional Dependence by Khusrav Gaibulloev, Todd Sandler and Donggyu Sul"
   },
   {
     "objectID": "posts/day-8/index.html",
@@ -161,6 +168,27 @@
     "text": "Slides in .pdf format\nA xaringan for presentation\n\nStarting the panel data, or the generalization to multiple time series, perhaps the most famous question in the generic literature is a question about fixed and random effects, more precisely, do we estimate specific unobserved constants or do we seek only the distribution of these constants. The implications of this basic issue are substantial."
   },
   {
+    "objectID": "posts/day-6/index.html#some-simulated-data",
+    "href": "posts/day-6/index.html#some-simulated-data",
+    "title": "Day 6: Panel Data",
+    "section": "Some Simulated Data",
+    "text": "Some Simulated Data\nRandom effects and pooled regressions can be terribly wrong when the pooled and random effects moment condition fails. Let’s show some data here to illustrate the point. The true model here is \\[ y_{it} = \\alpha_{i} + X_{it}\\beta + \\epsilon_{it} \\] where the \\(\\beta=1\\) and \\(\\alpha_{i}=\\{6,0,-6\\}\\) and \\(\\epsilon \\sim \\mathcal{N}(0,1)\\). Here is the plot.\n\nX.FE <- c(seq(-2.5,-0.5,by=0.05),seq(-2,0,by=0.05),seq(-1.5,0.5,by=0.05))\ny.FE <- -3*c(rep(-2,41),rep(0,41),rep(2,41))+X.FE + rnorm(123,0,1)\nFE.data <- data.frame(y.FE,X.FE,unit=c(rep(1,41),rep(2,41),rep(3,41)), time=rep(seq(1,41,1),3))\nlibrary(foreign)\nwrite.dta(FE.data, \"FEData-2.dta\")\npar(mfrow=c(1,2))\nwith(FE.data, plot(X.FE,y.FE, bty=\"n\", main=\"Pooled\"))\nwith(FE.data, abline(lm(y.FE~X.FE), lty=2, col=\"brown\"))\nwith(FE.data, plot(X.FE,y.FE, bty=\"n\", col=unit, main=\"Fixed Effects\"))\nabline(a=-6,b=1, col=\"blue\")\nabline(a=0,b=1, col=\"blue\")\nabline(a=6,b=1, col=\"blue\")"
+  },
+  {
+    "objectID": "posts/day-6/index.html#three-models",
+    "href": "posts/day-6/index.html#three-models",
+    "title": "Day 6: Panel Data",
+    "section": "Three Models",
+    "text": "Three Models\n\nlibrary(plm)\nFE.pdata <- pdata.frame(FE.data, c(\"unit\",\"time\"))\nmod.RE <- plm(y.FE~X.FE, data=FE.pdata, model=\"random\")\nmod.RE2 <- plm(y.FE~X.FE, data=FE.pdata, model=\"random\", random.method = \"amemiya\")\nmod.RE3 <- plm(y.FE~X.FE, data=FE.pdata, model=\"random\", random.method = \"walhus\")\nmod.RE4 <- plm(y.FE~X.FE, data=FE.pdata, model=\"random\", random.method = \"nerlove\")\nmod.FE <- plm(y.FE~X.FE, data=FE.pdata, model=\"within\")\nmod.pool <- plm(y.FE~X.FE, data=FE.pdata, model=\"pooling\")"
+  },
+  {
+    "objectID": "posts/day-6/index.html#omitted-fixed-effects-can-be-very-bad",
+    "href": "posts/day-6/index.html#omitted-fixed-effects-can-be-very-bad",
+    "title": "Day 6: Panel Data",
+    "section": "Omitted Fixed Effects can be Very Bad",
+    "text": "Omitted Fixed Effects can be Very Bad\nAs we can see, the default random effects model in R [and Stata] is actually pretty horrible.\nlibrary(stargazer)\nstargazer(mod.RE,mod.RE2,mod.RE3,mod.RE4,mod.pool,mod.FE, type=\"html\", column.labels=c(\"RE\",\"RE-WalHus\",\"RE-Amemiya\",\"RE-Nerlove\",\"Pooled\",\"FE\"))\n\n\n\n\n\n\n\n\n\n\nDependent variable:\n\n\n\n\n\n\n\n\n\n\n\n\ny.FE\n\n\n\n\n\n\nRE\n\n\nRE-WalHus\n\n\nRE-Amemiya\n\n\nRE-Nerlove\n\n\nPooled\n\n\nFE\n\n\n\n\n\n\n(1)\n\n\n(2)\n\n\n(3)\n\n\n(4)\n\n\n(5)\n\n\n(6)\n\n\n\n\n\n\n\n\nX.FE\n\n\n-2.852***\n\n\n1.043***\n\n\n0.968***\n\n\n1.045***\n\n\n-2.852***\n\n\n1.048***\n\n\n\n\n\n\n(0.528)\n\n\n(0.150)\n\n\n(0.173)\n\n\n(0.150)\n\n\n(0.528)\n\n\n(0.150)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConstant\n\n\n-4.039***\n\n\n-0.144\n\n\n-0.219\n\n\n-0.143\n\n\n-4.039***\n\n\n\n\n\n\n\n\n(0.650)\n\n\n(2.877)\n\n\n(0.884)\n\n\n(3.552)\n\n\n(0.650)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nObservations\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n\n\nR2\n\n\n0.194\n\n\n0.285\n\n\n0.206\n\n\n0.287\n\n\n0.194\n\n\n0.292\n\n\n\n\nAdjusted R2\n\n\n0.188\n\n\n0.279\n\n\n0.200\n\n\n0.281\n\n\n0.188\n\n\n0.274\n\n\n\n\nF Statistic\n\n\n29.156***\n\n\n48.135***\n\n\n31.412***\n\n\n48.722***\n\n\n29.156*** (df = 1; 121)\n\n\n49.015*** (df = 1; 119)\n\n\n\n\n\n\n\n\nNote:\n\n\np<0.1; p<0.05; p<0.01\n\n\n\n\n\nDiscussion\nThe random method matters quite a bit though; many of them are very close to the truth. Models containing much or all of the between information are wrong.\nIf the X and unit effects are dependent, then there are serious threats to proper inference."
+  },
+  {
     "objectID": "posts/day-7/index.html",
     "href": "posts/day-7/index.html",
     "title": "Day 7: Missing Data",
@@ -194,26 +222,5 @@
     "title": "About",
     "section": "",
     "text": "Harold D. Clarke was Ashbel Smith Professor in the School of Economic, Political and Policy Sciences, University of Texas at Dallas, and adjunct Professor, Department of Government, University of Essex. His current research interests focus on the political economy of party support. He has published widely on this topic in journals such as the American Journal of Political Science, American Political Science Review, and British Journal of Political Science. He is chief editor of Electoral Studies. He has been a principal investigator for the 2001, 2005 and 2010 British Election Study (University of Essex and University of Texas at Dallas), the 2011 Political Support in Canada Study, and the 2012 Political Support in America Study. His most recent books are Brexit—Why Britain Voted to Leave the European Union (Cambridge University Press, 2017), Affluence, Austerity and Electoral Change in Britain (Cambridge University Press, 2013), and Austerity and Political Choice in Britain (Palgrave Macmillan, 2015).\nRobert W. Walker is Associate Professor of Quantitative Methods in the Atkinson Graduate School of Management at Willamette University. He earned a Ph. D. in political science from the University of Rochester in 2005 and has previously held teaching positions at Dartmouth College, Rice University, Texas A&M University, and Washington University in Saint Louis. His current research develops and applies semi-Markov processes to time-series, cross-section data in international relations and international/comparative political economy. He teaches courses in quantitative methods/applied statistics and microeconomic strategy and previously taught four iterations in the U. S. National Science Foundation funded Empirical Implications of Theoretical Models sequence at Washington University in Saint Louis. His work with Curt Signorino and Muhammet Bas was awarded the Miller Prize for the best article in Political Analysis in 2009."
-  },
-  {
-    "objectID": "posts/day-6/index.html#some-simulated-data",
-    "href": "posts/day-6/index.html#some-simulated-data",
-    "title": "Day 6: Panel Data",
-    "section": "Some Simulated Data",
-    "text": "Some Simulated Data\nRandom effects and pooled regressions can be terribly wrong when the pooled and random effects moment condition fails. Let’s show some data here to illustrate the point. The true model here is \\[ y_{it} = \\alpha_{i} + X_{it}\\beta + \\epsilon_{it} \\] where the \\(\\beta=1\\) and \\(\\alpha_{i}=\\{6,0,-6\\}\\) and \\(\\epsilon \\sim \\mathcal{N}(0,1)\\). Here is the plot.\n\nX.FE <- c(seq(-2.5,-0.5,by=0.05),seq(-2,0,by=0.05),seq(-1.5,0.5,by=0.05))\ny.FE <- -3*c(rep(-2,41),rep(0,41),rep(2,41))+X.FE + rnorm(123,0,1)\nFE.data <- data.frame(y.FE,X.FE,unit=c(rep(1,41),rep(2,41),rep(3,41)), time=rep(seq(1,41,1),3))\nlibrary(foreign)\nwrite.dta(FE.data, \"FEData-2.dta\")\npar(mfrow=c(1,2))\nwith(FE.data, plot(X.FE,y.FE, bty=\"n\", main=\"Pooled\"))\nwith(FE.data, abline(lm(y.FE~X.FE), lty=2, col=\"brown\"))\nwith(FE.data, plot(X.FE,y.FE, bty=\"n\", col=unit, main=\"Fixed Effects\"))\nabline(a=-6,b=1, col=\"blue\")\nabline(a=0,b=1, col=\"blue\")\nabline(a=6,b=1, col=\"blue\")"
-  },
-  {
-    "objectID": "posts/day-6/index.html#three-models",
-    "href": "posts/day-6/index.html#three-models",
-    "title": "Day 6: Panel Data",
-    "section": "Three Models",
-    "text": "Three Models\n\nlibrary(plm)\nFE.pdata <- pdata.frame(FE.data, c(\"unit\",\"time\"))\nmod.RE <- plm(y.FE~X.FE, data=FE.pdata, model=\"random\")\nmod.RE2 <- plm(y.FE~X.FE, data=FE.pdata, model=\"random\", random.method = \"amemiya\")\nmod.RE3 <- plm(y.FE~X.FE, data=FE.pdata, model=\"random\", random.method = \"walhus\")\nmod.RE4 <- plm(y.FE~X.FE, data=FE.pdata, model=\"random\", random.method = \"nerlove\")\nmod.FE <- plm(y.FE~X.FE, data=FE.pdata, model=\"within\")\nmod.pool <- plm(y.FE~X.FE, data=FE.pdata, model=\"pooling\")"
-  },
-  {
-    "objectID": "posts/day-6/index.html#omitted-fixed-effects-can-be-very-bad",
-    "href": "posts/day-6/index.html#omitted-fixed-effects-can-be-very-bad",
-    "title": "Day 6: Panel Data",
-    "section": "Omitted Fixed Effects can be Very Bad",
-    "text": "Omitted Fixed Effects can be Very Bad\nAs we can see, the default random effects model in R [and Stata] is actually pretty horrible.\nlibrary(stargazer)\nstargazer(mod.RE,mod.RE2,mod.RE3,mod.RE4,mod.pool,mod.FE, type=\"html\", column.labels=c(\"RE\",\"RE-WalHus\",\"RE-Amemiya\",\"RE-Nerlove\",\"Pooled\",\"FE\"))\n\n\n\n\n\n\n\n\n\n\nDependent variable:\n\n\n\n\n\n\n\n\n\n\n\n\ny.FE\n\n\n\n\n\n\nRE\n\n\nRE-WalHus\n\n\nRE-Amemiya\n\n\nRE-Nerlove\n\n\nPooled\n\n\nFE\n\n\n\n\n\n\n(1)\n\n\n(2)\n\n\n(3)\n\n\n(4)\n\n\n(5)\n\n\n(6)\n\n\n\n\n\n\n\n\nX.FE\n\n\n-2.852***\n\n\n1.043***\n\n\n0.968***\n\n\n1.045***\n\n\n-2.852***\n\n\n1.048***\n\n\n\n\n\n\n(0.528)\n\n\n(0.150)\n\n\n(0.173)\n\n\n(0.150)\n\n\n(0.528)\n\n\n(0.150)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConstant\n\n\n-4.039***\n\n\n-0.144\n\n\n-0.219\n\n\n-0.143\n\n\n-4.039***\n\n\n\n\n\n\n\n\n(0.650)\n\n\n(2.877)\n\n\n(0.884)\n\n\n(3.552)\n\n\n(0.650)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nObservations\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n\n\nR2\n\n\n0.194\n\n\n0.285\n\n\n0.206\n\n\n0.287\n\n\n0.194\n\n\n0.292\n\n\n\n\nAdjusted R2\n\n\n0.188\n\n\n0.279\n\n\n0.200\n\n\n0.281\n\n\n0.188\n\n\n0.274\n\n\n\n\nF Statistic\n\n\n29.156***\n\n\n48.135***\n\n\n31.412***\n\n\n48.722***\n\n\n29.156*** (df = 1; 121)\n\n\n49.015*** (df = 1; 119)\n\n\n\n\n\n\n\n\nNote:\n\n\np<0.1; p<0.05; p<0.01\n\n\n\n\n\nDiscussion\nThe random method matters quite a bit though; many of them are very close to the truth. Models containing much or all of the between information are wrong.\nIf the X and unit effects are dependent, then there are serious threats to proper inference."
   }
 ]

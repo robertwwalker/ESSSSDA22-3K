@@ -37,3 +37,11 @@ Depending upon your software of choice, you will want to have a look over the re
 - [A `github` with the course data.](https://github.com/robertwwalker/Essex-Data)
 - [A `github` with this website.](https://github.com/robertwwalker/ESSSSDA22-3K/)
 - [Robert W. Walker's website](https://rww.science)
+
+## Topics of Interest Cut by Time
+
+We will read selections from a broader controversy in *Political Analysis*  on Time Series and error correction models; [the full list of papers can be found here as a large part of the Winter 2016 issue 24(1)](https://www.cambridge.org/core/journals/political-analysis/issue/BEBF2602B7601618A0EA1D40B9AC4DDE).  
+
+There is [a digital special issue of *Political Analysis* on Regression Discontinuity and Time Series Cross-Section data.](https://www.cambridge.org/core/journals/political-analysis/special-collections/panel-data-analysis-and-regression-discontinuity)  For day 6 of the class, [the paper by Plumper and Troeger (2019) about fixed effects regression is definitely worth considering.](https://www.cambridge.org/core/journals/political-analysis/article/not-so-harmless-after-all-the-fixedeffects-model/5DD67D1D95F573B11EB189BA72338854)
+
+Factor augmented dynamic panel data models get an interesting treatment in [Dynamic Panel Analysis under Cross-Sectional Dependence by Khusrav Gaibulloev, Todd Sandler and Donggyu Sul](https://www.cambridge.org/core/journals/political-analysis/article/dynamic-panel-analysis-under-crosssectional-dependence/88101DECF0F2804EF7E8AE2EEC53127F)
