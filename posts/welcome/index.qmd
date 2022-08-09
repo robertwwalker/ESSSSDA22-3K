@@ -16,7 +16,7 @@ In the next two weeks we will set forth as comprehensive a treatment as we can i
 
 A *brief* summary for the Instructor's Presentation
 
-- Week 1: Time Series
+- Week 1: Time Series [Day 1](https://youtu.be/33ERJFeyEiQ)
   + Stationarity and Unit Roots
   + ARMA structures
   + Dynamic Linear Models and their Interpretation
