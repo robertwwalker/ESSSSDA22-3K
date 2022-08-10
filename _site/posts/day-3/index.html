@@ -502,10 +502,13 @@ F test and Wald χ² test based on VAR(3) model:
 <p>Whether VARs or dynamic linear models or ADL models, these are key to interpreting a model <strong>in the real world</strong>.</p>
 <section id="males" class="level3">
 <h3 class="anchored" data-anchor-id="males">Males</h3>
+<pre><code>irf set "M:\t1.irf"
+irf create irf1, order( mdeaths fdeaths)
+irf graph irf</code></pre>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>VARMF <span class="ot">&lt;-</span> <span class="fu">cbind</span>(Males,Females)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> vars<span class="sc">::</span><span class="fu">VAR</span>(VARMF, <span class="at">p=</span><span class="dv">3</span>, <span class="at">type=</span><span class="st">"const"</span>)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vars<span class="sc">::</span><span class="fu">irf</span>(mod1, <span class="at">boot=</span><span class="cn">TRUE</span>, <span class="at">impulse=</span><span class="st">"Males"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>VARMF <span class="ot">&lt;-</span> <span class="fu">cbind</span>(Males,Females)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> vars<span class="sc">::</span><span class="fu">VAR</span>(VARMF, <span class="at">p=</span><span class="dv">3</span>, <span class="at">type=</span><span class="st">"const"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vars<span class="sc">::</span><span class="fu">irf</span>(mod1, <span class="at">boot=</span><span class="cn">TRUE</span>, <span class="at">impulse=</span><span class="st">"Males"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>
@@ -513,8 +516,11 @@ F test and Wald χ² test based on VAR(3) model:
 </section>
 <section id="females" class="level3">
 <h3 class="anchored" data-anchor-id="females">Females</h3>
+<pre><code>irf set "M:\tF.irf"
+irf create Female, order( fdeaths mdeaths)
+irf graph irf</code></pre>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vars<span class="sc">::</span><span class="fu">irf</span>(mod1, <span class="at">boot=</span><span class="cn">TRUE</span>, <span class="at">impulse=</span><span class="st">"Females"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vars<span class="sc">::</span><span class="fu">irf</span>(mod1, <span class="at">boot=</span><span class="cn">TRUE</span>, <span class="at">impulse=</span><span class="st">"Females"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" style="width:100.0%"></p>
 </div>

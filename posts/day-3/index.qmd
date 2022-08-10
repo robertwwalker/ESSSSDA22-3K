@@ -136,6 +136,12 @@ Whether VARs or dynamic linear models or ADL models, these are key to interpreti
 
 ### Males
 
+```
+irf set "M:\t1.irf"
+irf create irf1, order( mdeaths fdeaths)
+irf graph irf
+```
+
 ```{r}
 VARMF <- cbind(Males,Females)
 mod1 <- vars::VAR(VARMF, p=3, type="const")
@@ -144,6 +150,13 @@ plot(vars::irf(mod1, boot=TRUE, impulse="Males"))
 
 
 ### Females
+
+```
+irf set "M:\tF.irf"
+irf create Female, order( fdeaths mdeaths)
+irf graph irf
+```
+
 
 ```{r}
 plot(vars::irf(mod1, boot=TRUE, impulse="Females"))
