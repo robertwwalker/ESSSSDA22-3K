@@ -2,7 +2,7 @@
 title: "Day 3: Heterogeneity and Dynamics in Data"
 subtitle: "Dynamic Regression Models"  
 author: "Robert W. Walker"
-date: "August 8, 2022"
+date: "August 10, 2022"
 output:
   xaringan::moon_reader:
     css: xaringan-themer.css
