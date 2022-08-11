@@ -9,7 +9,7 @@ image: "image.png"
 ## Slides
 
 - [Slides in .pdf format](./slides/slidesDay4.pdf)
-- [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day4/)
+- [A xaringan for presentation](https://robertwwalker.github.io/xaringan/ESSSSDA22-Day4/)
 
 ## A replication
 

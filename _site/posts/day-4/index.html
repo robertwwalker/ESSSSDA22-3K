@@ -309,7 +309,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="slides">Slides</h2>
 <ul>
 <li><a href="./slides/slidesDay4.pdf">Slides in .pdf format</a></li>
-<li><a href="https://rww.science/xaringan/ESSSSDA22-Day4/">A xaringan for presentation</a></li>
+<li><a href="https://robertwwalker.github.io/xaringan/ESSSSDA22-Day4/">A xaringan for presentation</a></li>
 </ul>
 </section>
 <section id="a-replication" class="level2">
@@ -318,29 +318,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven); <span class="fu">library</span>(tidyverse); <span class="fu">library</span>(fpp3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>✔ ggplot2 3.3.6     ✔ purrr   0.3.4
-✔ tibble  3.1.7     ✔ dplyr   1.0.9
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+✔ ggplot2 3.3.6     ✔ purrr   0.3.4
+✔ tibble  3.1.8     ✔ dplyr   1.0.9
 ✔ tidyr   1.2.0     ✔ stringr 1.4.0
-✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✔ readr   2.1.2     ✔ forcats 0.5.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching packages ──────────────────────────────────────────── fpp3 0.4.0 ──</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>✔ lubridate   1.8.0     ✔ feasts      0.2.2
+✖ dplyr::lag()    masks stats::lag()
+── Attaching packages ──────────────────────────────────────────── fpp3 0.4.0 ──
+
+✔ lubridate   1.8.0     ✔ feasts      0.2.2
 ✔ tsibble     1.1.1     ✔ fable       0.3.1
-✔ tsibbledata 0.4.0     </code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Conflicts ───────────────────────────────────────────────── fpp3_conflicts ──
+✔ tsibbledata 0.4.0     
+
+── Conflicts ───────────────────────────────────────────────── fpp3_conflicts ──
 ✖ lubridate::date()    masks base::date()
 ✖ dplyr::filter()      masks stats::filter()
 ✖ tsibble::intersect() masks base::intersect()
@@ -349,12 +341,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ✖ tsibble::setdiff()   masks base::setdiff()
 ✖ tsibble::union()     masks base::union()</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>dgw.data <span class="ot">&lt;-</span> <span class="fu">read_stata</span>(<span class="st">"https://github.com/robertwwalker/Essex-Data/raw/main/dgw.dta"</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>dgw.data <span class="ot">&lt;-</span> dgw.data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(year))</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>dgw.data <span class="ot">&lt;-</span> dgw.data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">paste0</span>(year,<span class="st">" Q"</span>,quarter, <span class="at">sep=</span><span class="st">""</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">dateQ =</span> <span class="fu">yearquarter</span>(date))</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="ot">&lt;-</span> dgw.data <span class="sc">%&gt;%</span> <span class="fu">as_tsibble</span>(<span class="at">index=</span>dateQ)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A dynamic linear model</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="sc">%&gt;%</span> <span class="fu">model</span>(<span class="fu">TSLM</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp,<span class="dv">1</span>)<span class="sc">+</span>econexp<span class="sc">+</span>nytavg<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills)) <span class="sc">%&gt;%</span> <span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dgw.data <span class="ot">&lt;-</span> <span class="fu">read_stata</span>(<span class="st">"https://github.com/robertwwalker/Essex-Data/raw/main/dgw.dta"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dgw.data <span class="ot">&lt;-</span> dgw.data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(year))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>dgw.data <span class="ot">&lt;-</span> dgw.data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">paste0</span>(year,<span class="st">" Q"</span>,quarter, <span class="at">sep=</span><span class="st">""</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">dateQ =</span> <span class="fu">yearquarter</span>(date))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="ot">&lt;-</span> dgw.data <span class="sc">%&gt;%</span> <span class="fu">as_tsibble</span>(<span class="at">index=</span>dateQ)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A dynamic linear model</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="sc">%&gt;%</span> <span class="fu">model</span>(<span class="fu">TSLM</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp,<span class="dv">1</span>)<span class="sc">+</span>econexp<span class="sc">+</span>nytavg<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills)) <span class="sc">%&gt;%</span> <span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Series: capp 
 Model: TSLM 
@@ -384,7 +376,7 @@ F-statistic: 58.97 on 9 and 69 DF, p-value: &lt; 2.22e-16</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="sc">%&gt;%</span> <span class="fu">model</span>(<span class="fu">TSLM</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp,<span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span>econexp<span class="sc">+</span>nytavg<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills)) <span class="sc">%&gt;%</span> <span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="sc">%&gt;%</span> <span class="fu">model</span>(<span class="fu">TSLM</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp,<span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span>econexp<span class="sc">+</span>nytavg<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills)) <span class="sc">%&gt;%</span> <span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Series: capp 
 Model: TSLM 
@@ -415,7 +407,7 @@ F-statistic:  53.5 on 10 and 68 DF, p-value: &lt; 2.22e-16</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="sc">%&gt;%</span> <span class="fu">model</span>(<span class="fu">TSLM</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp, <span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span><span class="fu">lag</span>(p_prap, <span class="dv">1</span>)<span class="sc">+</span>econexp<span class="sc">+</span><span class="fu">lag</span>(econexp,<span class="dv">1</span>)<span class="sc">+</span>nytavg<span class="sc">+</span><span class="fu">lag</span>(nytavg, <span class="dv">1</span>)<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills)) <span class="sc">%&gt;%</span> <span class="fu">gg_tsresiduals</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="sc">%&gt;%</span> <span class="fu">model</span>(<span class="fu">TSLM</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp, <span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span><span class="fu">lag</span>(p_prap, <span class="dv">1</span>)<span class="sc">+</span>econexp<span class="sc">+</span><span class="fu">lag</span>(econexp,<span class="dv">1</span>)<span class="sc">+</span>nytavg<span class="sc">+</span><span class="fu">lag</span>(nytavg, <span class="dv">1</span>)<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills)) <span class="sc">%&gt;%</span> <span class="fu">gg_tsresiduals</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
 </div>
