@@ -315,8 +315,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="a-replication" class="level2">
 <h2 class="anchored" data-anchor-id="a-replication">A replication</h2>
 <p>This is an example with an ECM from a model presented by DeBoef and Keele in their excellent paper “Taking Time Seriously: Dynamic Regression.” The data come from a paper Gilmour and Wolbrecht.</p>
+<pre><code>use "https://github.com/robertwwalker/Essex-Data/raw/main/dgw.dta", clear
+* These data have already been time set:
+tsset
+* The dependent variable in this example is Congressional Approval
+*Table 2
+reg capp l.capp econexp nytavg kg hb vetoes override intrasum mbill 
+bgodfrey, lag(1 2 3)</code></pre>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven); <span class="fu">library</span>(tidyverse); <span class="fu">library</span>(fpp3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven); <span class="fu">library</span>(tidyverse); <span class="fu">library</span>(fpp3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
 ✔ ggplot2 3.3.6     ✔ purrr   0.3.4
@@ -341,12 +348,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ✖ tsibble::setdiff()   masks base::setdiff()
 ✖ tsibble::union()     masks base::union()</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dgw.data <span class="ot">&lt;-</span> <span class="fu">read_stata</span>(<span class="st">"https://github.com/robertwwalker/Essex-Data/raw/main/dgw.dta"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dgw.data <span class="ot">&lt;-</span> dgw.data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(year))</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>dgw.data <span class="ot">&lt;-</span> dgw.data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">paste0</span>(year,<span class="st">" Q"</span>,quarter, <span class="at">sep=</span><span class="st">""</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">dateQ =</span> <span class="fu">yearquarter</span>(date))</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="ot">&lt;-</span> dgw.data <span class="sc">%&gt;%</span> <span class="fu">as_tsibble</span>(<span class="at">index=</span>dateQ)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A dynamic linear model</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="sc">%&gt;%</span> <span class="fu">model</span>(<span class="fu">TSLM</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp,<span class="dv">1</span>)<span class="sc">+</span>econexp<span class="sc">+</span>nytavg<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills)) <span class="sc">%&gt;%</span> <span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dgw.data <span class="ot">&lt;-</span> <span class="fu">read_stata</span>(<span class="st">"https://github.com/robertwwalker/Essex-Data/raw/main/dgw.dta"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>dgw.data <span class="ot">&lt;-</span> dgw.data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(year))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>dgw.data <span class="ot">&lt;-</span> dgw.data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">paste0</span>(year,<span class="st">" Q"</span>,quarter, <span class="at">sep=</span><span class="st">""</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">dateQ =</span> <span class="fu">yearquarter</span>(date))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="ot">&lt;-</span> dgw.data <span class="sc">%&gt;%</span> <span class="fu">as_tsibble</span>(<span class="at">index=</span>dateQ)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A dynamic linear model</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="sc">%&gt;%</span> <span class="fu">model</span>(<span class="fu">TSLM</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp,<span class="dv">1</span>)<span class="sc">+</span>econexp<span class="sc">+</span>nytavg<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills)) <span class="sc">%&gt;%</span> <span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Series: capp 
 Model: TSLM 
@@ -375,8 +382,11 @@ Multiple R-squared: 0.885,  Adjusted R-squared: 0.8699
 F-statistic: 58.97 on 9 and 69 DF, p-value: &lt; 2.22e-16</code></pre>
 </div>
 </div>
+<pre><code>*Table 2 with Pres. Approval
+reg capp l.capp p_prap econexp nytavg kg hb vetoes override intrasum mbill 
+bgodfrey, lag(1 2 3)</code></pre>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="sc">%&gt;%</span> <span class="fu">model</span>(<span class="fu">TSLM</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp,<span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span>econexp<span class="sc">+</span>nytavg<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills)) <span class="sc">%&gt;%</span> <span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="sc">%&gt;%</span> <span class="fu">model</span>(<span class="fu">TSLM</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp,<span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span>econexp<span class="sc">+</span>nytavg<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills)) <span class="sc">%&gt;%</span> <span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Series: capp 
 Model: TSLM 
@@ -406,8 +416,43 @@ Multiple R-squared: 0.8872, Adjusted R-squared: 0.8706
 F-statistic:  53.5 on 10 and 68 DF, p-value: &lt; 2.22e-16</code></pre>
 </div>
 </div>
+<p>The Breusch-Godfrey test</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="sc">%&gt;%</span> <span class="fu">model</span>(<span class="fu">TSLM</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp, <span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span><span class="fu">lag</span>(p_prap, <span class="dv">1</span>)<span class="sc">+</span>econexp<span class="sc">+</span><span class="fu">lag</span>(econexp,<span class="dv">1</span>)<span class="sc">+</span>nytavg<span class="sc">+</span><span class="fu">lag</span>(nytavg, <span class="dv">1</span>)<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills)) <span class="sc">%&gt;%</span> <span class="fu">gg_tsresiduals</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>), <span class="cf">function</span>(x) {lmtest<span class="sc">::</span><span class="fu">bgtest</span>(<span class="fu">lm</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp,<span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span>econexp<span class="sc">+</span>nytavg<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills, <span class="at">data=</span>dgw.ts), <span class="at">order =</span> x)})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             [,1]                                                          
+statistic    0.5038368                                                     
+parameter    1                                                             
+method       "Breusch-Godfrey test for serial correlation of order up to 1"
+p.value      0.4778191                                                     
+data.name    character,2                                                   
+coefficients numeric,12                                                    
+vcov         numeric,144                                                   
+             [,2]                                                          
+statistic    1.043041                                                      
+parameter    2                                                             
+method       "Breusch-Godfrey test for serial correlation of order up to 2"
+p.value      0.5936172                                                     
+data.name    character,2                                                   
+coefficients numeric,13                                                    
+vcov         numeric,169                                                   
+             [,3]                                                          
+statistic    1.531487                                                      
+parameter    3                                                             
+method       "Breusch-Godfrey test for serial correlation of order up to 3"
+p.value      0.6750225                                                     
+data.name    character,2                                                   
+coefficients numeric,14                                                    
+vcov         numeric,196                                                   </code></pre>
+</div>
+</div>
+<pre><code>* An Alternate Measure
+* ADL
+reg capp l.capp p_prap l.p_prap econexp l.econexp nytavg l.nytavg kg hb vetoes override intrasum mbill 
+fitstat
+bgodfrey, lag(1 2 3)</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="sc">%&gt;%</span> <span class="fu">model</span>(<span class="fu">TSLM</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp, <span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span><span class="fu">lag</span>(p_prap, <span class="dv">1</span>)<span class="sc">+</span>econexp<span class="sc">+</span><span class="fu">lag</span>(econexp,<span class="dv">1</span>)<span class="sc">+</span>nytavg<span class="sc">+</span><span class="fu">lag</span>(nytavg, <span class="dv">1</span>)<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills)) <span class="sc">%&gt;%</span> <span class="fu">gg_tsresiduals</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
 </div>
@@ -418,31 +463,114 @@ F-statistic:  53.5 on 10 and 68 DF, p-value: &lt; 2.22e-16</code></pre>
 <pre><code>Warning: Removed 1 rows containing non-finite values (stat_bin).</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<pre><code>use "https://github.com/robertwwalker/Essex-Data/raw/main/dgw.dta", clear
-* These data have already been time set:
-tsset
-* The dependent variable in this example is Congressional Approval
-*Table 2
-reg capp l.capp econexp nytavg kg hb vetoes override intrasum mbill 
-bgodfrey, lag(1 2 3)
-*Table 2 with Pres. Approval
-reg capp l.capp p_prap econexp nytavg kg hb vetoes override intrasum mbill 
-bgodfrey, lag(1 2 3)
-* An Alternate Measure
-* ADL
-reg capp l.capp p_prap l.p_prap econexp l.econexp nytavg l.nytavg kg hb vetoes override intrasum mbill 
+<pre><code>reg capp l.capp p_prap l.p_prap econexp l.econexp nytavg l.nytavg l2.nytavg kg hb vetoes override intrasum mbill 
 fitstat
-bgodfrey, lag(1 2 3)
-reg capp l.capp p_prap l.p_prap econexp l.econexp nytavg l.nytavg l2.nytavg kg hb vetoes override intrasum mbill 
-fitstat
-test l.p_prap 
-*ECM
+test l.p_prap </code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(capp<span class="sc">~</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(capp, <span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span>dplyr<span class="sc">::</span><span class="fu">lag</span>(p_prap, <span class="dv">1</span>)<span class="sc">+</span>econexp<span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(econexp, <span class="dv">1</span>)<span class="sc">+</span> nytavg<span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(nytavg, <span class="dv">1</span>) <span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(nytavg, <span class="dv">2</span>)<span class="sc">+</span> kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills, <span class="at">data=</span>dgw.data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = capp ~ dplyr::lag(capp, 1) + p_prap + dplyr::lag(p_prap, 
+    1) + econexp + dplyr::lag(econexp, 1) + nytavg + dplyr::lag(nytavg, 
+    1) + dplyr::lag(nytavg, 2) + kg + hb + vetoes + override + 
+    intrasum + mbills, data = dgw.data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-7.2813 -1.1587 -0.2843  1.5055  5.5623 
+
+Coefficients:
+                        Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            13.255444   4.027775   3.291  0.00164 ** 
+dplyr::lag(capp, 1)     0.726775   0.065844  11.038 2.31e-16 ***
+p_prap                  0.138223   0.057373   2.409  0.01892 *  
+dplyr::lag(p_prap, 1)  -0.093813   0.055274  -1.697  0.09459 .  
+econexp                 0.005848   0.070969   0.082  0.93459    
+dplyr::lag(econexp, 1)  0.082163   0.072223   1.138  0.25959    
+nytavg                  0.192404   0.071465   2.692  0.00908 ** 
+dplyr::lag(nytavg, 1)   0.023006   0.069422   0.331  0.74144    
+dplyr::lag(nytavg, 2)   0.138535   0.078110   1.774  0.08097 .  
+kg                     -1.566093   1.122181  -1.396  0.16774    
+hb                     -4.340598   1.715171  -2.531  0.01389 *  
+vetoes                  0.283759   0.101779   2.788  0.00700 ** 
+override               -1.061008   0.580564  -1.828  0.07235 .  
+intrasum               -0.107917   0.122254  -0.883  0.38074    
+mbills                 -0.715715   0.304646  -2.349  0.02196 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.914 on 63 degrees of freedom
+  (2 observations deleted due to missingness)
+Multiple R-squared:  0.8992,    Adjusted R-squared:  0.8768 
+F-statistic: 40.14 on 14 and 63 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(capp<span class="sc">~</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(capp, <span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span>econexp<span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(econexp, <span class="dv">1</span>)<span class="sc">+</span> nytavg<span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(nytavg, <span class="dv">1</span>) <span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(nytavg, <span class="dv">2</span>)<span class="sc">+</span> kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills, <span class="at">data=</span>dgw.data), <span class="fu">lm</span>(capp<span class="sc">~</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(capp, <span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span>dplyr<span class="sc">::</span><span class="fu">lag</span>(p_prap, <span class="dv">1</span>)<span class="sc">+</span>econexp<span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(econexp, <span class="dv">1</span>)<span class="sc">+</span> nytavg<span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(nytavg, <span class="dv">1</span>) <span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(nytavg, <span class="dv">2</span>)<span class="sc">+</span> kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills, <span class="at">data=</span>dgw.data)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Model 1: capp ~ dplyr::lag(capp, 1) + p_prap + econexp + dplyr::lag(econexp, 
+    1) + nytavg + dplyr::lag(nytavg, 1) + dplyr::lag(nytavg, 
+    2) + kg + hb + vetoes + override + intrasum + mbills
+Model 2: capp ~ dplyr::lag(capp, 1) + p_prap + dplyr::lag(p_prap, 1) + 
+    econexp + dplyr::lag(econexp, 1) + nytavg + dplyr::lag(nytavg, 
+    1) + dplyr::lag(nytavg, 2) + kg + hb + vetoes + override + 
+    intrasum + mbills
+  Res.Df    RSS Df Sum of Sq      F  Pr(&gt;F)  
+1     64 559.29                              
+2     63 534.83  1    24.454 2.8806 0.09459 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<pre><code>*ECM
 reg d.capp l.capp d.p_prap l.p_prap d.econexp l.econexp d.nytavg l.nytavg kg hb vetoes override intrasum mbill 
-bgodfrey, lag(1 2 3)
-*Bewley
+bgodfrey, lag(1 2 3)</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(<span class="fu">difference</span>(capp)<span class="sc">~</span>dplyr<span class="sc">::</span><span class="fu">lag</span>(capp, <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">difference</span>(p_prap) <span class="sc">+</span>  dplyr<span class="sc">::</span><span class="fu">lag</span>(p_prap, <span class="dv">1</span>)<span class="sc">+</span> <span class="fu">difference</span>(econexp)<span class="sc">+</span><span class="fu">lag</span>(econexp, <span class="dv">1</span>)<span class="sc">+</span><span class="fu">difference</span>(nytavg) <span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(nytavg) <span class="sc">+</span>  kg <span class="sc">+</span>  hb <span class="sc">+</span>  vetoes <span class="sc">+</span> override <span class="sc">+</span>  intrasum <span class="sc">+</span>  mbills, <span class="at">data=</span>dgw.data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = difference(capp) ~ dplyr::lag(capp, 1) + difference(p_prap) + 
+    dplyr::lag(p_prap, 1) + difference(econexp) + lag(econexp, 
+    1) + difference(nytavg) + dplyr::lag(nytavg) + kg + hb + 
+    vetoes + override + intrasum + mbills, data = dgw.data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-8.0575 -1.2991 -0.2338  1.6723  6.0297 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            9.92398    3.59485   2.761 0.007490 ** 
+dplyr::lag(capp, 1)   -0.22348    0.05979  -3.738 0.000394 ***
+difference(p_prap)     0.11480    0.05548   2.069 0.042508 *  
+dplyr::lag(p_prap, 1)  0.02166    0.04356   0.497 0.620667    
+difference(econexp)    0.02214    0.07027   0.315 0.753732    
+lag(econexp, 1)        0.08156    0.03311   2.463 0.016420 *  
+difference(nytavg)     0.18074    0.07179   2.518 0.014290 *  
+dplyr::lag(nytavg)     0.22229    0.09152   2.429 0.017921 *  
+kg                    -1.36022    1.12380  -1.210 0.230519    
+hb                    -4.24191    1.72938  -2.453 0.016865 *  
+vetoes                 0.20605    0.09261   2.225 0.029567 *  
+override              -0.75686    0.55956  -1.353 0.180870    
+intrasum              -0.12549    0.12277  -1.022 0.310504    
+mbills                -0.53209    0.28906  -1.841 0.070217 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.939 on 65 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.4115,    Adjusted R-squared:  0.2938 
+F-statistic: 3.496 on 13 and 65 DF,  p-value: 0.0003862</code></pre>
+</div>
+</div>
+<pre><code>*Bewley
 ivreg capp p_prap d.p_prap econexp d.econexp nytavg d.nytavg kg hb vetoes override intrasum mbill (d.capp = l.capp p_prap l.p_prap econexp l.econexp nytavg l.nytavg)</code></pre>
 
 
