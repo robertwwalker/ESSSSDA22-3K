@@ -109,7 +109,7 @@
     "href": "posts/welcome/index.html",
     "title": "Welcome!",
     "section": "",
-    "text": "I hope you are ready!\nIn the next two weeks we will set forth as comprehensive a treatment as we can in time series and panel data in ten sessions. With coffee in hand and the computer getting ready, let’s dig in!\n\nA brief summary for the Instructor’s Presentation\n\nWeek 1: Time Series Day 1\n\nStationarity and Unit Roots\nARMA structures\nDynamic Linear Models and their Interpretation\nCointegration topics\nEquation balance and recent controversies\n\nWeek 2: Panel Data\n\nFixed and random effects and Within/Between\nSTADL Up!\nMissing data\nGLM Extensions of Panel Models\nCausal Inference in Panel Data [TWFE/DID]"
+    "text": "I hope you are ready!\nIn the next two weeks we will set forth as comprehensive a treatment as we can in time series and panel data in ten sessions. With coffee in hand and the computer getting ready, let’s dig in!\n\nA brief summary for the Instructor’s Presentation\n\nWeek 1: Time Series Day 1\n\nStationarity and Unit Roots\nARMA structures\nDynamic Linear Models and their Interpretation\nVAR and Cointegration topics\nEquation balance and recent controversies\n\nWeek 2: Panel Data\n\nFixed and random effects and Within/Between\nSTADL Up!\nMissing data\nGLM Extensions of Panel Models\nCausal Inference in Panel Data [TWFE/DID]"
   },
   {
     "objectID": "posts/welcome/index.html#topics-of-interest-cut-by-time",

@@ -19,8 +19,8 @@ A *brief* summary for the Instructor's Presentation
 - Week 1: Time Series [Day 1](https://youtu.be/33ERJFeyEiQ)
   + [Stationarity and Unit Roots](https://youtu.be/-Ibi3SpCBHc)
   + [ARMA structures](https://youtu.be/-Ibi3SpCBHc)
-  + Dynamic Linear Models and their Interpretation
-  + Cointegration topics
+  + [Dynamic Linear Models and their Interpretation](https://youtu.be/lxIdDXVmZqM)
+  + VAR and Cointegration topics
   + Equation balance and recent controversies
 - Week 2: Panel Data
   + Fixed and random effects and Within/Between
