@@ -20,7 +20,7 @@ A *brief* summary for the Instructor's Presentation
   + [Stationarity and Unit Roots](https://youtu.be/-Ibi3SpCBHc)
   + [ARMA structures](https://youtu.be/-Ibi3SpCBHc)
   + [Dynamic Linear Models and their Interpretation](https://youtu.be/lxIdDXVmZqM)
-  + VAR and Cointegration topics
+  + [VAR and Cointegration topics](https://youtu.be/DqXBZDNT2Ig)
   + Equation balance and recent controversies
 - Week 2: Panel Data
   + Fixed and random effects and Within/Between
