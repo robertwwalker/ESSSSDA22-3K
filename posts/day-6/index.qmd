@@ -8,8 +8,7 @@ image: "image.png"
 
 ## Slides
 
-- [Slides in .pdf format](./slides/slidesDay6.pdf)
-- [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day6/)
+- [A xaringan for presentation](https://robertwwalker.github.io/xaringan/ESSSSDA22-Day6/)
 
 Starting the panel data, or the generalization to multiple time series, perhaps the most famous question in the generic literature is a question about fixed and random effects, more precisely, do we estimate specific unobserved constants or do we seek only the distribution of these constants.  The implications of this basic issue are substantial.
 
