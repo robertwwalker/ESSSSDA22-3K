@@ -165,7 +165,7 @@
     "href": "posts/day-6/index.html",
     "title": "Day 6: Panel Data",
     "section": "",
-    "text": "A xaringan for presentation\n\nStarting the panel data, or the generalization to multiple time series, perhaps the most famous question in the generic literature is a question about fixed and random effects, more precisely, do we estimate specific unobserved constants or do we seek only the distribution of these constants. The implications of this basic issue are substantial."
+    "text": "Slides in .pdf format\nA xaringan for presentation\n\nStarting the panel data, or the generalization to multiple time series, perhaps the most famous question in the generic literature is a question about fixed and random effects, more precisely, do we estimate specific unobserved constants or do we seek only the distribution of these constants. The implications of this basic issue are substantial."
   },
   {
     "objectID": "posts/day-6/index.html#some-simulated-data",
@@ -186,14 +186,14 @@
     "href": "posts/day-6/index.html#omitted-fixed-effects-can-be-very-bad",
     "title": "Day 6: Panel Data",
     "section": "Omitted Fixed Effects can be Very Bad",
-    "text": "Omitted Fixed Effects can be Very Bad\nAs we can see, the default random effects model in R [and Stata] is actually pretty horrible.\nlibrary(stargazer)\nstargazer(mod.RE,mod.RE2,mod.RE3,mod.RE4,mod.pool,mod.FE, type=\"html\", column.labels=c(\"RE\",\"RE-WalHus\",\"RE-Amemiya\",\"RE-Nerlove\",\"Pooled\",\"FE\"))\n\n\n\n\n\n\n\n\n\n\nDependent variable:\n\n\n\n\n\n\n\n\n\n\n\n\ny.FE\n\n\n\n\n\n\nRE\n\n\nRE-WalHus\n\n\nRE-Amemiya\n\n\nRE-Nerlove\n\n\nPooled\n\n\nFE\n\n\n\n\n\n\n(1)\n\n\n(2)\n\n\n(3)\n\n\n(4)\n\n\n(5)\n\n\n(6)\n\n\n\n\n\n\n\n\nX.FE\n\n\n-2.658***\n\n\n1.063***\n\n\n0.990***\n\n\n1.065***\n\n\n-2.658***\n\n\n1.070***\n\n\n\n\n\n\n(0.509)\n\n\n(0.165)\n\n\n(0.184)\n\n\n(0.164)\n\n\n(0.509)\n\n\n(0.164)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConstant\n\n\n-3.694***\n\n\n0.027\n\n\n-0.046\n\n\n0.029\n\n\n-3.694***\n\n\n\n\n\n\n\n\n(0.627)\n\n\n(2.751)\n\n\n(0.922)\n\n\n(3.396)\n\n\n(0.627)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nObservations\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n\n\nR2\n\n\n0.184\n\n\n0.256\n\n\n0.192\n\n\n0.258\n\n\n0.184\n\n\n0.263\n\n\n\n\nAdjusted R2\n\n\n0.177\n\n\n0.249\n\n\n0.186\n\n\n0.252\n\n\n0.177\n\n\n0.244\n\n\n\n\nF Statistic\n\n\n27.258***\n\n\n41.535***\n\n\n28.841***\n\n\n42.075***\n\n\n27.258*** (df = 1; 121)\n\n\n42.392*** (df = 1; 119)\n\n\n\n\n\n\n\n\nNote:\n\n\np<0.1; p<0.05; p<0.01\n\n\n\n\n\nDiscussion\nThe random method matters quite a bit though; many of them are very close to the truth. Models containing much or all of the between information are wrong.\nIf the X and unit effects are dependent, then there are serious threats to proper inference."
+    "text": "Omitted Fixed Effects can be Very Bad\nAs we can see, the default random effects model in R [and Stata] is actually pretty horrible.\nlibrary(stargazer)\nstargazer(mod.RE,mod.RE2,mod.RE3,mod.RE4,mod.pool,mod.FE, type=\"html\", column.labels=c(\"RE\",\"RE-WalHus\",\"RE-Amemiya\",\"RE-Nerlove\",\"Pooled\",\"FE\"))\n\n\n\n\n\n\n\n\n\n\nDependent variable:\n\n\n\n\n\n\n\n\n\n\n\n\ny.FE\n\n\n\n\n\n\nRE\n\n\nRE-WalHus\n\n\nRE-Amemiya\n\n\nRE-Nerlove\n\n\nPooled\n\n\nFE\n\n\n\n\n\n\n(1)\n\n\n(2)\n\n\n(3)\n\n\n(4)\n\n\n(5)\n\n\n(6)\n\n\n\n\n\n\n\n\nX.FE\n\n\n-3.008***\n\n\n0.786***\n\n\n0.711***\n\n\n0.788***\n\n\n-3.008***\n\n\n0.793***\n\n\n\n\n\n\n(0.519)\n\n\n(0.166)\n\n\n(0.186)\n\n\n(0.165)\n\n\n(0.519)\n\n\n(0.165)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConstant\n\n\n-4.026***\n\n\n-0.233\n\n\n-0.307\n\n\n-0.230\n\n\n-4.026***\n\n\n\n\n\n\n\n\n(0.639)\n\n\n(2.805)\n\n\n(0.932)\n\n\n(3.462)\n\n\n(0.639)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nObservations\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n\n\nR2\n\n\n0.218\n\n\n0.156\n\n\n0.108\n\n\n0.158\n\n\n0.218\n\n\n0.162\n\n\n\n\nAdjusted R2\n\n\n0.211\n\n\n0.149\n\n\n0.101\n\n\n0.151\n\n\n0.211\n\n\n0.141\n\n\n\n\nF Statistic\n\n\n33.647***\n\n\n22.418***\n\n\n14.644***\n\n\n22.745***\n\n\n33.647*** (df = 1; 121)\n\n\n22.983*** (df = 1; 119)\n\n\n\n\n\n\n\n\nNote:\n\n\np<0.1; p<0.05; p<0.01\n\n\n\n\n\nDiscussion\nThe random method matters quite a bit though; many of them are very close to the truth. Models containing much or all of the between information are wrong.\nIf the X and unit effects are dependent, then there are serious threats to proper inference."
   },
   {
     "objectID": "posts/day-7/index.html",
     "href": "posts/day-7/index.html",
     "title": "Day 7: Missing Data",
     "section": "",
-    "text": "A xaringan for presentation"
+    "text": "Slides in .pdf format\nA xaringan for presentation"
   },
   {
     "objectID": "posts/day-10/index.html",

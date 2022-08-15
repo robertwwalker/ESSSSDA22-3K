@@ -8,5 +8,6 @@ image: "image.jpg"
 
 ## Slides
 
+- [Slides in .pdf format](./img/slidesDay7.pdf)
 - [A xaringan for presentation](https://robertwwalker.github.io/xaringan/ESSSSDA22-Day7/)
 
