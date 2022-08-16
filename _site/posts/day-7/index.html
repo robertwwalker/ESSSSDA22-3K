@@ -326,16 +326,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="missing-data" class="level2">
 <h2 class="anchored" data-anchor-id="missing-data">Missing Data</h2>
+<pre><code>use "https://github.com/robertwwalker/Essex-Data/raw/main/ISQ99-Essex.dta"
+xtset
+drop if AINEW==.
+xtset
+* Give consideration to what we should do about the Lagged DV
+drop if AILAG==.
+* A note about long versus flong
+mi set flong
+* Note that it adds some variables; what are they?
+mi describe
+mi misstable summarize
+* There are some logical restrictions that we are going to want.
+* For example, we have some changes that need to be consistent
+* with levels.  We can deal with that; just calculate the changes
+* after imputation.
+mi register imputed DEMOC3
+mi impute regress DEMOC3 PERCHPCG PERCHPOP LPOP CWARCOW IWARCOW2, add(10) dots force
+* mi impute regress PCGTHOU DEMOC3 PERCHPOP LPOP CWARCOW IWARCOW2, add(20)
+mi estimate: xtreg AINEW AILAG DEMOC3, fe</code></pre>
 </section>
 <section id="the-data-poe-tate-keith-1999" class="level2">
 <h2 class="anchored" data-anchor-id="the-data-poe-tate-keith-1999">The Data: Poe, Tate, Keith 1999</h2>
 <p>Two objectives. Load the data and transform it into a pdata.frame for now.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">warning=</span><span class="cn">FALSE</span>, <span class="at">message=</span><span class="cn">FALSE</span>, <span class="at">comment=</span><span class="cn">NA</span>, <span class="at">prompt=</span><span class="cn">FALSE</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(foreign)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">warning=</span><span class="cn">FALSE</span>, <span class="at">message=</span><span class="cn">FALSE</span>, <span class="at">comment=</span><span class="cn">NA</span>, <span class="at">prompt=</span><span class="cn">FALSE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(foreign)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
 ✔ ggplot2 3.3.6     ✔ purrr   0.3.4
@@ -348,15 +367,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ✖ dplyr::lag()     masks plm::lag(), stats::lag()
 ✖ dplyr::lead()    masks plm::lead()</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ISQ99_Essex <span class="ot">&lt;-</span> <span class="fu">read.dta</span>(<span class="st">"./img/ISQ99-Essex.dta"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ISQ99p <span class="ot">&lt;-</span> <span class="fu">pdata.frame</span>(ISQ99_Essex, <span class="fu">c</span>(<span class="st">"IDORIGIN"</span>, <span class="st">"YEAR"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ISQ99_Essex <span class="ot">&lt;-</span> <span class="fu">read.dta</span>(<span class="st">"./img/ISQ99-Essex.dta"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ISQ99p <span class="ot">&lt;-</span> <span class="fu">pdata.frame</span>(ISQ99_Essex, <span class="fu">c</span>(<span class="st">"IDORIGIN"</span>, <span class="st">"YEAR"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="pdata.frame" class="level2">
 <h2 class="anchored" data-anchor-id="pdata.frame">pdata.frame</h2>
 <p>Will allow R to answer many questions that stata’s xt commands make available. First, some basic summaries to get to balance.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ISQ99_Essex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ISQ99_Essex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    IDORIGIN          YEAR            AI              SD            POLRT      
  Min.   :  2.0   Min.   :1976   Min.   :1.000   Min.   :1.000   Min.   :1.000  
@@ -399,7 +418,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  Max.   :10.000   Max.   :1.000   Max.   :1.0000  
  NA's   :793      NA's   :407     NA's   :380     </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ISQ99_Essex<span class="sc">$</span>IDORIGIN)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ISQ99_Essex<span class="sc">$</span>IDORIGIN)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     2    20    31    40    41    42    51    52    53    55    56    57    59 
@@ -431,7 +450,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   830   840   850   900   910   911   914   920   950   990 
    18    18    18    18    18    18    18    18    18    18 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ISQ99_Essex<span class="sc">$</span>YEAR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ISQ99_Essex<span class="sc">$</span>YEAR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 1976 1977 1978 1979 1980 1981 1982 1983 1984 1985 1986 1987 1988 1989 1990 1991 
@@ -439,14 +458,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 1992 1993 
  179  179 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.pbalanced</span>(ISQ99p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.pbalanced</span>(ISQ99p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
 </div>
 <p>Is any variable time invariant?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pvar</span>(ISQ99p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pvar</span>(ISQ99p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>no time variation:       IDORIGIN BRIT IDGURR AILAG SDLAG PERCHPCG PERCHPOP 
 no individual variation: YEAR AI SD POLRT MIL2 LEFT BRIT PCGNP AINEW SDNEW AILAG SDLAG PERCHPCG PERCHPOP LPOP PCGTHOU DEMOC3 CWARCOW IWARCOW2 
@@ -458,14 +477,14 @@ all NA in ind. dimension for at least one time period: AI SD POLRT MIL2 LEFT BRI
 <section id="visualizations-of-missingness" class="level2">
 <h2 class="anchored" data-anchor-id="visualizations-of-missingness">Visualizations of Missingness</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(visdat)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vis_dat</span>(ISQ99_Essex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(visdat)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vis_dat</span>(ISQ99_Essex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/MP-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vis_miss</span>(ISQ99_Essex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vis_miss</span>(ISQ99_Essex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -474,10 +493,10 @@ all NA in ind. dimension for at least one time period: AI SD POLRT MIL2 LEFT BRI
 <section id="univariate" class="level2">
 <h2 class="anchored" data-anchor-id="univariate">Univariate</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>mplot <span class="ot">&lt;-</span> <span class="fu">gg_miss_var</span>(ISQ99_Essex)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>mplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>mplot <span class="ot">&lt;-</span> <span class="fu">gg_miss_var</span>(ISQ99_Essex)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>mplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/Plot1-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -486,22 +505,22 @@ all NA in ind. dimension for at least one time period: AI SD POLRT MIL2 LEFT BRI
 <section id="bivariate" class="level2">
 <h2 class="anchored" data-anchor-id="bivariate">Bivariate</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>mplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ISQ99_Essex, </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> DEMOC3, </span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> POLRT)) <span class="sc">+</span> </span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>mplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>mplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ISQ99_Essex, </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> DEMOC3, </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> POLRT)) <span class="sc">+</span> </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>mplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/Plot2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>mplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ISQ99_Essex, </span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> DEMOC3, </span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> POLRT)) <span class="sc">+</span> </span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_miss_point</span>()</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>mplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>mplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ISQ99_Essex, </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> DEMOC3, </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> POLRT)) <span class="sc">+</span> </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_miss_point</span>()</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>mplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/Plot3-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -511,11 +530,11 @@ all NA in ind. dimension for at least one time period: AI SD POLRT MIL2 LEFT BRI
 <h2 class="anchored" data-anchor-id="multiple-imputation-amelia-ii">Multiple Imputation: Amelia II</h2>
 <p>A simple multivariate normal is easy as long as the data are well behaved. NB: This uses none of the time series or cross-sectional dimensionality for identification.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Amelia)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Zelig)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Shorten the dataset</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>ISQ99<span class="fl">.4</span>MI <span class="ot">&lt;-</span> ISQ99_Essex[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span><span class="sc">:</span><span class="dv">11</span>,<span class="dv">13</span><span class="sc">:</span><span class="dv">21</span>)]</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>a.out <span class="ot">&lt;-</span> <span class="fu">amelia</span>(ISQ99<span class="fl">.4</span>MI, <span class="at">m=</span><span class="dv">5</span>, <span class="at">ts=</span><span class="st">"YEAR"</span>, <span class="at">cs=</span><span class="st">"IDORIGIN"</span>, <span class="at">noms=</span><span class="fu">c</span>(<span class="st">"MIL2"</span>,<span class="st">"LEFT"</span>,<span class="st">"BRIT"</span>,<span class="st">"CWARCOW"</span>,<span class="st">"IWARCOW2"</span>), <span class="at">ords =</span> <span class="fu">c</span>(<span class="st">"AINEW"</span>,<span class="st">"SDNEW"</span>,<span class="st">"AILAG"</span>,<span class="st">"SDLAG"</span>,<span class="st">"POLRT"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Amelia)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Zelig)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Shorten the dataset</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>ISQ99<span class="fl">.4</span>MI <span class="ot">&lt;-</span> ISQ99_Essex[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span><span class="sc">:</span><span class="dv">11</span>,<span class="dv">13</span><span class="sc">:</span><span class="dv">21</span>)]</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>a.out <span class="ot">&lt;-</span> <span class="fu">amelia</span>(ISQ99<span class="fl">.4</span>MI, <span class="at">m=</span><span class="dv">5</span>, <span class="at">ts=</span><span class="st">"YEAR"</span>, <span class="at">cs=</span><span class="st">"IDORIGIN"</span>, <span class="at">noms=</span><span class="fu">c</span>(<span class="st">"MIL2"</span>,<span class="st">"LEFT"</span>,<span class="st">"BRIT"</span>,<span class="st">"CWARCOW"</span>,<span class="st">"IWARCOW2"</span>), <span class="at">ords =</span> <span class="fu">c</span>(<span class="st">"AINEW"</span>,<span class="st">"SDNEW"</span>,<span class="st">"AILAG"</span>,<span class="st">"SDLAG"</span>,<span class="st">"POLRT"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Warning: There are observations in the data that are completely missing. 
          These observations will remain unimputed in the final datasets. 
@@ -548,7 +567,7 @@ all NA in ind. dimension for at least one time period: AI SD POLRT MIL2 LEFT BRI
 <section id="using-the-cs-and-ts-information-with-polytimesplinetime-and-intercs" class="level2">
 <h2 class="anchored" data-anchor-id="using-the-cs-and-ts-information-with-polytimesplinetime-and-intercs">Using the cs and ts information with polytime/splinetime and intercs</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>a.out2 <span class="ot">&lt;-</span> <span class="fu">amelia</span>(ISQ99<span class="fl">.4</span>MI, <span class="at">m=</span><span class="dv">5</span>, <span class="at">ts=</span><span class="st">"YEAR"</span>, <span class="at">cs=</span><span class="st">"IDORIGIN"</span>, <span class="at">polytime=</span><span class="dv">2</span>, <span class="at">intercs=</span><span class="cn">FALSE</span>, <span class="at">noms=</span><span class="fu">c</span>(<span class="st">"MIL2"</span>,<span class="st">"LEFT"</span>,<span class="st">"BRIT"</span>,<span class="st">"CWARCOW"</span>,<span class="st">"IWARCOW2"</span>), <span class="at">ords =</span> <span class="fu">c</span>(<span class="st">"AINEW"</span>,<span class="st">"SDNEW"</span>,<span class="st">"AILAG"</span>,<span class="st">"SDLAG"</span>,<span class="st">"POLRT"</span>), <span class="at">p2s=</span><span class="dv">2</span>, <span class="at">emburn =</span> <span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>a.out2 <span class="ot">&lt;-</span> <span class="fu">amelia</span>(ISQ99<span class="fl">.4</span>MI, <span class="at">m=</span><span class="dv">5</span>, <span class="at">ts=</span><span class="st">"YEAR"</span>, <span class="at">cs=</span><span class="st">"IDORIGIN"</span>, <span class="at">polytime=</span><span class="dv">2</span>, <span class="at">intercs=</span><span class="cn">FALSE</span>, <span class="at">noms=</span><span class="fu">c</span>(<span class="st">"MIL2"</span>,<span class="st">"LEFT"</span>,<span class="st">"BRIT"</span>,<span class="st">"CWARCOW"</span>,<span class="st">"IWARCOW2"</span>), <span class="at">ords =</span> <span class="fu">c</span>(<span class="st">"AINEW"</span>,<span class="st">"SDNEW"</span>,<span class="st">"AILAG"</span>,<span class="st">"SDLAG"</span>,<span class="st">"POLRT"</span>), <span class="at">p2s=</span><span class="dv">2</span>, <span class="at">emburn =</span> <span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 amelia starting
@@ -599,7 +618,7 @@ setting up EM chain indicies
 
  saving and cleaning</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(a.out2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(a.out2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Amelia output with 5 imputed datasets.
@@ -648,9 +667,9 @@ IWARCOW2       0.11793917</code></pre>
 <h1>Some Analysis</h1>
 <p>Not a correct model but a first start.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"IQSS/ZeligChoice"</span>)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ZeligChoice)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>Model.a2 <span class="ot">&lt;-</span> <span class="fu">zelig</span>(AINEW <span class="sc">~</span> AILAG <span class="sc">+</span> MIL2 <span class="sc">+</span> LEFT <span class="sc">+</span> BRIT <span class="sc">+</span> CWARCOW <span class="sc">+</span> IWARCOW2 <span class="sc">+</span> PCGTHOU <span class="sc">+</span> PERCHPOP <span class="sc">+</span> DEMOC3, <span class="at">model =</span> <span class="st">"ls"</span>, <span class="at">data =</span> a.out2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"IQSS/ZeligChoice"</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ZeligChoice)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>Model.a2 <span class="ot">&lt;-</span> <span class="fu">zelig</span>(AINEW <span class="sc">~</span> AILAG <span class="sc">+</span> MIL2 <span class="sc">+</span> LEFT <span class="sc">+</span> BRIT <span class="sc">+</span> CWARCOW <span class="sc">+</span> IWARCOW2 <span class="sc">+</span> PCGTHOU <span class="sc">+</span> PERCHPOP <span class="sc">+</span> DEMOC3, <span class="at">model =</span> <span class="st">"ls"</span>, <span class="at">data =</span> a.out2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>How to cite this model in Zelig:
   R Core Team. 2007.
@@ -658,7 +677,7 @@ IWARCOW2       0.11793917</code></pre>
   in Christine Choirat, Christopher Gandrud, James Honaker, Kosuke Imai, Gary King, and Olivia Lau,
   "Zelig: Everyone's Statistical Software," https://zeligproject.org/</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Model.a2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Model.a2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Model: Combined Imputations 
 
@@ -686,10 +705,10 @@ Next step: Use 'setx' method</code></pre>
 <section id="more-general" class="level2">
 <h2 class="anchored" data-anchor-id="more-general">More General</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>all_imputations <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(<span class="fu">unclass</span>(a.out2<span class="sc">$</span>imputations), <span class="at">.id =</span> <span class="st">"m"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(m) <span class="sc">%&gt;%</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>()</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>all_imputations</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>all_imputations <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(<span class="fu">unclass</span>(a.out2<span class="sc">$</span>imputations), <span class="at">.id =</span> <span class="st">"m"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(m) <span class="sc">%&gt;%</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>()</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>all_imputations</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 2
 # Groups:   m [5]
@@ -703,12 +722,12 @@ Next step: Use 'setx' method</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>models_imputations <span class="ot">&lt;-</span> all_imputations <span class="sc">%&gt;%</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> data <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">lm</span>(AINEW <span class="sc">~</span> AILAG <span class="sc">+</span> MIL2 <span class="sc">+</span> LEFT <span class="sc">+</span> BRIT <span class="sc">+</span> CWARCOW <span class="sc">+</span> IWARCOW2 <span class="sc">+</span> PCGTHOU <span class="sc">+</span> PERCHPOP <span class="sc">+</span> DEMOC3, <span class="at">data =</span> .)),</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">tidied =</span> model <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">tidy</span>(., <span class="at">conf.int =</span> <span class="cn">TRUE</span>)),</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">glance =</span> model <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">glance</span>(.)))</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>models_imputations</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>models_imputations <span class="ot">&lt;-</span> all_imputations <span class="sc">%&gt;%</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> data <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">lm</span>(AINEW <span class="sc">~</span> AILAG <span class="sc">+</span> MIL2 <span class="sc">+</span> LEFT <span class="sc">+</span> BRIT <span class="sc">+</span> CWARCOW <span class="sc">+</span> IWARCOW2 <span class="sc">+</span> PCGTHOU <span class="sc">+</span> PERCHPOP <span class="sc">+</span> DEMOC3, <span class="at">data =</span> .)),</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">tidied =</span> model <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">tidy</span>(., <span class="at">conf.int =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">glance =</span> model <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">glance</span>(.)))</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>models_imputations</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 5
 # Groups:   m [5]
@@ -722,12 +741,12 @@ Next step: Use 'setx' method</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>params <span class="ot">&lt;-</span> models_imputations <span class="sc">%&gt;%</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(tidied) <span class="sc">%&gt;%</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(m, term, estimate, std.error) <span class="sc">%&gt;%</span></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(key, value, estimate, std.error) <span class="sc">%&gt;%</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(term, value)</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>params</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>params <span class="ot">&lt;-</span> models_imputations <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(tidied) <span class="sc">%&gt;%</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(m, term, estimate, std.error) <span class="sc">%&gt;%</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(key, value, estimate, std.error) <span class="sc">%&gt;%</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(term, value)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>params</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 12
 # Groups:   m [5]
@@ -749,11 +768,11 @@ Next step: Use 'setx' method</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>just_coefs <span class="ot">&lt;-</span> params <span class="sc">%&gt;%</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(key <span class="sc">==</span> <span class="st">"estimate"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>m, <span class="sc">-</span>key)</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>just_coefs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>just_coefs <span class="ot">&lt;-</span> params <span class="sc">%&gt;%</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(key <span class="sc">==</span> <span class="st">"estimate"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>m, <span class="sc">-</span>key)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>just_coefs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 10
   (Inter…¹ AILAG    BRIT CWARCOW  DEMOC3 IWARC…²    LEFT   MIL2 PCGTHOU PERCHPOP
@@ -767,11 +786,11 @@ Next step: Use 'setx' method</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>just_ses <span class="ot">&lt;-</span> params <span class="sc">%&gt;%</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(key <span class="sc">==</span> <span class="st">"std.error"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>m, <span class="sc">-</span>key)</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>just_ses</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>just_ses <span class="ot">&lt;-</span> params <span class="sc">%&gt;%</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(key <span class="sc">==</span> <span class="st">"std.error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>m, <span class="sc">-</span>key)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>just_ses</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 10
   (Interce…¹  AILAG   BRIT CWARCOW  DEMOC3 IWARC…²   LEFT   MIL2 PCGTHOU PERCH…³
@@ -785,8 +804,8 @@ Next step: Use 'setx' method</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>coefs_melded <span class="ot">&lt;-</span> <span class="fu">mi.meld</span>(just_coefs, just_ses)</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>coefs_melded</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>coefs_melded <span class="ot">&lt;-</span> <span class="fu">mi.meld</span>(just_coefs, just_ses)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>coefs_melded</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$q.mi
      (Intercept)     AILAG       BRIT  CWARCOW      DEMOC3  IWARCOW2
@@ -800,7 +819,7 @@ $se.mi
            LEFT       MIL2     PCGTHOU    PERCHPOP
 [1,] 0.04696314 0.03575381 0.003344076 0.003508067</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>coefs_melded<span class="sc">$</span>q.mi <span class="sc">/</span> coefs_melded<span class="sc">$</span>se.mi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>coefs_melded<span class="sc">$</span>q.mi <span class="sc">/</span> coefs_melded<span class="sc">$</span>se.mi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     (Intercept)    AILAG      BRIT  CWARCOW    DEMOC3 IWARCOW2     LEFT
 [1,]    18.64711 34.58908 -3.699019 9.549729 -7.049228 2.527259 -1.59078

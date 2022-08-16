@@ -11,7 +11,7 @@
     "href": "posts/day-7/index.html#missing-data",
     "title": "Day 7: Missing Data",
     "section": "Missing Data",
-    "text": "Missing Data"
+    "text": "Missing Data\nuse \"https://github.com/robertwwalker/Essex-Data/raw/main/ISQ99-Essex.dta\"\nxtset\ndrop if AINEW==.\nxtset\n* Give consideration to what we should do about the Lagged DV\ndrop if AILAG==.\n* A note about long versus flong\nmi set flong\n* Note that it adds some variables; what are they?\nmi describe\nmi misstable summarize\n* There are some logical restrictions that we are going to want.\n* For example, we have some changes that need to be consistent\n* with levels.  We can deal with that; just calculate the changes\n* after imputation.\nmi register imputed DEMOC3\nmi impute regress DEMOC3 PERCHPCG PERCHPOP LPOP CWARCOW IWARCOW2, add(10) dots force\n* mi impute regress PCGTHOU DEMOC3 PERCHPOP LPOP CWARCOW IWARCOW2, add(20)\nmi estimate: xtreg AINEW AILAG DEMOC3, fe"
   },
   {
     "objectID": "posts/day-7/index.html#the-data-poe-tate-keith-1999",

@@ -13,6 +13,30 @@ image: "image.png"
 
 ## Missing Data
 
+
+```
+use "https://github.com/robertwwalker/Essex-Data/raw/main/ISQ99-Essex.dta"
+xtset
+drop if AINEW==.
+xtset
+* Give consideration to what we should do about the Lagged DV
+drop if AILAG==.
+* A note about long versus flong
+mi set flong
+* Note that it adds some variables; what are they?
+mi describe
+mi misstable summarize
+* There are some logical restrictions that we are going to want.
+* For example, we have some changes that need to be consistent
+* with levels.  We can deal with that; just calculate the changes
+* after imputation.
+mi register imputed DEMOC3
+mi impute regress DEMOC3 PERCHPCG PERCHPOP LPOP CWARCOW IWARCOW2, add(10) dots force
+* mi impute regress PCGTHOU DEMOC3 PERCHPOP LPOP CWARCOW IWARCOW2, add(20)
+mi estimate: xtreg AINEW AILAG DEMOC3, fe
+```
+
+
 ## The Data: Poe, Tate, Keith 1999
 
 Two objectives.  Load the data and transform it into a pdata.frame for now.
