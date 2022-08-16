@@ -17,6 +17,69 @@ span.underline{text-decoration: underline;}
 div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -212,7 +275,7 @@ ul.task-list{list-style: none;}
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../posts/day-9/index.html" class="sidebar-item-text sidebar-link">Day 9: GMM and GEE</a>
+  <a href="../../posts/day-9/index.html" class="sidebar-item-text sidebar-link">Day 9: DPD and GMM</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -232,6 +295,19 @@ ul.task-list{list-style: none;}
    
   <ul>
   <li><a href="#slides" id="toc-slides" class="nav-link active" data-scroll-target="#slides">Slides</a></li>
+  <li><a href="#missing-data" id="toc-missing-data" class="nav-link" data-scroll-target="#missing-data">Missing Data</a></li>
+  <li><a href="#the-data-poe-tate-keith-1999" id="toc-the-data-poe-tate-keith-1999" class="nav-link" data-scroll-target="#the-data-poe-tate-keith-1999">The Data: Poe, Tate, Keith 1999</a></li>
+  <li><a href="#pdata.frame" id="toc-pdata.frame" class="nav-link" data-scroll-target="#pdata.frame">pdata.frame</a></li>
+  <li><a href="#visualizations-of-missingness" id="toc-visualizations-of-missingness" class="nav-link" data-scroll-target="#visualizations-of-missingness">Visualizations of Missingness</a></li>
+  <li><a href="#univariate" id="toc-univariate" class="nav-link" data-scroll-target="#univariate">Univariate</a></li>
+  <li><a href="#bivariate" id="toc-bivariate" class="nav-link" data-scroll-target="#bivariate">Bivariate</a></li>
+  <li><a href="#multiple-imputation-amelia-ii" id="toc-multiple-imputation-amelia-ii" class="nav-link" data-scroll-target="#multiple-imputation-amelia-ii">Multiple Imputation: Amelia II</a></li>
+  <li><a href="#transforms-are-key" id="toc-transforms-are-key" class="nav-link" data-scroll-target="#transforms-are-key">Transforms are Key</a></li>
+  <li><a href="#using-the-cs-and-ts-information-with-polytimesplinetime-and-intercs" id="toc-using-the-cs-and-ts-information-with-polytimesplinetime-and-intercs" class="nav-link" data-scroll-target="#using-the-cs-and-ts-information-with-polytimesplinetime-and-intercs">Using the cs and ts information with polytime/splinetime and intercs</a></li>
+  <li><a href="#some-analysis" id="toc-some-analysis" class="nav-link" data-scroll-target="#some-analysis">Some Analysis</a>
+  <ul class="collapse">
+  <li><a href="#more-general" id="toc-more-general" class="nav-link" data-scroll-target="#more-general">More General</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -247,8 +323,487 @@ ul.task-list{list-style: none;}
 <li><a href="./img/slidesDay7.pdf">Slides in .pdf format</a></li>
 <li><a href="https://robertwwalker.github.io/xaringan/ESSSSDA22-Day7/">A xaringan for presentation</a></li>
 </ul>
+</section>
+<section id="missing-data" class="level2">
+<h2 class="anchored" data-anchor-id="missing-data">Missing Data</h2>
+</section>
+<section id="the-data-poe-tate-keith-1999" class="level2">
+<h2 class="anchored" data-anchor-id="the-data-poe-tate-keith-1999">The Data: Poe, Tate, Keith 1999</h2>
+<p>Two objectives. Load the data and transform it into a pdata.frame for now.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">warning=</span><span class="cn">FALSE</span>, <span class="at">message=</span><span class="cn">FALSE</span>, <span class="at">comment=</span><span class="cn">NA</span>, <span class="at">prompt=</span><span class="cn">FALSE</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(foreign)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+✔ ggplot2 3.3.6     ✔ purrr   0.3.4
+✔ tibble  3.1.8     ✔ dplyr   1.0.9
+✔ tidyr   1.2.0     ✔ stringr 1.4.0
+✔ readr   2.1.2     ✔ forcats 0.5.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::between() masks plm::between()
+✖ dplyr::filter()  masks stats::filter()
+✖ dplyr::lag()     masks plm::lag(), stats::lag()
+✖ dplyr::lead()    masks plm::lead()</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ISQ99_Essex <span class="ot">&lt;-</span> <span class="fu">read.dta</span>(<span class="st">"./img/ISQ99-Essex.dta"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ISQ99p <span class="ot">&lt;-</span> <span class="fu">pdata.frame</span>(ISQ99_Essex, <span class="fu">c</span>(<span class="st">"IDORIGIN"</span>, <span class="st">"YEAR"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="pdata.frame" class="level2">
+<h2 class="anchored" data-anchor-id="pdata.frame">pdata.frame</h2>
+<p>Will allow R to answer many questions that stata’s xt commands make available. First, some basic summaries to get to balance.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ISQ99_Essex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    IDORIGIN          YEAR            AI              SD            POLRT      
+ Min.   :  2.0   Min.   :1976   Min.   :1.000   Min.   :1.000   Min.   :1.000  
+ 1st Qu.:290.0   1st Qu.:1980   1st Qu.:2.000   1st Qu.:1.000   1st Qu.:2.000  
+ Median :435.0   Median :1984   Median :3.000   Median :2.000   Median :3.000  
+ Mean   :446.7   Mean   :1984   Mean   :2.753   Mean   :2.241   Mean   :3.809  
+ 3rd Qu.:640.0   3rd Qu.:1989   3rd Qu.:3.000   3rd Qu.:3.000   3rd Qu.:6.000  
+ Max.   :990.0   Max.   :1993   Max.   :5.000   Max.   :5.000   Max.   :7.000  
+                                NA's   :1061    NA's   :587     NA's   :382    
+      MIL2             LEFT             BRIT            PCGNP      
+ Min.   :0.0000   Min.   :0.0000   Min.   :0.0000   Min.   :   52  
+ 1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:  390  
+ Median :0.0000   Median :0.0000   Median :0.0000   Median : 1112  
+ Mean   :0.2725   Mean   :0.1764   Mean   :0.3554   Mean   : 3592  
+ 3rd Qu.:1.0000   3rd Qu.:0.0000   3rd Qu.:1.0000   3rd Qu.: 3510  
+ Max.   :1.0000   Max.   :1.0000   Max.   :1.0000   Max.   :36670  
+ NA's   :382      NA's   :393      NA's   :290      NA's   :443    
+     AINEW           SDNEW           IDGURR          AILAG          SDLAG      
+ Min.   :1.000   Min.   :1.000   Min.   :  2.0   Min.   :1.00   Min.   :1.000  
+ 1st Qu.:1.000   1st Qu.:1.000   1st Qu.:290.0   1st Qu.:1.00   1st Qu.:1.000  
+ Median :2.000   Median :2.000   Median :450.0   Median :2.00   Median :2.000  
+ Mean   :2.443   Mean   :2.262   Mean   :455.8   Mean   :2.45   Mean   :2.247  
+ 3rd Qu.:3.000   3rd Qu.:3.000   3rd Qu.:663.0   3rd Qu.:3.00   3rd Qu.:3.000  
+ Max.   :5.000   Max.   :5.000   Max.   :990.0   Max.   :5.00   Max.   :5.000  
+ NA's   :468     NA's   :468                     NA's   :644    NA's   :644    
+    PERCHPCG          PERCHPOP            LPOP          PCGTHOU      
+ Min.   :-95.500   Min.   :-48.450   Min.   :11.00   Min.   : 0.050  
+ 1st Qu.: -2.545   1st Qu.:  0.910   1st Qu.:14.51   1st Qu.: 0.390  
+ Median :  4.615   Median :  2.220   Median :15.59   Median : 1.110  
+ Mean   :  4.614   Mean   :  2.193   Mean   :15.48   Mean   : 3.592  
+ 3rd Qu.: 11.760   3rd Qu.:  2.940   3rd Qu.:16.64   3rd Qu.: 3.510  
+ Max.   :128.570   Max.   :126.010   Max.   :20.89   Max.   :36.670  
+ NA's   :618       NA's   :293       NA's   :115     NA's   :443     
+     DEMOC3          CWARCOW         IWARCOW2     
+ Min.   : 0.000   Min.   :0.000   Min.   :0.0000  
+ 1st Qu.: 0.000   1st Qu.:0.000   1st Qu.:0.0000  
+ Median : 0.000   Median :0.000   Median :0.0000  
+ Mean   : 3.682   Mean   :0.092   Mean   :0.0862  
+ 3rd Qu.: 9.000   3rd Qu.:0.000   3rd Qu.:0.0000  
+ Max.   :10.000   Max.   :1.000   Max.   :1.0000  
+ NA's   :793      NA's   :407     NA's   :380     </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ISQ99_Essex<span class="sc">$</span>IDORIGIN)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    2    20    31    40    41    42    51    52    53    55    56    57    59 
+   18    18    18    18    18    18    18    18    18    18    18    18    18 
+   70    90    91    92    93    94    95    96   100   101   110   115   130 
+   18    18    18    18    18    18    18    18    18    18    18    18    18 
+  135   140   145   150   155   160   165   200   205   210   211   212   220 
+   18    18    18    18    18    18    18    18    18    18    18    18    18 
+  225   230   235   260   265   290   305   310   315   316   325   333   339 
+   18    18    18    18    18    18    18    18    18    18    18    18    18 
+  345   346   347   348   349   350   352   355   360   365   366   367   368 
+   18    18    18    18    18    18    18    18    18    18    18    18    18 
+  369   370   371   372   373   374 374.1 374.2 374.3 374.4 374.5   375   380 
+   18    18    18    18    18    18    18    18    18    18    18    18    18 
+  385   390   395   402   403   404   411   420   432   433   434   435   436 
+   18    18    18    18    18    18    18    18    18    18    18    18    18 
+  437   438   439   450   451   452   461   471   475   481   482   483   484 
+   18    18    18    18    18    18    18    18    18    18    18    18    18 
+  490   500   501   510   516   517   520   525   530   531   540   541   551 
+   18    18    18    18    18    18    18    18    18    18    18    18    18 
+  552   553   560   562   570   571   572   580   581   590   591   600   615 
+   18    18    18    18    18    18    18    18    18    18    18    18    18 
+  616   620   625   630   640   645   651   652   660   663   666   670   678 
+   18    18    18    18    18    18    18    18    18    18    18    18    18 
+  680   690   692   694   696   698   700   710   712   713   732   740   750 
+   18    18    18    18    18    18    18    18    18    18    18    18    18 
+  760   770   771   775   780   781   790   800   811   812   815   820   821 
+   18    18    18    18    18    18    18    18    18    18    18    18    18 
+  830   840   850   900   910   911   914   920   950   990 
+   18    18    18    18    18    18    18    18    18    18 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ISQ99_Essex<span class="sc">$</span>YEAR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+1976 1977 1978 1979 1980 1981 1982 1983 1984 1985 1986 1987 1988 1989 1990 1991 
+ 179  179  179  179  179  179  179  179  179  179  179  179  179  179  179  179 
+1992 1993 
+ 179  179 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.pbalanced</span>(ISQ99p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p>Is any variable time invariant?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pvar</span>(ISQ99p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>no time variation:       IDORIGIN BRIT IDGURR AILAG SDLAG PERCHPCG PERCHPOP 
+no individual variation: YEAR AI SD POLRT MIL2 LEFT BRIT PCGNP AINEW SDNEW AILAG SDLAG PERCHPCG PERCHPOP LPOP PCGTHOU DEMOC3 CWARCOW IWARCOW2 
+all NA in time dimension for at least one individual:  AI SD POLRT MIL2 LEFT BRIT PCGNP AINEW SDNEW AILAG SDLAG PERCHPCG PERCHPOP LPOP PCGTHOU DEMOC3 CWARCOW IWARCOW2 
+all NA in ind. dimension for at least one time period: AI SD POLRT MIL2 LEFT BRIT PCGNP AINEW SDNEW AILAG SDLAG PERCHPCG PERCHPOP LPOP PCGTHOU DEMOC3 CWARCOW IWARCOW2 </code></pre>
+</div>
+</div>
+</section>
+<section id="visualizations-of-missingness" class="level2">
+<h2 class="anchored" data-anchor-id="visualizations-of-missingness">Visualizations of Missingness</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(visdat)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vis_dat</span>(ISQ99_Essex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/MP-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vis_miss</span>(ISQ99_Essex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="univariate" class="level2">
+<h2 class="anchored" data-anchor-id="univariate">Univariate</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>mplot <span class="ot">&lt;-</span> <span class="fu">gg_miss_var</span>(ISQ99_Essex)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>mplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/Plot1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="bivariate" class="level2">
+<h2 class="anchored" data-anchor-id="bivariate">Bivariate</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>mplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ISQ99_Essex, </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> DEMOC3, </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> POLRT)) <span class="sc">+</span> </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>mplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/Plot2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>mplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ISQ99_Essex, </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> DEMOC3, </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> POLRT)) <span class="sc">+</span> </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_miss_point</span>()</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>mplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/Plot3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="multiple-imputation-amelia-ii" class="level2">
+<h2 class="anchored" data-anchor-id="multiple-imputation-amelia-ii">Multiple Imputation: Amelia II</h2>
+<p>A simple multivariate normal is easy as long as the data are well behaved. NB: This uses none of the time series or cross-sectional dimensionality for identification.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Amelia)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Zelig)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Shorten the dataset</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>ISQ99<span class="fl">.4</span>MI <span class="ot">&lt;-</span> ISQ99_Essex[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span><span class="sc">:</span><span class="dv">11</span>,<span class="dv">13</span><span class="sc">:</span><span class="dv">21</span>)]</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>a.out <span class="ot">&lt;-</span> <span class="fu">amelia</span>(ISQ99<span class="fl">.4</span>MI, <span class="at">m=</span><span class="dv">5</span>, <span class="at">ts=</span><span class="st">"YEAR"</span>, <span class="at">cs=</span><span class="st">"IDORIGIN"</span>, <span class="at">noms=</span><span class="fu">c</span>(<span class="st">"MIL2"</span>,<span class="st">"LEFT"</span>,<span class="st">"BRIT"</span>,<span class="st">"CWARCOW"</span>,<span class="st">"IWARCOW2"</span>), <span class="at">ords =</span> <span class="fu">c</span>(<span class="st">"AINEW"</span>,<span class="st">"SDNEW"</span>,<span class="st">"AILAG"</span>,<span class="st">"SDLAG"</span>,<span class="st">"POLRT"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Warning: There are observations in the data that are completely missing. 
+         These observations will remain unimputed in the final datasets. 
+-- Imputation 1 --
+
+  1  2  3  4  5  6  7
+
+-- Imputation 2 --
+
+  1  2  3  4  5  6  7  8  9
+
+-- Imputation 3 --
+
+  1  2  3  4  5  6  7  8
+
+-- Imputation 4 --
+
+  1  2  3  4  5  6  7  8  9 10
+
+-- Imputation 5 --
+
+  1  2  3  4  5  6</code></pre>
+</div>
+</div>
+<p>Without simplifying, it crashes because there are id variables of different sorts and other things hiding in there, perfect multicollinearities exist. Even with them, we need a bit more work.</p>
+</section>
+<section id="transforms-are-key" class="level2">
+<h2 class="anchored" data-anchor-id="transforms-are-key">Transforms are Key</h2>
+</section>
+<section id="using-the-cs-and-ts-information-with-polytimesplinetime-and-intercs" class="level2">
+<h2 class="anchored" data-anchor-id="using-the-cs-and-ts-information-with-polytimesplinetime-and-intercs">Using the cs and ts information with polytime/splinetime and intercs</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>a.out2 <span class="ot">&lt;-</span> <span class="fu">amelia</span>(ISQ99<span class="fl">.4</span>MI, <span class="at">m=</span><span class="dv">5</span>, <span class="at">ts=</span><span class="st">"YEAR"</span>, <span class="at">cs=</span><span class="st">"IDORIGIN"</span>, <span class="at">polytime=</span><span class="dv">2</span>, <span class="at">intercs=</span><span class="cn">FALSE</span>, <span class="at">noms=</span><span class="fu">c</span>(<span class="st">"MIL2"</span>,<span class="st">"LEFT"</span>,<span class="st">"BRIT"</span>,<span class="st">"CWARCOW"</span>,<span class="st">"IWARCOW2"</span>), <span class="at">ords =</span> <span class="fu">c</span>(<span class="st">"AINEW"</span>,<span class="st">"SDNEW"</span>,<span class="st">"AILAG"</span>,<span class="st">"SDLAG"</span>,<span class="st">"POLRT"</span>), <span class="at">p2s=</span><span class="dv">2</span>, <span class="at">emburn =</span> <span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+amelia starting
+beginning prep functions
+Variables used:  POLRT PCGNP AINEW SDNEW AILAG SDLAG PERCHPCG PERCHPOP LPOP PCGTHOU DEMOC3 noms.MIL2.2 noms.LEFT.2 noms.BRIT.2 noms.CWARCOW.2 noms.IWARCOW2.2 time.1 time.2 
+running bootstrap
+-- Imputation 1 --
+setting up EM chain indicies
+
+  1(189)  2(182)  3(155)  4(89)  5(13)  6(9)  7(6)  8(1)  9(0) 10(0) 11(0) 12(0) 13(0) 14(0) 15(0) 16(0) 17(0) 18(0) 19(0) 20
+(0)
+
+ saving and cleaning
+
+running bootstrap
+-- Imputation 2 --
+setting up EM chain indicies
+
+  1(189)  2(182)  3(162)  4(87)  5(14)  6(5)  7(1)  8(0)  9(0) 10(0) 11(0) 12(0) 13(0) 14(0) 15(0) 16(0) 17(0) 18(0) 19(0) 20
+(0)
+
+ saving and cleaning
+
+running bootstrap
+-- Imputation 3 --
+setting up EM chain indicies
+
+  1(188)  2(183)  3(157)  4(76)  5(29)  6(17)  7(8)  8(0)  9(0) 10(0) 11(0) 12(0) 13(0) 14(0) 15(0) 16(0) 17(0) 18(0) 19(0) 20
+(0)
+
+ saving and cleaning
+
+running bootstrap
+-- Imputation 4 --
+setting up EM chain indicies
+
+  1(189)  2(181)  3(153)  4(60)  5(20)  6(13)  7(7)  8(2)  9(0) 10(0) 11(0) 12(0) 13(0) 14(0) 15(0) 16(0) 17(0) 18(0) 19(0) 20
+(0)
+
+ saving and cleaning
+
+running bootstrap
+-- Imputation 5 --
+setting up EM chain indicies
+
+  1(189)  2(181)  3(160)  4(90)  5(25)  6(12)  7(3)  8(0)  9(0) 10(0) 11(0) 12(0) 13(0) 14(0) 15(0) 16(0) 17(0) 18(0) 19(0) 20
+(0)
+
+ saving and cleaning</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(a.out2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Amelia output with 5 imputed datasets.
+Return code:  1 
+Message:  Normal EM convergence. 
+
+Chain Lengths:
+--------------
+Imputation 1:  20
+Imputation 2:  20
+Imputation 3:  20
+Imputation 4:  20
+Imputation 5:  20
+
+Rows after Listwise Deletion:  2144 
+Rows after Imputation:  3222 
+Patterns of missingness in the data:  65 
+
+Fraction Missing for original variables: 
+-----------------------------------------
+
+         Fraction Missing
+IDORIGIN       0.00000000
+YEAR           0.00000000
+POLRT          0.11855990
+MIL2           0.11855990
+LEFT           0.12197393
+BRIT           0.09000621
+PCGNP          0.13749224
+AINEW          0.14525140
+SDNEW          0.14525140
+AILAG          0.19987585
+SDLAG          0.19987585
+PERCHPCG       0.19180633
+PERCHPOP       0.09093731
+LPOP           0.03569212
+PCGTHOU        0.13749224
+DEMOC3         0.24612042
+CWARCOW        0.12631906
+IWARCOW2       0.11793917</code></pre>
+</div>
+</div>
+<p>Now let’s analyze it.</p>
+</section>
+<section id="some-analysis" class="level1">
+<h1>Some Analysis</h1>
+<p>Not a correct model but a first start.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"IQSS/ZeligChoice"</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ZeligChoice)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>Model.a2 <span class="ot">&lt;-</span> <span class="fu">zelig</span>(AINEW <span class="sc">~</span> AILAG <span class="sc">+</span> MIL2 <span class="sc">+</span> LEFT <span class="sc">+</span> BRIT <span class="sc">+</span> CWARCOW <span class="sc">+</span> IWARCOW2 <span class="sc">+</span> PCGTHOU <span class="sc">+</span> PERCHPOP <span class="sc">+</span> DEMOC3, <span class="at">model =</span> <span class="st">"ls"</span>, <span class="at">data =</span> a.out2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>How to cite this model in Zelig:
+  R Core Team. 2007.
+  ls: Least Squares Regression for Continuous Dependent Variables
+  in Christine Choirat, Christopher Gandrud, James Honaker, Kosuke Imai, Gary King, and Olivia Lau,
+  "Zelig: Everyone's Statistical Software," https://zeligproject.org/</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Model.a2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: Combined Imputations 
+
+             Estimate Std.Error z value Pr(&gt;|z|)
+(Intercept)  1.040136  0.055780   18.65  &lt; 2e-16
+AILAG        0.621404  0.017965   34.59  &lt; 2e-16
+MIL2         0.110257  0.035754    3.08  0.00204
+LEFT        -0.074708  0.046963   -1.59  0.11166
+BRIT        -0.112423  0.030393   -3.70  0.00022
+CWARCOW      0.532683  0.055780    9.55  &lt; 2e-16
+IWARCOW2     0.180371  0.071370    2.53  0.01150
+PCGTHOU     -0.016131  0.003344   -4.82  1.4e-06
+PERCHPOP    -0.000936  0.003508   -0.27  0.78956
+DEMOC3      -0.030649  0.004348   -7.05  1.8e-12
+
+For results from individual imputed datasets, use summary(x, subset = i:j)
+Statistical Warning: The GIM test suggests this model is misspecified
+ (based on comparisons between classical and robust SE's; see http://j.mp/GIMtest).
+ We suggest you run diagnostics to ascertain the cause, respecify the model
+ and run it again.
+
+Next step: Use 'setx' method</code></pre>
+</div>
+</div>
+<section id="more-general" class="level2">
+<h2 class="anchored" data-anchor-id="more-general">More General</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>all_imputations <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(<span class="fu">unclass</span>(a.out2<span class="sc">$</span>imputations), <span class="at">.id =</span> <span class="st">"m"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(m) <span class="sc">%&gt;%</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>()</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>all_imputations</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+# Groups:   m [5]
+  m     data                 
+  &lt;chr&gt; &lt;list&gt;               
+1 imp1  &lt;tibble [3,222 × 18]&gt;
+2 imp2  &lt;tibble [3,222 × 18]&gt;
+3 imp3  &lt;tibble [3,222 × 18]&gt;
+4 imp4  &lt;tibble [3,222 × 18]&gt;
+5 imp5  &lt;tibble [3,222 × 18]&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>models_imputations <span class="ot">&lt;-</span> all_imputations <span class="sc">%&gt;%</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> data <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">lm</span>(AINEW <span class="sc">~</span> AILAG <span class="sc">+</span> MIL2 <span class="sc">+</span> LEFT <span class="sc">+</span> BRIT <span class="sc">+</span> CWARCOW <span class="sc">+</span> IWARCOW2 <span class="sc">+</span> PCGTHOU <span class="sc">+</span> PERCHPOP <span class="sc">+</span> DEMOC3, <span class="at">data =</span> .)),</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">tidied =</span> model <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">tidy</span>(., <span class="at">conf.int =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">glance =</span> model <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">glance</span>(.)))</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>models_imputations</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 5
+# Groups:   m [5]
+  m     data                  model  tidied            glance           
+  &lt;chr&gt; &lt;list&gt;                &lt;list&gt; &lt;list&gt;            &lt;list&gt;           
+1 imp1  &lt;tibble [3,222 × 18]&gt; &lt;lm&gt;   &lt;tibble [10 × 7]&gt; &lt;tibble [1 × 12]&gt;
+2 imp2  &lt;tibble [3,222 × 18]&gt; &lt;lm&gt;   &lt;tibble [10 × 7]&gt; &lt;tibble [1 × 12]&gt;
+3 imp3  &lt;tibble [3,222 × 18]&gt; &lt;lm&gt;   &lt;tibble [10 × 7]&gt; &lt;tibble [1 × 12]&gt;
+4 imp4  &lt;tibble [3,222 × 18]&gt; &lt;lm&gt;   &lt;tibble [10 × 7]&gt; &lt;tibble [1 × 12]&gt;
+5 imp5  &lt;tibble [3,222 × 18]&gt; &lt;lm&gt;   &lt;tibble [10 × 7]&gt; &lt;tibble [1 × 12]&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>params <span class="ot">&lt;-</span> models_imputations <span class="sc">%&gt;%</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(tidied) <span class="sc">%&gt;%</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(m, term, estimate, std.error) <span class="sc">%&gt;%</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(key, value, estimate, std.error) <span class="sc">%&gt;%</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(term, value)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>params</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 12
+# Groups:   m [5]
+   m     key      (Inte…¹  AILAG    BRIT CWARCOW   DEMOC3 IWARC…²    LEFT   MIL2
+   &lt;chr&gt; &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 imp1  estimate  1.08   0.607  -0.106   0.583  -0.0314   0.187  -0.0867 0.112 
+ 2 imp1  std.err…  0.0485 0.0136  0.0279  0.0454  0.00380  0.0456  0.0362 0.0316
+ 3 imp2  estimate  1.04   0.623  -0.125   0.520  -0.0334   0.201  -0.114  0.0874
+ 4 imp2  std.err…  0.0462 0.0129  0.0267  0.0436  0.00364  0.0443  0.0353 0.0305
+ 5 imp3  estimate  0.999  0.637  -0.121   0.537  -0.0281   0.106  -0.0685 0.133 
+ 6 imp3  std.err…  0.0455 0.0128  0.0264  0.0432  0.00364  0.0431  0.0343 0.0301
+ 7 imp4  estimate  1.03   0.625  -0.116   0.503  -0.0313   0.162  -0.0360 0.113 
+ 8 imp4  std.err…  0.0469 0.0132  0.0271  0.0458  0.00373  0.0441  0.0348 0.0312
+ 9 imp5  estimate  1.05   0.615  -0.0938  0.521  -0.0291   0.245  -0.0686 0.106 
+10 imp5  std.err…  0.0465 0.0130  0.0269  0.0445  0.00367  0.0428  0.0351 0.0308
+# … with 2 more variables: PCGTHOU &lt;dbl&gt;, PERCHPOP &lt;dbl&gt;, and abbreviated
+#   variable names ¹​`(Intercept)`, ²​IWARCOW2
+# ℹ Use `colnames()` to see all variable names</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>just_coefs <span class="ot">&lt;-</span> params <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(key <span class="sc">==</span> <span class="st">"estimate"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>m, <span class="sc">-</span>key)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>just_coefs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 10
+  (Inter…¹ AILAG    BRIT CWARCOW  DEMOC3 IWARC…²    LEFT   MIL2 PCGTHOU PERCHPOP
+     &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+1    1.08  0.607 -0.106    0.583 -0.0314   0.187 -0.0867 0.112  -0.0163 -3.91e-4
+2    1.04  0.623 -0.125    0.520 -0.0334   0.201 -0.114  0.0874 -0.0142  5.02e-4
+3    0.999 0.637 -0.121    0.537 -0.0281   0.106 -0.0685 0.133  -0.0162 -3.14e-3
+4    1.03  0.625 -0.116    0.503 -0.0313   0.162 -0.0360 0.113  -0.0146 -1.57e-3
+5    1.05  0.615 -0.0938   0.521 -0.0291   0.245 -0.0686 0.106  -0.0193 -8.16e-5
+# … with abbreviated variable names ¹​`(Intercept)`, ²​IWARCOW2</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>just_ses <span class="ot">&lt;-</span> params <span class="sc">%&gt;%</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(key <span class="sc">==</span> <span class="st">"std.error"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>m, <span class="sc">-</span>key)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>just_ses</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 10
+  (Interce…¹  AILAG   BRIT CWARCOW  DEMOC3 IWARC…²   LEFT   MIL2 PCGTHOU PERCH…³
+       &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1     0.0485 0.0136 0.0279  0.0454 0.00380  0.0456 0.0362 0.0316 0.00255 0.00323
+2     0.0462 0.0129 0.0267  0.0436 0.00364  0.0443 0.0353 0.0305 0.00250 0.00305
+3     0.0455 0.0128 0.0264  0.0432 0.00364  0.0431 0.0343 0.0301 0.00246 0.00309
+4     0.0469 0.0132 0.0271  0.0458 0.00373  0.0441 0.0348 0.0312 0.00251 0.00317
+5     0.0465 0.0130 0.0269  0.0445 0.00367  0.0428 0.0351 0.0308 0.00248 0.00310
+# … with abbreviated variable names ¹​`(Intercept)`, ²​IWARCOW2, ³​PERCHPOP</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>coefs_melded <span class="ot">&lt;-</span> <span class="fu">mi.meld</span>(just_coefs, just_ses)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>coefs_melded</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$q.mi
+     (Intercept)     AILAG       BRIT  CWARCOW      DEMOC3  IWARCOW2
+[1,]    1.040136 0.6214036 -0.1124235 0.532683 -0.03064904 0.1803708
+            LEFT      MIL2     PCGTHOU      PERCHPOP
+[1,] -0.07470803 0.1102575 -0.01613081 -0.0009362572
+
+$se.mi
+     (Intercept)      AILAG       BRIT    CWARCOW      DEMOC3   IWARCOW2
+[1,]  0.05578001 0.01796531 0.03039278 0.05577991 0.004347858 0.07137014
+           LEFT       MIL2     PCGTHOU    PERCHPOP
+[1,] 0.04696314 0.03575381 0.003344076 0.003508067</code></pre>
+</div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

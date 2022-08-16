@@ -13,3 +13,162 @@ image: "image.jpg"
 
 ## Missing Data
 
+## The Data: Poe, Tate, Keith 1999
+
+Two objectives.  Load the data and transform it into a pdata.frame for now.
+
+```{r DatLoad}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, comment=NA, prompt=FALSE)
+library(broom)
+library(plm)
+library(foreign)
+library(tidyverse)
+ISQ99_Essex <- read.dta("./img/ISQ99-Essex.dta")
+ISQ99p <- pdata.frame(ISQ99_Essex, c("IDORIGIN", "YEAR"))
+```
+
+## pdata.frame
+
+Will allow R to answer many questions that stata's xt commands make available.  First, some basic summaries to get to balance.
+
+```{r DatSum}
+summary(ISQ99_Essex)
+table(ISQ99_Essex$IDORIGIN)
+table(ISQ99_Essex$YEAR)
+is.pbalanced(ISQ99p)
+```
+
+Is any variable time invariant?
+
+```{r}
+pvar(ISQ99p)
+```
+
+## Visualizations of Missingness
+
+```{r MP}
+library(visdat)
+vis_dat(ISQ99_Essex)
+```
+
+```{r}
+vis_miss(ISQ99_Essex)
+```
+
+## Univariate
+
+```{r Plot1}
+library(ggplot2)
+library(naniar)
+mplot <- gg_miss_var(ISQ99_Essex)
+mplot
+```
+
+
+## Bivariate
+
+```{r Plot2}
+mplot <- ggplot(ISQ99_Essex, 
+       aes(x = DEMOC3, 
+           y = POLRT)) + 
+  geom_point()
+mplot
+```
+
+
+```{r Plot3}
+library(naniar)
+mplot <- ggplot(ISQ99_Essex, 
+       aes(x = DEMOC3, 
+           y = POLRT)) + 
+  geom_miss_point()
+mplot
+```
+
+
+
+## Multiple Imputation: Amelia II
+
+A simple multivariate normal is easy as long as the data are well behaved.  NB: This uses none of the time series or cross-sectional dimensionality for identification.
+
+```{r}
+library(Amelia)
+library(Zelig)
+# Shorten the dataset
+ISQ99.4MI <- ISQ99_Essex[,c(1,2,5:11,13:21)]
+a.out <- amelia(ISQ99.4MI, m=5, ts="YEAR", cs="IDORIGIN", noms=c("MIL2","LEFT","BRIT","CWARCOW","IWARCOW2"), ords = c("AINEW","SDNEW","AILAG","SDLAG","POLRT"))
+```
+Without simplifying, it crashes because there are id variables of different sorts and other things hiding in there, perfect multicollinearities exist.  Even with them, we need a bit more work.
+
+
+## Transforms are Key
+
+## Using the cs and ts information with polytime/splinetime and intercs
+
+```{r, warning=FALSE, message=FALSE}
+a.out2 <- amelia(ISQ99.4MI, m=5, ts="YEAR", cs="IDORIGIN", polytime=2, intercs=FALSE, noms=c("MIL2","LEFT","BRIT","CWARCOW","IWARCOW2"), ords = c("AINEW","SDNEW","AILAG","SDLAG","POLRT"), p2s=2, emburn = c(20,50))
+summary(a.out2)
+```
+
+Now let's analyze it.
+
+# Some Analysis
+
+Not a correct model but a first start.
+
+```{r}
+devtools::install_github("IQSS/ZeligChoice")
+library(ZeligChoice)
+Model.a2 <- zelig(AINEW ~ AILAG + MIL2 + LEFT + BRIT + CWARCOW + IWARCOW2 + PCGTHOU + PERCHPOP + DEMOC3, model = "ls", data = a.out2)
+summary(Model.a2)
+```
+
+## More General
+
+```{r}
+all_imputations <- dplyr::bind_rows(unclass(a.out2$imputations), .id = "m") %>%
+  group_by(m) %>%
+  nest()
+all_imputations
+```
+
+```{r}
+models_imputations <- all_imputations %>%
+  mutate(model = data %>% map(~ lm(AINEW ~ AILAG + MIL2 + LEFT + BRIT + CWARCOW + IWARCOW2 + PCGTHOU + PERCHPOP + DEMOC3, data = .)),
+         tidied = model %>% map(~ tidy(., conf.int = TRUE)),
+         glance = model %>% map(~ glance(.)))
+
+models_imputations
+```
+
+
+
+```{r Last}
+params <- models_imputations %>%
+  unnest(tidied) %>%
+  select(m, term, estimate, std.error) %>%
+  gather(key, value, estimate, std.error) %>%
+  spread(term, value)
+params
+```
+
+```{r COEFS}
+just_coefs <- params %>%
+  filter(key == "estimate") %>%
+  ungroup() %>%
+  select(-m, -key)
+just_coefs
+```
+
+```{r SES}
+just_ses <- params %>%
+  filter(key == "std.error") %>%
+  ungroup() %>%
+  select(-m, -key)
+just_ses
+```
+
+```{r Meld}
+coefs_melded <- mi.meld(just_coefs, just_ses)
+coefs_melded
+```
