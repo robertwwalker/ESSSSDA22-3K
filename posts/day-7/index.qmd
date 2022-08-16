@@ -11,3 +11,5 @@ image: "image.jpg"
 - [Slides in .pdf format](./img/slidesDay7.pdf)
 - [A xaringan for presentation](https://robertwwalker.github.io/xaringan/ESSSSDA22-Day7/)
 
+## Missing Data
+

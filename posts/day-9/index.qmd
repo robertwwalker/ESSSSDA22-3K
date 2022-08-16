@@ -1,5 +1,5 @@
 ---
-title: "Day 9: GMM and GEE"
+title: "Day 9: DPD and GMM"
 author: "Robert W. Walker"
 date: "08/18/2022"
 categories: [panel data, code, analysis]
@@ -8,6 +8,7 @@ image: "image.jpg"
 
 ## Slides
 
-- [Slides in .pdf format](./slides/slidesDay9.pdf)
-- [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day9/)
+- [Slides in .pdf format](./img/slidesDay9.pdf)
+- [A xaringan for presentation](https://robertwwalker.github.io/xaringan/ESSSSDA22-Day9/)
 
+And a visit from Jude Hays

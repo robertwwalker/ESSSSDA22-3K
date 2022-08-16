@@ -8,6 +8,7 @@ image: "image.jpg"
 
 ## Slides
 
-- [Slides in .pdf format](./slides/slidesDay8.pdf)
-- [A xaringan for presentation](https://rww.science/xaringan/ESSSSDA22-Day8/)
+- [Slides in .pdf format](./img/slidesDay8.pdf)
+- [A xaringan for presentation](https://robertwwalker.github.io/xaringan/ESSSSDA22-Day8/)
 
+Two core issues remain: the spatial and the temporal.
