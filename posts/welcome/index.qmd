@@ -23,10 +23,11 @@ A *brief* summary for the Instructor's Presentation
   + [VAR and Cointegration topics](https://youtu.be/DqXBZDNT2Ig)
   + [Equation balance and recent controversies](https://youtu.be/aCe54k-7W-I)
 - Week 2: Panel Data
-  + Fixed and random effects and Within/Between
+  + [Fixed and random effects and Within/Between](https://youtu.be/QKVynJ37MtE)
   + STADL Up!
   + Missing data
   + GLM Extensions of Panel Models
+  + Dynamic Panel Data
   + Causal Inference in Panel Data [TWFE/DID]
 
 # Digital Resources
