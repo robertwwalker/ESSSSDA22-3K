@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Robert W. Walker">
+<meta name="dcterms.date" content="2022-08-11">
+
+<title>ESSSSDA 2022 3K: Dynamics and Heterogeneity - Day 4: Cointegration</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">ESSSSDA 2022 3K: Dynamics and Heterogeneity</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../posts/welcome/index.html" aria-current="page">Welcome!</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/robertwwalker/ESSSSDA22-3K/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/robertwwalker/Essex-Data/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Day 4: Cointegration</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title d-none d-lg-block">Day 4: Cointegration</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">time series</div>
+                <div class="quarto-category">code</div>
+                <div class="quarto-category">analysis</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Robert W. Walker </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">August 11, 2022</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/welcome/index.html" class="sidebar-item-text sidebar-link">Welcome to 3K!</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Week 1</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/day-1/index.html" class="sidebar-item-text sidebar-link">Day 1: Time, Decomposition, and Summaries</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/day-2/index.html" class="sidebar-item-text sidebar-link">Day 2: Time Series, Stationarity, and ARIMA Models</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/day-3/index.html" class="sidebar-item-text sidebar-link">Day 3: Dynamic Linear, ADL Models, and VARs</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/day-4/index.html" class="sidebar-item-text sidebar-link active">Day 4: Cointegration</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/day-5/index.html" class="sidebar-item-text sidebar-link">Day 5: Equation Balance to Wrap Up Week 1</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Week 2</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/day-6/index.html" class="sidebar-item-text sidebar-link">Day 6: Panel Data</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/day-7/index.html" class="sidebar-item-text sidebar-link">Day 7: Missing Data</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/day-8/index.html" class="sidebar-item-text sidebar-link">Day 8: Panel Models for Limited Outcomes</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/day-9/index.html" class="sidebar-item-text sidebar-link">Day 9: DPD and GMM</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/day-10/index.html" class="sidebar-item-text sidebar-link">Day 10: Causal Inference in Panels and TWFE</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#slides" id="toc-slides" class="nav-link active" data-scroll-target="#slides">Slides</a></li>
+  <li><a href="#a-replication" id="toc-a-replication" class="nav-link" data-scroll-target="#a-replication">A replication</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="slides" class="level2">
+<h2 class="anchored" data-anchor-id="slides">Slides</h2>
+<ul>
+<li><a href="./slides/slidesDay4.pdf">Slides in .pdf format</a></li>
+<li><a href="https://robertwwalker.github.io/xaringan/ESSSSDA22-Day4/">A xaringan for presentation</a></li>
+</ul>
+</section>
+<section id="a-replication" class="level2">
+<h2 class="anchored" data-anchor-id="a-replication">A replication</h2>
+<p>This is an example with an ECM from a model presented by DeBoef and Keele in their excellent paper “Taking Time Seriously: Dynamic Regression.” The data come from a paper Gilmour and Wolbrecht.</p>
+<pre><code>use "https://github.com/robertwwalker/Essex-Data/raw/main/dgw.dta", clear
+* These data have already been time set:
+tsset
+* The dependent variable in this example is Congressional Approval
+*Table 2
+reg capp l.capp econexp nytavg kg hb vetoes override intrasum mbill 
+bgodfrey, lag(1 2 3)</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven); <span class="fu">library</span>(tidyverse); <span class="fu">library</span>(fpp3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+✔ ggplot2 3.3.6     ✔ purrr   0.3.4
+✔ tibble  3.1.8     ✔ dplyr   1.0.9
+✔ tidyr   1.2.0     ✔ stringr 1.4.0
+✔ readr   2.1.2     ✔ forcats 0.5.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+── Attaching packages ──────────────────────────────────────────── fpp3 0.4.0 ──
+
+✔ lubridate   1.8.0     ✔ feasts      0.2.2
+✔ tsibble     1.1.1     ✔ fable       0.3.1
+✔ tsibbledata 0.4.0     
+
+── Conflicts ───────────────────────────────────────────────── fpp3_conflicts ──
+✖ lubridate::date()    masks base::date()
+✖ dplyr::filter()      masks stats::filter()
+✖ tsibble::intersect() masks base::intersect()
+✖ tsibble::interval()  masks lubridate::interval()
+✖ dplyr::lag()         masks stats::lag()
+✖ tsibble::setdiff()   masks base::setdiff()
+✖ tsibble::union()     masks base::union()</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dgw.data <span class="ot">&lt;-</span> <span class="fu">read_stata</span>(<span class="st">"https://github.com/robertwwalker/Essex-Data/raw/main/dgw.dta"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>dgw.data <span class="ot">&lt;-</span> dgw.data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(year))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>dgw.data <span class="ot">&lt;-</span> dgw.data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">paste0</span>(year,<span class="st">" Q"</span>,quarter, <span class="at">sep=</span><span class="st">""</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">dateQ =</span> <span class="fu">yearquarter</span>(date))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="ot">&lt;-</span> dgw.data <span class="sc">%&gt;%</span> <span class="fu">as_tsibble</span>(<span class="at">index=</span>dateQ)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A dynamic linear model</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="sc">%&gt;%</span> <span class="fu">model</span>(<span class="fu">TSLM</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp,<span class="dv">1</span>)<span class="sc">+</span>econexp<span class="sc">+</span>nytavg<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills)) <span class="sc">%&gt;%</span> <span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: capp 
+Model: TSLM 
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-9.1137 -1.3908 -0.1014  1.5446  7.0873 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   9.37793    3.33043   2.816  0.00634 ** 
+lag(capp, 1)  0.79605    0.05166  15.409  &lt; 2e-16 ***
+econexp       0.07173    0.03090   2.321  0.02323 *  
+nytavg        0.20716    0.06982   2.967  0.00413 ** 
+kg           -1.29097    1.08646  -1.188  0.23881    
+hb           -4.68564    1.69975  -2.757  0.00746 ** 
+vetoes        0.24382    0.08898   2.740  0.00781 ** 
+override     -0.99198    0.55252  -1.795  0.07697 .  
+intrasum     -0.16907    0.12199  -1.386  0.17021    
+mbills       -0.43939    0.28270  -1.554  0.12469    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.976 on 69 degrees of freedom
+Multiple R-squared: 0.885,  Adjusted R-squared: 0.8699
+F-statistic: 58.97 on 9 and 69 DF, p-value: &lt; 2.22e-16</code></pre>
+</div>
+</div>
+<pre><code>*Table 2 with Pres. Approval
+reg capp l.capp p_prap econexp nytavg kg hb vetoes override intrasum mbill 
+bgodfrey, lag(1 2 3)</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="sc">%&gt;%</span> <span class="fu">model</span>(<span class="fu">TSLM</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp,<span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span>econexp<span class="sc">+</span>nytavg<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills)) <span class="sc">%&gt;%</span> <span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: capp 
+Model: TSLM 
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-8.4892 -1.3161 -0.1978  1.7633  6.3624 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  10.13865    3.38461   2.996  0.00382 ** 
+lag(capp, 1)  0.77084    0.05585  13.803  &lt; 2e-16 ***
+p_prap        0.04708    0.04024   1.170  0.24610    
+econexp       0.08161    0.03195   2.554  0.01290 *  
+nytavg        0.20342    0.06971   2.918  0.00477 ** 
+kg           -1.61049    1.11745  -1.441  0.15411    
+hb           -4.87343    1.70280  -2.862  0.00559 ** 
+vetoes        0.24012    0.08880   2.704  0.00865 ** 
+override     -0.96229    0.55163  -1.744  0.08560 .  
+intrasum     -0.14809    0.12298  -1.204  0.23267    
+mbills       -0.46652    0.28290  -1.649  0.10375    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.968 on 68 degrees of freedom
+Multiple R-squared: 0.8872, Adjusted R-squared: 0.8706
+F-statistic:  53.5 on 10 and 68 DF, p-value: &lt; 2.22e-16</code></pre>
+</div>
+</div>
+<p>The Breusch-Godfrey test</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>), <span class="cf">function</span>(x) {lmtest<span class="sc">::</span><span class="fu">bgtest</span>(<span class="fu">lm</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp,<span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span>econexp<span class="sc">+</span>nytavg<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills, <span class="at">data=</span>dgw.ts), <span class="at">order =</span> x)})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             [,1]                                                          
+statistic    0.5038368                                                     
+parameter    1                                                             
+method       "Breusch-Godfrey test for serial correlation of order up to 1"
+p.value      0.4778191                                                     
+data.name    character,2                                                   
+coefficients numeric,12                                                    
+vcov         numeric,144                                                   
+             [,2]                                                          
+statistic    1.043041                                                      
+parameter    2                                                             
+method       "Breusch-Godfrey test for serial correlation of order up to 2"
+p.value      0.5936172                                                     
+data.name    character,2                                                   
+coefficients numeric,13                                                    
+vcov         numeric,169                                                   
+             [,3]                                                          
+statistic    1.531487                                                      
+parameter    3                                                             
+method       "Breusch-Godfrey test for serial correlation of order up to 3"
+p.value      0.6750225                                                     
+data.name    character,2                                                   
+coefficients numeric,14                                                    
+vcov         numeric,196                                                   </code></pre>
+</div>
+</div>
+<pre><code>* An Alternate Measure
+* ADL
+reg capp l.capp p_prap l.p_prap econexp l.econexp nytavg l.nytavg kg hb vetoes override intrasum mbill 
+fitstat
+bgodfrey, lag(1 2 3)</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dgw.ts <span class="sc">%&gt;%</span> <span class="fu">model</span>(<span class="fu">TSLM</span>(capp<span class="sc">~</span><span class="fu">lag</span>(capp, <span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span><span class="fu">lag</span>(p_prap, <span class="dv">1</span>)<span class="sc">+</span>econexp<span class="sc">+</span><span class="fu">lag</span>(econexp,<span class="dv">1</span>)<span class="sc">+</span>nytavg<span class="sc">+</span><span class="fu">lag</span>(nytavg, <span class="dv">1</span>)<span class="sc">+</span>kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills)) <span class="sc">%&gt;%</span> <span class="fu">gg_tsresiduals</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1 rows containing non-finite values (stat_bin).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<pre><code>reg capp l.capp p_prap l.p_prap econexp l.econexp nytavg l.nytavg l2.nytavg kg hb vetoes override intrasum mbill 
+fitstat
+test l.p_prap </code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(capp<span class="sc">~</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(capp, <span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span>dplyr<span class="sc">::</span><span class="fu">lag</span>(p_prap, <span class="dv">1</span>)<span class="sc">+</span>econexp<span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(econexp, <span class="dv">1</span>)<span class="sc">+</span> nytavg<span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(nytavg, <span class="dv">1</span>) <span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(nytavg, <span class="dv">2</span>)<span class="sc">+</span> kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills, <span class="at">data=</span>dgw.data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = capp ~ dplyr::lag(capp, 1) + p_prap + dplyr::lag(p_prap, 
+    1) + econexp + dplyr::lag(econexp, 1) + nytavg + dplyr::lag(nytavg, 
+    1) + dplyr::lag(nytavg, 2) + kg + hb + vetoes + override + 
+    intrasum + mbills, data = dgw.data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-7.2813 -1.1587 -0.2843  1.5055  5.5623 
+
+Coefficients:
+                        Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            13.255444   4.027775   3.291  0.00164 ** 
+dplyr::lag(capp, 1)     0.726775   0.065844  11.038 2.31e-16 ***
+p_prap                  0.138223   0.057373   2.409  0.01892 *  
+dplyr::lag(p_prap, 1)  -0.093813   0.055274  -1.697  0.09459 .  
+econexp                 0.005848   0.070969   0.082  0.93459    
+dplyr::lag(econexp, 1)  0.082163   0.072223   1.138  0.25959    
+nytavg                  0.192404   0.071465   2.692  0.00908 ** 
+dplyr::lag(nytavg, 1)   0.023006   0.069422   0.331  0.74144    
+dplyr::lag(nytavg, 2)   0.138535   0.078110   1.774  0.08097 .  
+kg                     -1.566093   1.122181  -1.396  0.16774    
+hb                     -4.340598   1.715171  -2.531  0.01389 *  
+vetoes                  0.283759   0.101779   2.788  0.00700 ** 
+override               -1.061008   0.580564  -1.828  0.07235 .  
+intrasum               -0.107917   0.122254  -0.883  0.38074    
+mbills                 -0.715715   0.304646  -2.349  0.02196 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.914 on 63 degrees of freedom
+  (2 observations deleted due to missingness)
+Multiple R-squared:  0.8992,    Adjusted R-squared:  0.8768 
+F-statistic: 40.14 on 14 and 63 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(capp<span class="sc">~</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(capp, <span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span>econexp<span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(econexp, <span class="dv">1</span>)<span class="sc">+</span> nytavg<span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(nytavg, <span class="dv">1</span>) <span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(nytavg, <span class="dv">2</span>)<span class="sc">+</span> kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills, <span class="at">data=</span>dgw.data), <span class="fu">lm</span>(capp<span class="sc">~</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(capp, <span class="dv">1</span>)<span class="sc">+</span>p_prap<span class="sc">+</span>dplyr<span class="sc">::</span><span class="fu">lag</span>(p_prap, <span class="dv">1</span>)<span class="sc">+</span>econexp<span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(econexp, <span class="dv">1</span>)<span class="sc">+</span> nytavg<span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(nytavg, <span class="dv">1</span>) <span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(nytavg, <span class="dv">2</span>)<span class="sc">+</span> kg<span class="sc">+</span>hb<span class="sc">+</span>vetoes<span class="sc">+</span>override<span class="sc">+</span>intrasum<span class="sc">+</span>mbills, <span class="at">data=</span>dgw.data)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Model 1: capp ~ dplyr::lag(capp, 1) + p_prap + econexp + dplyr::lag(econexp, 
+    1) + nytavg + dplyr::lag(nytavg, 1) + dplyr::lag(nytavg, 
+    2) + kg + hb + vetoes + override + intrasum + mbills
+Model 2: capp ~ dplyr::lag(capp, 1) + p_prap + dplyr::lag(p_prap, 1) + 
+    econexp + dplyr::lag(econexp, 1) + nytavg + dplyr::lag(nytavg, 
+    1) + dplyr::lag(nytavg, 2) + kg + hb + vetoes + override + 
+    intrasum + mbills
+  Res.Df    RSS Df Sum of Sq      F  Pr(&gt;F)  
+1     64 559.29                              
+2     63 534.83  1    24.454 2.8806 0.09459 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<pre><code>*ECM
+reg d.capp l.capp d.p_prap l.p_prap d.econexp l.econexp d.nytavg l.nytavg kg hb vetoes override intrasum mbill 
+bgodfrey, lag(1 2 3)</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(<span class="fu">difference</span>(capp)<span class="sc">~</span>dplyr<span class="sc">::</span><span class="fu">lag</span>(capp, <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">difference</span>(p_prap) <span class="sc">+</span>  dplyr<span class="sc">::</span><span class="fu">lag</span>(p_prap, <span class="dv">1</span>)<span class="sc">+</span> <span class="fu">difference</span>(econexp)<span class="sc">+</span><span class="fu">lag</span>(econexp, <span class="dv">1</span>)<span class="sc">+</span><span class="fu">difference</span>(nytavg) <span class="sc">+</span> dplyr<span class="sc">::</span><span class="fu">lag</span>(nytavg) <span class="sc">+</span>  kg <span class="sc">+</span>  hb <span class="sc">+</span>  vetoes <span class="sc">+</span> override <span class="sc">+</span>  intrasum <span class="sc">+</span>  mbills, <span class="at">data=</span>dgw.data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = difference(capp) ~ dplyr::lag(capp, 1) + difference(p_prap) + 
+    dplyr::lag(p_prap, 1) + difference(econexp) + lag(econexp, 
+    1) + difference(nytavg) + dplyr::lag(nytavg) + kg + hb + 
+    vetoes + override + intrasum + mbills, data = dgw.data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-8.0575 -1.2991 -0.2338  1.6723  6.0297 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            9.92398    3.59485   2.761 0.007490 ** 
+dplyr::lag(capp, 1)   -0.22348    0.05979  -3.738 0.000394 ***
+difference(p_prap)     0.11480    0.05548   2.069 0.042508 *  
+dplyr::lag(p_prap, 1)  0.02166    0.04356   0.497 0.620667    
+difference(econexp)    0.02214    0.07027   0.315 0.753732    
+lag(econexp, 1)        0.08156    0.03311   2.463 0.016420 *  
+difference(nytavg)     0.18074    0.07179   2.518 0.014290 *  
+dplyr::lag(nytavg)     0.22229    0.09152   2.429 0.017921 *  
+kg                    -1.36022    1.12380  -1.210 0.230519    
+hb                    -4.24191    1.72938  -2.453 0.016865 *  
+vetoes                 0.20605    0.09261   2.225 0.029567 *  
+override              -0.75686    0.55956  -1.353 0.180870    
+intrasum              -0.12549    0.12277  -1.022 0.310504    
+mbills                -0.53209    0.28906  -1.841 0.070217 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.939 on 65 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.4115,    Adjusted R-squared:  0.2938 
+F-statistic: 3.496 on 13 and 65 DF,  p-value: 0.0003862</code></pre>
+</div>
+</div>
+<pre><code>*Bewley
+ivreg capp p_prap d.p_prap econexp d.econexp nytavg d.nytavg kg hb vetoes override intrasum mbill (d.capp = l.capp p_prap l.p_prap econexp l.econexp nytavg l.nytavg)</code></pre>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

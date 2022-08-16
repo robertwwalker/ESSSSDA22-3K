@@ -3,7 +3,7 @@ title: "Day 7: Missing Data"
 author: "Robert W. Walker"
 date: "08/16/2022"
 categories: [panel data, code, analysis]
-image: "image.jpg"
+image: "image.png"
 ---
 
 ## Slides
@@ -171,4 +171,5 @@ just_ses
 ```{r Meld}
 coefs_melded <- mi.meld(just_coefs, just_ses)
 coefs_melded
+coefs_melded$q.mi / coefs_melded$se.mi
 ```
