@@ -24,6 +24,7 @@ A *brief* summary for the Instructor's Presentation
   + [Equation balance and recent controversies](https://youtu.be/aCe54k-7W-I)
 - Week 2: Panel Data
   + [Fixed and random effects and Within/Between](https://youtu.be/QKVynJ37MtE)
+  + [Estimating Models, xtmixed, xtreg, etc.](https://youtu.be/rjRllkaoG_c)
   + STADL Up!
   + Missing data
   + GLM Extensions of Panel Models
