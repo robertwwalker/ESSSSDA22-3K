@@ -303,6 +303,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
   </ul></li>
+  <li><a href="#plm-things" id="toc-plm-things" class="nav-link" data-scroll-target="#plm-things"><code>plm</code> things</a></li>
   </ul>
 </nav>
     </div>
@@ -442,44 +443,44 @@ FE
 X.FE
 </td>
 <td>
--2.953<sup>***</sup>
+-3.043<sup>***</sup>
 </td>
 <td>
-0.980<sup>***</sup>
+0.837<sup>***</sup>
 </td>
 <td>
-0.903<sup>***</sup>
+0.764<sup>***</sup>
 </td>
 <td>
-0.982<sup>***</sup>
+0.839<sup>***</sup>
 </td>
 <td>
--2.953<sup>***</sup>
+-3.043<sup>***</sup>
 </td>
 <td>
-0.986<sup>***</sup>
+0.842<sup>***</sup>
 </td>
 </tr>
 <tr>
 <td style="text-align:left">
 </td>
 <td>
-(0.536)
+(0.524)
 </td>
 <td>
-(0.166)
+(0.140)
 </td>
 <td>
-(0.188)
+(0.164)
 </td>
 <td>
-(0.166)
+(0.139)
 </td>
 <td>
-(0.536)
+(0.524)
 </td>
 <td>
-(0.166)
+(0.140)
 </td>
 </tr>
 <tr>
@@ -503,19 +504,19 @@ X.FE
 Constant
 </td>
 <td>
--4.046<sup>***</sup>
+-4.084<sup>***</sup>
 </td>
 <td>
--0.113
+-0.203
 </td>
 <td>
--0.190
+-0.277
 </td>
 <td>
--0.111
+-0.202
 </td>
 <td>
--4.046<sup>***</sup>
+-4.084<sup>***</sup>
 </td>
 <td>
 </td>
@@ -524,19 +525,19 @@ Constant
 <td style="text-align:left">
 </td>
 <td>
-(0.661)
+(0.646)
 </td>
 <td>
-(2.907)
+(2.866)
 </td>
 <td>
-(0.947)
+(0.845)
 </td>
 <td>
-(3.588)
+(3.538)
 </td>
 <td>
-(0.661)
+(0.646)
 </td>
 <td>
 </td>
@@ -589,22 +590,22 @@ Observations
 R<sup>2</sup>
 </td>
 <td>
-0.200
+0.218
 </td>
 <td>
-0.223
+0.228
 </td>
 <td>
-0.161
+0.153
 </td>
 <td>
-0.225
+0.230
 </td>
 <td>
-0.200
+0.218
 </td>
 <td>
-0.229
+0.234
 </td>
 </tr>
 <tr>
@@ -612,22 +613,22 @@ R<sup>2</sup>
 Adjusted R<sup>2</sup>
 </td>
 <td>
-0.194
+0.211
 </td>
 <td>
-0.216
+0.222
 </td>
 <td>
-0.154
+0.146
 </td>
 <td>
-0.218
+0.224
 </td>
 <td>
-0.194
+0.211
 </td>
 <td>
-0.210
+0.215
 </td>
 </tr>
 <tr>
@@ -635,22 +636,22 @@ Adjusted R<sup>2</sup>
 F Statistic
 </td>
 <td>
-30.307<sup>***</sup>
+33.666<sup>***</sup>
 </td>
 <td>
-34.648<sup>***</sup>
+35.758<sup>***</sup>
 </td>
 <td>
-23.174<sup>***</sup>
+21.821<sup>***</sup>
 </td>
 <td>
-35.106<sup>***</sup>
+36.205<sup>***</sup>
 </td>
 <td>
-30.307<sup>***</sup> (df = 1; 121)
+33.666<sup>***</sup> (df = 1; 121)
 </td>
 <td>
-35.386<sup>***</sup> (df = 1; 119)
+36.446<sup>***</sup> (df = 1; 119)
 </td>
 </tr>
 <tr>
@@ -671,9 +672,41 @@ F Statistic
 <h3 class="anchored" data-anchor-id="discussion">Discussion</h3>
 <p>The random method matters quite a bit though; many of them are very close to the truth. Models containing much or all of the between information are wrong.</p>
 <p>If the X and unit effects are dependent, then there are serious threats to proper inference.</p>
-
-
 </section>
+</section>
+<section id="plm-things" class="level2">
+<h2 class="anchored" data-anchor-id="plm-things"><code>plm</code> things</h2>
+<p>Beck and Katz (1995) standard errors are provided with <code>vcovBK()</code>. The key argument is <code>cluster</code> which averages over groups or time. The Beck and Katz paper would involve <code>cluster="time"</code>.</p>
+<p><strong>Almost all panel unit root testing goes on with <code>purtest</code>. The <code>test=</code> argument is key for IPS, Levin, et al., Maddala-Wu, Hadri, and various tests proposed by Choi (2001).</strong> A few others are specified individually below.</p>
+<ul>
+<li><p>The test of serial correlation for panel models is given by <code>pbgtest(model)</code>.</p></li>
+<li><p>The Baltagi and Li test of serial correlation in panel models with random effects is given by <code>pbltest(model)</code>. The various alternatives are specified in <code>alternative</code>.</p></li>
+<li><p>The Baltagi-Wu statistic for AR(1) disturbances is given by <code>pbnftest(model, test="lbi")</code> while a BNF (1982) statistic is the default for this test for fixed effects models.</p></li>
+</ul>
+<pre><code># replicate Baltagi (2013), p. 101, table 5.1:
+re &lt;- plm(inv ~ value + capital, data = Grunfeld, model = "random")
+pbnftest(re, test = "lbi")</code></pre>
+<ul>
+<li><p><code>pbsytest(model)</code> gives the joint test of Baltagi and Li and a variant owing to Bera, et. al (2001) and Sosa-Escudero and Bera (2008) – the latter is a paper in Stata journal with companion software to be installed.</p></li>
+<li><p><code>pcdtest(formula, data)</code> gives the Pesaran test for cross-sectional dependence.</p></li>
+<li><p><code>pdwtest(model)</code> gives a panel Durbin-Watson statistic.</p></li>
+<li><p><code>pFtest</code> gives the F-test of fixed effects.</p></li>
+<li><p><code>pggls</code> gives GLS estimators for panel data specifying the effect and a model of <code>within, pooling, fd</code>.</p></li>
+<li><p><code>phansitest(purtest object)</code> combines unit root tests in the method proposed by Hanck (2013).</p></li>
+<li><p><code>phtest(model1, model2)</code> is the Hausman test for panel data models. This one has robust options detailed in the last section of <code>?phtest</code>.</p></li>
+<li><p><code>piest(formula, data)</code> performs Chamberlain’s tests on the <code>within</code> regression.</p></li>
+<li><p>Another test of unit/time effects is given in <code>plmtest()</code>.</p></li>
+<li><p>Chow tests of <code>poolability</code> are given by <code>pooltest()</code> applied to a pooled or within regression.</p></li>
+<li><p><code>pvar</code> ensures variation along dimensions.</p></li>
+<li><p><code>pvcm</code> will estimate variable coefficients models ala Swamy (1970).</p></li>
+<li><p>Joint tests of coefficients are constructed using <code>pwaldtest</code>.</p></li>
+<li><p>Wooldridge’s test for serial correlation in <code>within</code> models is <code>pwartest(model)</code></p></li>
+<li><p>Wooldridge’s test for AR(1) errors in level or differenced panel models is given by <code>pwfdtest(model)</code>. The underlying idea is clever; if the levels are independent then the errors in first-differences will be correlated as -0.5. The test can be implemented against either within/fe or first-difference alternatives.</p></li>
+<li><p><code>pwtest(pooling model)</code> gives a semi-parametric test for the presence of (individual or time) unobserved effects in panel models that owes to Wooldridge.</p></li>
+<li><p><code>ranef</code> and <code>fixef</code> extract the random and fixed effects, respectively.</p></li>
+</ul>
+
+
 </section>
 
 </main> <!-- /main -->

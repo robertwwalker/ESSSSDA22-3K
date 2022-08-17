@@ -40,6 +40,11 @@ Depending upon your software of choice, you will want to have a look over the re
 - [A `github` with this website.](https://github.com/robertwwalker/ESSSSDA22-3K/)
 - [Robert W. Walker's website](https://rww.science)
 
+## A Useful Model Translator
+
+[The Social Science Computing Cooperative at the University of Wisconsin has a nice, albeit incomplete, rendition of model compatibilities with syntax in R and Stata.](https://www.sscc.wisc.edu/sscc/pubs/Rmisc/panelmodels.html)
+
+
 ## Topics of Interest Cut by Time
 
 We will read selections from a broader controversy in *Political Analysis*  on Time Series and error correction models; [the full list of papers can be found here as a large part of the Winter 2016 issue 24(1)](https://www.cambridge.org/core/journals/political-analysis/issue/BEBF2602B7601618A0EA1D40B9AC4DDE).  

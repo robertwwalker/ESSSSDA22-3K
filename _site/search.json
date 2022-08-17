@@ -112,6 +112,13 @@
     "text": "I hope you are ready!\nIn the next two weeks we will set forth as comprehensive a treatment as we can in time series and panel data in ten sessions. With coffee in hand and the computer getting ready, let’s dig in!\n\nA brief summary for the Instructor’s Presentation\n\nWeek 1: Time Series Day 1\n\nStationarity and Unit Roots\nARMA structures\nDynamic Linear Models and their Interpretation\nVAR and Cointegration topics\nEquation balance and recent controversies\n\nWeek 2: Panel Data\n\nFixed and random effects and Within/Between\nEstimating Models, xtmixed, xtreg, etc.\nSTADL Up!\nMissing data\nGLM Extensions of Panel Models\nDynamic Panel Data\nCausal Inference in Panel Data [TWFE/DID]"
   },
   {
+    "objectID": "posts/welcome/index.html#a-useful-model-translator",
+    "href": "posts/welcome/index.html#a-useful-model-translator",
+    "title": "Welcome!",
+    "section": "A Useful Model Translator",
+    "text": "A Useful Model Translator\nThe Social Science Computing Cooperative at the University of Wisconsin has a nice, albeit incomplete, rendition of model compatibilities with syntax in R and Stata."
+  },
+  {
     "objectID": "posts/welcome/index.html#topics-of-interest-cut-by-time",
     "href": "posts/welcome/index.html#topics-of-interest-cut-by-time",
     "title": "Welcome!",
@@ -123,7 +130,28 @@
     "href": "posts/day-8/index.html",
     "title": "Day 8: Panel Models for Limited Outcomes",
     "section": "",
-    "text": "Slides in .pdf format\nA xaringan for presentation\n\nTwo core issues remain: the spatial and the temporal."
+    "text": "Slides in .pdf format\nA xaringan for presentation\n\nTwo core issues remain: the spatial and the temporal. There are fewer well worked diagnostics for this than for the pure linear case owing to partial observability and/or coarse measurement in some fashion or other."
+  },
+  {
+    "objectID": "posts/day-8/index.html#panel-glm-computing",
+    "href": "posts/day-8/index.html#panel-glm-computing",
+    "title": "Day 8: Panel Models for Limited Outcomes",
+    "section": "Panel GLM Computing",
+    "text": "Panel GLM Computing"
+  },
+  {
+    "objectID": "posts/day-8/index.html#r",
+    "href": "posts/day-8/index.html#r",
+    "title": "Day 8: Panel Models for Limited Outcomes",
+    "section": "R",
+    "text": "R\nAll of the computing will take place in the confines of pglm, a package in the spirit of plm for linear models. The help file provides an example of the familiar models. They are specified to match up with the syntax of R’s glm functions with family and link arguments.\n# install.packages(\"pglm\")\nlibrary(pglm)\n## an ordered probit example\ndata('Fairness', package = 'pglm')\nParking <- subset(Fairness, good == 'parking')\nop <- pglm(as.numeric(answer) ~ education + rule,\nParking[1:105, ],\nfamily = ordinal('probit'), R = 5, print.level = 3,\nmethod = 'bfgs', index = 'id', model = \"random\")\n## a binomial (probit) example\ndata('UnionWage', package = 'pglm')\nanb <- pglm(union ~ wage + exper + rural, UnionWage, family = binomial('probit'),\nmodel = \"pooling\", method = \"bfgs\", print.level = 3, R = 5)\n## a gaussian example on unbalanced panel data\ndata(Hedonic, package = \"plm\")\nra <- pglm(mv ~ crim + zn + indus + nox + age + rm, Hedonic, family = gaussian,\nmodel = \"random\", print.level = 3, method = \"nr\", index = \"townid\")\n## some count data models\ndata(\"PatentsRDUS\", package=\"pglm\")\nla <- pglm(patents ~ lag(log(rd), 0:5) + scisect + log(capital72) + factor(year), PatentsRDUS,\nfamily = negbin, model = \"within\", print.level = 3, method = \"nr\",\nindex = c('cusip', 'year'))\nla <- pglm(patents ~ lag(log(rd), 0:5) + scisect + log(capital72) + factor(year), PatentsRDUS,\nfamily = poisson, model = \"pooling\", index = c(\"cusip\", \"year\"),\nprint.level = 0, method=\"nr\")\n## a tobit example\ndata(\"HealthIns\", package=\"pglm\")\nHealthIns$med2 <- HealthIns$med / 1000\nHealthIns2 <- HealthIns[-2209, ]\nset.seed(2)\nsubs <- sample(1:20186, 200, replace = FALSE)\nHealthIns2 <- HealthIns2[subs, ]\nla <- pglm(med ~ mdu + disease + age, HealthIns2,\nmodel = 'random', family = 'tobit', print.level = 0,\nmethod = 'nr', R = 5)"
+  },
+  {
+    "objectID": "posts/day-8/index.html#stata",
+    "href": "posts/day-8/index.html#stata",
+    "title": "Day 8: Panel Models for Limited Outcomes",
+    "section": "Stata",
+    "text": "Stata\nStata separates out the commands by family/link combination. So there are xtprobit and xtlogit for binary. xtoprobit for ordered probit models and xtologit [with random effects] for ordered outcomes."
   },
   {
     "objectID": "posts/day-1/index.html",
@@ -193,7 +221,14 @@
     "href": "posts/day-6/index.html#omitted-fixed-effects-can-be-very-bad",
     "title": "Day 6: Panel Data",
     "section": "Omitted Fixed Effects can be Very Bad",
-    "text": "Omitted Fixed Effects can be Very Bad\nAs we can see, the default random effects model in R [and Stata] is actually pretty horrible.\nlibrary(stargazer)\nstargazer(mod.RE,mod.RE2,mod.RE3,mod.RE4,mod.pool,mod.FE, type=\"html\", column.labels=c(\"RE\",\"RE-WalHus\",\"RE-Amemiya\",\"RE-Nerlove\",\"Pooled\",\"FE\"))\n\n\n\n\n\n\n\n\n\n\nDependent variable:\n\n\n\n\n\n\n\n\n\n\n\n\ny.FE\n\n\n\n\n\n\nRE\n\n\nRE-WalHus\n\n\nRE-Amemiya\n\n\nRE-Nerlove\n\n\nPooled\n\n\nFE\n\n\n\n\n\n\n(1)\n\n\n(2)\n\n\n(3)\n\n\n(4)\n\n\n(5)\n\n\n(6)\n\n\n\n\n\n\n\n\nX.FE\n\n\n-2.953***\n\n\n0.980***\n\n\n0.903***\n\n\n0.982***\n\n\n-2.953***\n\n\n0.986***\n\n\n\n\n\n\n(0.536)\n\n\n(0.166)\n\n\n(0.188)\n\n\n(0.166)\n\n\n(0.536)\n\n\n(0.166)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConstant\n\n\n-4.046***\n\n\n-0.113\n\n\n-0.190\n\n\n-0.111\n\n\n-4.046***\n\n\n\n\n\n\n\n\n(0.661)\n\n\n(2.907)\n\n\n(0.947)\n\n\n(3.588)\n\n\n(0.661)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nObservations\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n\n\nR2\n\n\n0.200\n\n\n0.223\n\n\n0.161\n\n\n0.225\n\n\n0.200\n\n\n0.229\n\n\n\n\nAdjusted R2\n\n\n0.194\n\n\n0.216\n\n\n0.154\n\n\n0.218\n\n\n0.194\n\n\n0.210\n\n\n\n\nF Statistic\n\n\n30.307***\n\n\n34.648***\n\n\n23.174***\n\n\n35.106***\n\n\n30.307*** (df = 1; 121)\n\n\n35.386*** (df = 1; 119)\n\n\n\n\n\n\n\n\nNote:\n\n\np<0.1; p<0.05; p<0.01\n\n\n\n\n\nDiscussion\nThe random method matters quite a bit though; many of them are very close to the truth. Models containing much or all of the between information are wrong.\nIf the X and unit effects are dependent, then there are serious threats to proper inference."
+    "text": "Omitted Fixed Effects can be Very Bad\nAs we can see, the default random effects model in R [and Stata] is actually pretty horrible.\nlibrary(stargazer)\nstargazer(mod.RE,mod.RE2,mod.RE3,mod.RE4,mod.pool,mod.FE, type=\"html\", column.labels=c(\"RE\",\"RE-WalHus\",\"RE-Amemiya\",\"RE-Nerlove\",\"Pooled\",\"FE\"))\n\n\n\n\n\n\n\n\n\n\nDependent variable:\n\n\n\n\n\n\n\n\n\n\n\n\ny.FE\n\n\n\n\n\n\nRE\n\n\nRE-WalHus\n\n\nRE-Amemiya\n\n\nRE-Nerlove\n\n\nPooled\n\n\nFE\n\n\n\n\n\n\n(1)\n\n\n(2)\n\n\n(3)\n\n\n(4)\n\n\n(5)\n\n\n(6)\n\n\n\n\n\n\n\n\nX.FE\n\n\n-3.043***\n\n\n0.837***\n\n\n0.764***\n\n\n0.839***\n\n\n-3.043***\n\n\n0.842***\n\n\n\n\n\n\n(0.524)\n\n\n(0.140)\n\n\n(0.164)\n\n\n(0.139)\n\n\n(0.524)\n\n\n(0.140)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConstant\n\n\n-4.084***\n\n\n-0.203\n\n\n-0.277\n\n\n-0.202\n\n\n-4.084***\n\n\n\n\n\n\n\n\n(0.646)\n\n\n(2.866)\n\n\n(0.845)\n\n\n(3.538)\n\n\n(0.646)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nObservations\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n123\n\n\n\n\nR2\n\n\n0.218\n\n\n0.228\n\n\n0.153\n\n\n0.230\n\n\n0.218\n\n\n0.234\n\n\n\n\nAdjusted R2\n\n\n0.211\n\n\n0.222\n\n\n0.146\n\n\n0.224\n\n\n0.211\n\n\n0.215\n\n\n\n\nF Statistic\n\n\n33.666***\n\n\n35.758***\n\n\n21.821***\n\n\n36.205***\n\n\n33.666*** (df = 1; 121)\n\n\n36.446*** (df = 1; 119)\n\n\n\n\n\n\n\n\nNote:\n\n\np<0.1; p<0.05; p<0.01\n\n\n\n\n\nDiscussion\nThe random method matters quite a bit though; many of them are very close to the truth. Models containing much or all of the between information are wrong.\nIf the X and unit effects are dependent, then there are serious threats to proper inference."
+  },
+  {
+    "objectID": "posts/day-6/index.html#plm-things",
+    "href": "posts/day-6/index.html#plm-things",
+    "title": "Day 6: Panel Data",
+    "section": "plm things",
+    "text": "plm things\nBeck and Katz (1995) standard errors are provided with vcovBK(). The key argument is cluster which averages over groups or time. The Beck and Katz paper would involve cluster=\"time\".\nAlmost all panel unit root testing goes on with purtest. The test= argument is key for IPS, Levin, et al., Maddala-Wu, Hadri, and various tests proposed by Choi (2001). A few others are specified individually below.\n\nThe test of serial correlation for panel models is given by pbgtest(model).\nThe Baltagi and Li test of serial correlation in panel models with random effects is given by pbltest(model). The various alternatives are specified in alternative.\nThe Baltagi-Wu statistic for AR(1) disturbances is given by pbnftest(model, test=\"lbi\") while a BNF (1982) statistic is the default for this test for fixed effects models.\n\n# replicate Baltagi (2013), p. 101, table 5.1:\nre <- plm(inv ~ value + capital, data = Grunfeld, model = \"random\")\npbnftest(re, test = \"lbi\")\n\npbsytest(model) gives the joint test of Baltagi and Li and a variant owing to Bera, et. al (2001) and Sosa-Escudero and Bera (2008) – the latter is a paper in Stata journal with companion software to be installed.\npcdtest(formula, data) gives the Pesaran test for cross-sectional dependence.\npdwtest(model) gives a panel Durbin-Watson statistic.\npFtest gives the F-test of fixed effects.\npggls gives GLS estimators for panel data specifying the effect and a model of within, pooling, fd.\nphansitest(purtest object) combines unit root tests in the method proposed by Hanck (2013).\nphtest(model1, model2) is the Hausman test for panel data models. This one has robust options detailed in the last section of ?phtest.\npiest(formula, data) performs Chamberlain’s tests on the within regression.\nAnother test of unit/time effects is given in plmtest().\nChow tests of poolability are given by pooltest() applied to a pooled or within regression.\npvar ensures variation along dimensions.\npvcm will estimate variable coefficients models ala Swamy (1970).\nJoint tests of coefficients are constructed using pwaldtest.\nWooldridge’s test for serial correlation in within models is pwartest(model)\nWooldridge’s test for AR(1) errors in level or differenced panel models is given by pwfdtest(model). The underlying idea is clever; if the levels are independent then the errors in first-differences will be correlated as -0.5. The test can be implemented against either within/fe or first-difference alternatives.\npwtest(pooling model) gives a semi-parametric test for the presence of (individual or time) unobserved effects in panel models that owes to Wooldridge.\nranef and fixef extract the random and fixed effects, respectively."
   },
   {
     "objectID": "posts/day-7/index.html",
