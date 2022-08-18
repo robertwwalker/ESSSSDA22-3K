@@ -17,6 +17,69 @@ span.underline{text-decoration: underline;}
 div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -235,6 +298,8 @@ ul.task-list{list-style: none;}
   <li><a href="#panel-glm-computing" id="toc-panel-glm-computing" class="nav-link" data-scroll-target="#panel-glm-computing">Panel GLM Computing</a></li>
   <li><a href="#r" id="toc-r" class="nav-link" data-scroll-target="#r">R</a></li>
   <li><a href="#stata" id="toc-stata" class="nav-link" data-scroll-target="#stata">Stata</a></li>
+  <li><a href="#events" id="toc-events" class="nav-link" data-scroll-target="#events">Events</a></li>
+  <li><a href="#the-gee" id="toc-the-gee" class="nav-link" data-scroll-target="#the-gee">The GEE</a></li>
   </ul>
 </nav>
     </div>
@@ -297,6 +362,341 @@ method = 'nr', R = 5)</code></pre>
 <section id="stata" class="level2">
 <h2 class="anchored" data-anchor-id="stata">Stata</h2>
 <p>Stata separates out the commands by family/link combination. So there are <code>xtprobit</code> and <code>xtlogit</code> for binary. <code>xtoprobit</code> for ordered probit models and <code>xtologit</code> [with random effects] for ordered outcomes.</p>
+</section>
+<section id="events" class="level2">
+<h2 class="anchored" data-anchor-id="events">Events</h2>
+<p>A Stata do file on the box is replicated here. First, a use of regular old <code>glm</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Patents <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="fu">url</span>(<span class="st">"https://github.com/robertwwalker/Essex-Data/raw/main/Patents.dta"</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Mod<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">glm</span>(PAT<span class="sc">~</span>LOGR<span class="sc">+</span>LOGR1<span class="sc">+</span>LOGR2<span class="sc">+</span>LOGR3<span class="sc">+</span>LOGR4<span class="sc">+</span>LOGR5<span class="sc">+</span>dyear2<span class="sc">+</span>dyear3<span class="sc">+</span>dyear4<span class="sc">+</span>dyear5, <span class="at">data=</span>Patents, <span class="at">family=</span><span class="st">"poisson"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Mod<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = PAT ~ LOGR + LOGR1 + LOGR2 + LOGR3 + LOGR4 + LOGR5 + 
+    dyear2 + dyear3 + dyear4 + dyear5, family = "poisson", data = Patents)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-24.1602   -3.0131   -1.6689    0.2972   23.3629  
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  1.82831    0.01253 145.861  &lt; 2e-16 ***
+LOGR         0.15251    0.02939   5.189 2.11e-07 ***
+LOGR1        0.02198    0.04083   0.538 0.590297    
+LOGR2        0.04369    0.03802   1.149 0.250557    
+LOGR3        0.08272    0.03568   2.318 0.020427 *  
+LOGR4        0.10397    0.03176   3.274 0.001061 ** 
+LOGR5        0.30109    0.02063  14.594  &lt; 2e-16 ***
+dyear2      -0.04399    0.01320  -3.332 0.000862 ***
+dyear3      -0.06043    0.01343  -4.499 6.81e-06 ***
+dyear4      -0.18925    0.01368 -13.830  &lt; 2e-16 ***
+dyear5      -0.22979    0.01363 -16.854  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 144500  on 1729  degrees of freedom
+Residual deviance:  33745  on 1719  degrees of freedom
+AIC: 39807
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Mod<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(PAT<span class="sc">~</span>LOGR<span class="sc">+</span>LOGR1<span class="sc">+</span>LOGR2<span class="sc">+</span>LOGR3<span class="sc">+</span>LOGR4<span class="sc">+</span>LOGR5<span class="sc">+</span>dyear2<span class="sc">+</span>dyear3<span class="sc">+</span>dyear4<span class="sc">+</span>dyear5, <span class="at">data=</span>Patents)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Mod<span class="fl">.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm.nb(formula = PAT ~ LOGR + LOGR1 + LOGR2 + LOGR3 + LOGR4 + 
+    LOGR5 + dyear2 + dyear3 + dyear4 + dyear5, data = Patents, 
+    init.theta = 1.276776486, link = log)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.6541  -1.0412  -0.3894   0.2827   4.3518  
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  1.19343    0.05851  20.396  &lt; 2e-16 ***
+LOGR         0.40148    0.11591   3.464 0.000533 ***
+LOGR1       -0.11198    0.15672  -0.714 0.474920    
+LOGR2        0.11039    0.14742   0.749 0.453957    
+LOGR3        0.08770    0.13696   0.640 0.521938    
+LOGR4        0.24389    0.12259   1.989 0.046657 *  
+LOGR5        0.17263    0.08478   2.036 0.041729 *  
+dyear2      -0.05346    0.07726  -0.692 0.488943    
+dyear3      -0.05482    0.07790  -0.704 0.481611    
+dyear4      -0.11764    0.07768  -1.514 0.129941    
+dyear5      -0.22006    0.07764  -2.835 0.004589 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for Negative Binomial(1.2768) family taken to be 1)
+
+    Null deviance: 7202.0  on 1729  degrees of freedom
+Residual deviance: 1967.8  on 1719  degrees of freedom
+AIC: 11594
+
+Number of Fisher Scoring iterations: 1
+
+              Theta:  1.2768 
+          Std. Err.:  0.0558 
+
+ 2 x log-likelihood:  -11570.1870 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pglm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: maxLik</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: miscTools</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Please cite the 'maxLik' package as:
+Henningsen, Arne and Toomet, Ott (2011). maxLik: A package for maximum likelihood estimation in R. Computational Statistics 26(3), 443-458. DOI 10.1007/s00180-010-0217-1.
+
+If you have questions, suggestions, or comments regarding the 'maxLik' package, please use a forum or 'tracker' at maxLik's R-Forge site:
+https://r-forge.r-project.org/projects/maxlik/</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: plm</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Patents.pdata <span class="ot">&lt;-</span> <span class="fu">pdata.frame</span>(Patents, <span class="at">index=</span><span class="fu">c</span>(<span class="st">"id"</span>,<span class="st">"YEAR"</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>Mod<span class="fl">.3</span>A <span class="ot">&lt;-</span> <span class="fu">pglm</span>(PAT<span class="sc">~</span>LOGR<span class="sc">+</span>LOGR1<span class="sc">+</span>LOGR2<span class="sc">+</span>LOGR3<span class="sc">+</span>LOGR4<span class="sc">+</span>LOGR5<span class="sc">+</span>dyear2<span class="sc">+</span>dyear3<span class="sc">+</span>dyear4<span class="sc">+</span>dyear5<span class="sc">+</span>LOGK<span class="sc">+</span>SCISECT, Patents.pdata, <span class="at">effect=</span><span class="st">"individual"</span>, <span class="at">model=</span><span class="st">"random"</span>, <span class="at">family=</span><span class="st">"poisson"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Mod<span class="fl">.3</span>A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--------------------------------------------
+Maximum Likelihood estimation
+Newton-Raphson maximisation, 4 iterations
+Return code 8: successive function values within relative tolerance limit (reltol)
+Log-Likelihood: -5234.927 
+14  free parameters
+Estimates:
+            Estimate Std. error t value  Pr(&gt; t)    
+(Intercept)  0.41079    0.14674   2.799 0.005121 ** 
+LOGR         0.40345    0.04350   9.274  &lt; 2e-16 ***
+LOGR1       -0.04618    0.04822  -0.958 0.338277    
+LOGR2        0.10792    0.04471   2.414 0.015788 *  
+LOGR3        0.02977    0.04132   0.720 0.471221    
+LOGR4        0.01070    0.03771   0.284 0.776679    
+LOGR5        0.04061    0.03157   1.286 0.198364    
+dyear2      -0.04496    0.01313  -3.425 0.000616 ***
+dyear3      -0.04839    0.01340  -3.610 0.000306 ***
+dyear4      -0.17416    0.01397 -12.467  &lt; 2e-16 ***
+dyear5      -0.22590    0.01466 -15.404  &lt; 2e-16 ***
+LOGK         0.29169    0.03934   7.415 1.21e-13 ***
+SCISECT      0.25700    0.11227   2.289 0.022074 *  
+sigma        1.16969    0.09471  12.350  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+--------------------------------------------</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Mod<span class="fl">.3</span>B <span class="ot">&lt;-</span> <span class="fu">pglm</span>(PAT<span class="sc">~</span>LOGR<span class="sc">+</span>LOGR1<span class="sc">+</span>LOGR2<span class="sc">+</span>LOGR3<span class="sc">+</span>LOGR4<span class="sc">+</span>LOGR5<span class="sc">+</span>dyear2<span class="sc">+</span>dyear3<span class="sc">+</span>dyear4<span class="sc">+</span>dyear5, Patents.pdata, <span class="at">effect=</span><span class="st">"individual"</span>, <span class="at">model=</span><span class="st">"random"</span>, <span class="at">family=</span><span class="st">"poisson"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Mod<span class="fl">.3</span>B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--------------------------------------------
+Maximum Likelihood estimation
+Newton-Raphson maximisation, 5 iterations
+Return code 1: gradient close to zero (gradtol)
+Log-Likelihood: -5263.611 
+12  free parameters
+Estimates:
+             Estimate Std. error t value  Pr(&gt; t)    
+(Intercept)  1.402861   0.067052  20.922  &lt; 2e-16 ***
+LOGR         0.476575   0.042263  11.276  &lt; 2e-16 ***
+LOGR1       -0.007708   0.047934  -0.161 0.872242    
+LOGR2        0.136413   0.044734   3.049 0.002293 ** 
+LOGR3        0.059191   0.041279   1.434 0.151598    
+LOGR4        0.027518   0.037601   0.732 0.464267    
+LOGR5        0.082547   0.030977   2.665 0.007704 ** 
+dyear2      -0.046879   0.013131  -3.570 0.000357 ***
+dyear3      -0.056088   0.013362  -4.198  2.7e-05 ***
+dyear4      -0.190312   0.013789 -13.802  &lt; 2e-16 ***
+dyear5      -0.252677   0.014197 -17.798  &lt; 2e-16 ***
+sigma        1.154854   0.094192  12.261  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+--------------------------------------------</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Mod<span class="fl">.3</span>C <span class="ot">&lt;-</span> <span class="fu">pglm</span>(PAT<span class="sc">~</span>LOGR<span class="sc">+</span>LOGR1<span class="sc">+</span>LOGR2<span class="sc">+</span>LOGR3<span class="sc">+</span>LOGR4<span class="sc">+</span>LOGR5<span class="sc">+</span>dyear2<span class="sc">+</span>dyear3<span class="sc">+</span>dyear4<span class="sc">+</span>dyear5<span class="sc">+</span>LOGK<span class="sc">+</span>SCISECT<span class="dv">-1</span>, Patents.pdata, <span class="at">effect=</span><span class="st">"individual"</span>, <span class="at">model=</span><span class="st">"random"</span>, <span class="at">family=</span><span class="st">"poisson"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Mod<span class="fl">.3</span>C)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--------------------------------------------
+Maximum Likelihood estimation
+Newton-Raphson maximisation, 4 iterations
+Return code 1: gradient close to zero (gradtol)
+Log-Likelihood: -5238.845 
+13  free parameters
+Estimates:
+         Estimate Std. error t value  Pr(&gt; t)    
+LOGR     0.382042   0.042877   8.910  &lt; 2e-16 ***
+LOGR1   -0.055620   0.048157  -1.155 0.248098    
+LOGR2    0.100308   0.044621   2.248 0.024576 *  
+LOGR3    0.020949   0.041203   0.508 0.611146    
+LOGR4    0.005334   0.037709   0.141 0.887523    
+LOGR5    0.028364   0.031336   0.905 0.365383    
+dyear2  -0.042732   0.013109  -3.260 0.001115 ** 
+dyear3  -0.044442   0.013332  -3.333 0.000858 ***
+dyear4  -0.167871   0.013796 -12.168  &lt; 2e-16 ***
+dyear5  -0.216749   0.014303 -15.154  &lt; 2e-16 ***
+LOGK     0.388567   0.019946  19.481  &lt; 2e-16 ***
+SCISECT  0.419111   0.097521   4.298 1.73e-05 ***
+sigma    1.117773   0.088520  12.627  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+--------------------------------------------</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>Mod<span class="fl">.4</span>A <span class="ot">&lt;-</span> <span class="fu">pglm</span>(PAT<span class="sc">~</span>LOGR<span class="sc">+</span>LOGR1<span class="sc">+</span>LOGR2<span class="sc">+</span>LOGR3<span class="sc">+</span>LOGR4<span class="sc">+</span>LOGR5<span class="sc">+</span>dyear2<span class="sc">+</span>dyear3<span class="sc">+</span>dyear4<span class="sc">+</span>dyear5<span class="sc">+</span>LOGK<span class="sc">+</span>SCISECT, Patents.pdata, <span class="at">effect=</span><span class="st">"individual"</span>, <span class="at">model=</span><span class="st">"random"</span>, <span class="at">family=</span><span class="st">"negbin"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Mod<span class="fl">.4</span>A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--------------------------------------------
+Maximum Likelihood estimation
+Newton-Raphson maximisation, 6 iterations
+Return code 1: gradient close to zero (gradtol)
+Log-Likelihood: -4948.494 
+15  free parameters
+Estimates:
+             Estimate Std. error t value  Pr(&gt; t)    
+(Intercept)  0.899562   0.168111   5.351 8.75e-08 ***
+LOGR         0.350312   0.065282   5.366 8.04e-08 ***
+LOGR1       -0.003032   0.075092  -0.040 0.967796    
+LOGR2        0.104988   0.068849   1.525 0.127284    
+LOGR3        0.016352   0.063638   0.257 0.797210    
+LOGR4        0.035942   0.058716   0.612 0.540445    
+LOGR5        0.071832   0.048289   1.488 0.136867    
+dyear2      -0.043674   0.021343  -2.046 0.040734 *  
+dyear3      -0.055660   0.021857  -2.547 0.010881 *  
+dyear4      -0.183105   0.022718  -8.060 7.64e-16 ***
+dyear5      -0.230044   0.023152  -9.936  &lt; 2e-16 ***
+LOGK         0.161937   0.041787   3.875 0.000107 ***
+SCISECT      0.117642   0.106616   1.103 0.269848    
+a            2.685210   0.258163  10.401  &lt; 2e-16 ***
+b            2.015688   0.217631   9.262  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+--------------------------------------------</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Mod<span class="fl">.4</span>B <span class="ot">&lt;-</span> <span class="fu">pglm</span>(PAT<span class="sc">~</span>LOGR<span class="sc">+</span>LOGR1<span class="sc">+</span>LOGR2<span class="sc">+</span>LOGR3<span class="sc">+</span>LOGR4<span class="sc">+</span>LOGR5<span class="sc">+</span>dyear2<span class="sc">+</span>dyear3<span class="sc">+</span>dyear4<span class="sc">+</span>dyear5, Patents.pdata, <span class="at">effect=</span><span class="st">"individual"</span>, <span class="at">model=</span><span class="st">"random"</span>, <span class="at">family=</span><span class="st">"negbin"</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Mod<span class="fl">.4</span>B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--------------------------------------------
+Maximum Likelihood estimation
+Newton-Raphson maximisation, 6 iterations
+Return code 1: gradient close to zero (gradtol)
+Log-Likelihood: -4956.259 
+13  free parameters
+Estimates:
+            Estimate Std. error t value  Pr(&gt; t)    
+(Intercept)  1.39944    0.10060  13.910  &lt; 2e-16 ***
+LOGR         0.38762    0.06492   5.970 2.37e-09 ***
+LOGR1        0.01833    0.07597   0.241  0.80935    
+LOGR2        0.12909    0.06972   1.852  0.06408 .  
+LOGR3        0.02469    0.06446   0.383  0.70172    
+LOGR4        0.05775    0.05873   0.983  0.32544    
+LOGR5        0.10003    0.04750   2.106  0.03521 *  
+dyear2      -0.04671    0.02180  -2.142  0.03219 *  
+dyear3      -0.06512    0.02223  -2.930  0.00339 ** 
+dyear4      -0.20006    0.02282  -8.765  &lt; 2e-16 ***
+dyear5      -0.25096    0.02298 -10.921  &lt; 2e-16 ***
+a            2.64396    0.25190  10.496  &lt; 2e-16 ***
+b            2.02183    0.21889   9.237  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+--------------------------------------------</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>Mod<span class="fl">.4</span>C <span class="ot">&lt;-</span> <span class="fu">pglm</span>(PAT<span class="sc">~</span>LOGR<span class="sc">+</span>LOGR1<span class="sc">+</span>LOGR2<span class="sc">+</span>LOGR3<span class="sc">+</span>LOGR4<span class="sc">+</span>LOGR5<span class="sc">+</span>dyear2<span class="sc">+</span>dyear3<span class="sc">+</span>dyear4<span class="sc">+</span>dyear5<span class="sc">+</span>LOGK<span class="sc">+</span>SCISECT<span class="dv">-1</span>, Patents.pdata, <span class="at">effect=</span><span class="st">"individual"</span>, <span class="at">model=</span><span class="st">"random"</span>, <span class="at">family=</span><span class="st">"negbin"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Mod<span class="fl">.4</span>C)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--------------------------------------------
+Maximum Likelihood estimation
+Newton-Raphson maximisation, 6 iterations
+Return code 1: gradient close to zero (gradtol)
+Log-Likelihood: -4963.305 
+14  free parameters
+Estimates:
+         Estimate Std. error t value  Pr(&gt; t)    
+LOGR     0.296803   0.066943   4.434 9.26e-06 ***
+LOGR1   -0.005170   0.078300  -0.066   0.9474    
+LOGR2    0.085684   0.071482   1.199   0.2307    
+LOGR3    0.004177   0.065959   0.063   0.9495    
+LOGR4    0.010518   0.060898   0.173   0.8629    
+LOGR5    0.048459   0.050342   0.963   0.3357    
+dyear2  -0.032498   0.021569  -1.507   0.1319    
+dyear3  -0.037854   0.021894  -1.729   0.0838 .  
+dyear4  -0.159944   0.022586  -7.082 1.42e-12 ***
+dyear5  -0.201171   0.022791  -8.827  &lt; 2e-16 ***
+LOGK     0.343399   0.027143  12.652  &lt; 2e-16 ***
+SCISECT  0.427951   0.089606   4.776 1.79e-06 ***
+a        2.435387   0.225784  10.786  &lt; 2e-16 ***
+b        2.154018   0.240574   8.954  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+--------------------------------------------</code></pre>
+</div>
+</div>
+</section>
+<section id="the-gee" class="level2">
+<h2 class="anchored" data-anchor-id="the-gee">The GEE</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(geepack)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>gee.Mod <span class="ot">&lt;-</span> <span class="fu">geeglm</span>(PAT<span class="sc">~</span>LOGR<span class="sc">+</span>LOGR1<span class="sc">+</span>LOGR2<span class="sc">+</span>LOGR3<span class="sc">+</span>LOGR4<span class="sc">+</span>LOGR5<span class="sc">+</span>dyear2<span class="sc">+</span>dyear3<span class="sc">+</span>dyear4<span class="sc">+</span>dyear5, <span class="at">data=</span>Patents, <span class="at">id=</span>id, <span class="at">corstr=</span><span class="st">"exchangeable"</span>, <span class="at">family=</span>poisson)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(gee.Mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+geeglm(formula = PAT ~ LOGR + LOGR1 + LOGR2 + LOGR3 + LOGR4 + 
+    LOGR5 + dyear2 + dyear3 + dyear4 + dyear5, family = poisson, 
+    data = Patents, id = id, corstr = "exchangeable")
+
+ Coefficients:
+             Estimate   Std.err    Wald Pr(&gt;|W|)    
+(Intercept)  1.851156  0.122963 226.638  &lt; 2e-16 ***
+LOGR         0.392713  0.064716  36.824 1.29e-09 ***
+LOGR1        0.001683  0.057782   0.001  0.97677    
+LOGR2        0.132732  0.048185   7.588  0.00588 ** 
+LOGR3        0.039535  0.064560   0.375  0.54029    
+LOGR4        0.036056  0.049440   0.532  0.46582    
+LOGR5        0.081190  0.047667   2.901  0.08851 .  
+dyear2      -0.048400  0.017823   7.375  0.00661 ** 
+dyear3      -0.056190  0.027314   4.232  0.03967 *  
+dyear4      -0.191152  0.042825  19.923 8.06e-06 ***
+dyear5      -0.248547  0.041809  35.341 2.77e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation structure = exchangeable 
+Estimated Scale Parameters:
+
+            Estimate Std.err
+(Intercept)    22.57   4.102
+  Link = identity 
+
+Estimated Correlation Parameters:
+      Estimate Std.err
+alpha   0.8983 0.06245
+Number of clusters:   346  Maximum cluster size: 5 </code></pre>
+</div>
+</div>
+<p><img src="./img/Screen%20Shot%202022-08-18%20at%202.45.20%20AM.png" class="img-fluid"></p>
 
 
 </section>

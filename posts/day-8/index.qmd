@@ -59,4 +59,64 @@ method = 'nr', R = 5)
 
 ## Stata
 
-Stata separates out the commands by family/link combination.  So there are `xtprobit` and `xtlogit` for binary.  `xtoprobit` for ordered probit models and `xtologit` [with random effects] for ordered outcomes.   
+Stata separates out the commands by family/link combination.  So there are `xtprobit` and `xtlogit` for binary.  `xtoprobit` for ordered probit models and `xtologit` [with random effects] for ordered outcomes.
+
+## Events
+
+A Stata do file on the box is replicated here.  First, a use of regular old `glm`.
+
+```{r}
+library(haven)
+Patents <- read_dta(url("https://github.com/robertwwalker/Essex-Data/raw/main/Patents.dta"))
+Mod.1 <- glm(PAT~LOGR+LOGR1+LOGR2+LOGR3+LOGR4+LOGR5+dyear2+dyear3+dyear4+dyear5, data=Patents, family="poisson")
+summary(Mod.1)
+```
+
+```{r}
+library(MASS)
+Mod.2 <- glm.nb(PAT~LOGR+LOGR1+LOGR2+LOGR3+LOGR4+LOGR5+dyear2+dyear3+dyear4+dyear5, data=Patents)
+summary(Mod.2)
+```
+
+```{r}
+library(pglm)
+Patents.pdata <- pdata.frame(Patents, index=c("id","YEAR"))
+Mod.3A <- pglm(PAT~LOGR+LOGR1+LOGR2+LOGR3+LOGR4+LOGR5+dyear2+dyear3+dyear4+dyear5+LOGK+SCISECT, Patents.pdata, effect="individual", model="random", family="poisson")
+summary(Mod.3A)
+```
+
+```{r}
+Mod.3B <- pglm(PAT~LOGR+LOGR1+LOGR2+LOGR3+LOGR4+LOGR5+dyear2+dyear3+dyear4+dyear5, Patents.pdata, effect="individual", model="random", family="poisson")
+summary(Mod.3B)
+```
+
+```{r}
+Mod.3C <- pglm(PAT~LOGR+LOGR1+LOGR2+LOGR3+LOGR4+LOGR5+dyear2+dyear3+dyear4+dyear5+LOGK+SCISECT-1, Patents.pdata, effect="individual", model="random", family="poisson")
+summary(Mod.3C)
+```
+
+```{r}
+Mod.4A <- pglm(PAT~LOGR+LOGR1+LOGR2+LOGR3+LOGR4+LOGR5+dyear2+dyear3+dyear4+dyear5+LOGK+SCISECT, Patents.pdata, effect="individual", model="random", family="negbin")
+summary(Mod.4A)
+```
+
+```{r}
+Mod.4B <- pglm(PAT~LOGR+LOGR1+LOGR2+LOGR3+LOGR4+LOGR5+dyear2+dyear3+dyear4+dyear5, Patents.pdata, effect="individual", model="random", family="negbin")
+summary(Mod.4B)
+```
+
+```{r}
+Mod.4C <- pglm(PAT~LOGR+LOGR1+LOGR2+LOGR3+LOGR4+LOGR5+dyear2+dyear3+dyear4+dyear5+LOGK+SCISECT-1, Patents.pdata, effect="individual", model="random", family="negbin")
+summary(Mod.4C)
+```
+
+## The GEE
+
+```{r}
+library(geepack)
+gee.Mod <- geeglm(PAT~LOGR+LOGR1+LOGR2+LOGR3+LOGR4+LOGR5+dyear2+dyear3+dyear4+dyear5, data=Patents, id=id, corstr="exchangeable", family=poisson)
+summary(gee.Mod)
+```
+
+
+![](./img/Screen Shot 2022-08-18 at 2.45.20 AM.png)
