@@ -120,3 +120,70 @@ summary(gee.Mod)
 
 
 ![](./img/Screen Shot 2022-08-18 at 2.45.20 AM.png)
+
+
+```{r}
+gee.Mod <- geeglm(PAT~LOGR+LOGR1+LOGR2+LOGR3+LOGR4+LOGR5+dyear2+dyear3+dyear4+dyear5, data=Patents, id=id, corstr="ar1", family=poisson)
+summary(gee.Mod)
+```
+
+And an anova...
+
+```{r}
+anova(gee.Mod)
+```
+
+
+## BKT and Carter-Signorino
+
+Load the data
+
+
+```{r}
+BKT.data <- read_dta(url("https://github.com/robertwwalker/Essex-Data/raw/main/bkt98ajps.dta"))
+Mod.1 <- glm(dispute~ dem+growth+allies+contig+capratio+trade, family=binomial("logit"), data=BKT.data)
+summary(Mod.1)
+```
+
+```{r}
+Mod.1B <- glm(dispute~ dem+growth+allies+contig+capratio+trade+as.factor(py), family=binomial("logit"), data=BKT.data)
+summary(Mod.1B)
+```
+
+```{r}
+Mod.1C <- glm(dispute~ dem+growth+allies+contig+capratio+trade+py+pys1+pys2+pys3, family=binomial("logit"), data=BKT.data)
+summary(Mod.1C)
+```
+
+```{r}
+Mod.2A <- glm(dispute~ dem+growth+allies+contig+capratio+trade, family=binomial("logit"), subset = contdisp!=1, data=BKT.data)
+summary(Mod.2A)
+```
+
+```{r}
+Mod.2B <- glm(dispute~ dem+growth+allies+contig+capratio+trade+py+pys1+pys2+pys3, family=binomial("logit"), subset = contdisp!=1, data=BKT.data)
+summary(Mod.2B)
+```
+
+```{r}
+Mod.3A <- glm(dispute~ dem+growth+allies+contig+capratio+trade+py+pys1+pys2+pys3, family=binomial("logit"), subset = prefail<1, data=BKT.data)
+summary(Mod.3A)
+```
+
+### Carter and Signorino
+
+Use a Taylor series to clean this up with a suggestion that no baseline hazard is more than cubic [two inflection points].
+
+
+```{r}
+Mod.CS <- glm(dispute~ dem+growth+allies+contig+capratio+trade+prefail+py+I(py^2)+I(py^3), family=binomial("logit"), data=BKT.data)
+summary(Mod.CS)
+```
+
+As a technical matter, none of this is exactly equivalent to a Cox model.  That requires the `cloglog`.
+
+```{r}
+Mod.CS <- glm(dispute~ dem+growth+allies+contig+capratio+trade+prefail+py+I(py^2)+I(py^3), family=binomial("cloglog"), data=BKT.data)
+summary(Mod.CS)
+```
+

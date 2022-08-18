@@ -12,3 +12,7 @@ image: "image.jpg"
 - [A xaringan for presentation](https://robertwwalker.github.io/xaringan/ESSSSDA22-Day9/)
 
 And a visit from Jude Hays
+
+## R and GMM
+
+There are a number of packages for estimating GMM models in R.  `pgmm` does many of the most basic models, though Stata is the industry leader in this.  That said, there is a relatively new and highly customizable package for this: `pdynmc` which is [described here in a pdf vignette](https://cran.r-project.org/web/packages/pdynmc/vignettes/pdynmc-intro.pdf).  The package is rather new; the paper is forthcoming.

@@ -300,6 +300,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#stata" id="toc-stata" class="nav-link" data-scroll-target="#stata">Stata</a></li>
   <li><a href="#events" id="toc-events" class="nav-link" data-scroll-target="#events">Events</a></li>
   <li><a href="#the-gee" id="toc-the-gee" class="nav-link" data-scroll-target="#the-gee">The GEE</a></li>
+  <li><a href="#bkt-and-carter-signorino" id="toc-bkt-and-carter-signorino" class="nav-link" data-scroll-target="#bkt-and-carter-signorino">BKT and Carter-Signorino</a>
+  <ul class="collapse">
+  <li><a href="#carter-and-signorino" id="toc-carter-and-signorino" class="nav-link" data-scroll-target="#carter-and-signorino">Carter and Signorino</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -697,8 +701,416 @@ Number of clusters:   346  Maximum cluster size: 5 </code></pre>
 </div>
 </div>
 <p><img src="./img/Screen%20Shot%202022-08-18%20at%202.45.20%20AM.png" class="img-fluid"></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>gee.Mod <span class="ot">&lt;-</span> <span class="fu">geeglm</span>(PAT<span class="sc">~</span>LOGR<span class="sc">+</span>LOGR1<span class="sc">+</span>LOGR2<span class="sc">+</span>LOGR3<span class="sc">+</span>LOGR4<span class="sc">+</span>LOGR5<span class="sc">+</span>dyear2<span class="sc">+</span>dyear3<span class="sc">+</span>dyear4<span class="sc">+</span>dyear5, <span class="at">data=</span>Patents, <span class="at">id=</span>id, <span class="at">corstr=</span><span class="st">"ar1"</span>, <span class="at">family=</span>poisson)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(gee.Mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+geeglm(formula = PAT ~ LOGR + LOGR1 + LOGR2 + LOGR3 + LOGR4 + 
+    LOGR5 + dyear2 + dyear3 + dyear4 + dyear5, family = poisson, 
+    data = Patents, id = id, corstr = "ar1")
+
+ Coefficients:
+            Estimate Std.err   Wald Pr(&gt;|W|)    
+(Intercept)   1.8121  0.1270 203.72  &lt; 2e-16 ***
+LOGR          0.3096  0.0554  31.17  2.4e-08 ***
+LOGR1         0.0254  0.0549   0.21   0.6435    
+LOGR2         0.1624  0.0518   9.82   0.0017 ** 
+LOGR3         0.0801  0.0564   2.02   0.1555    
+LOGR4         0.0793  0.0446   3.16   0.0756 .  
+LOGR5         0.0408  0.0411   0.99   0.3200    
+dyear2       -0.0494  0.0175   8.01   0.0047 ** 
+dyear3       -0.0542  0.0266   4.14   0.0419 *  
+dyear4       -0.1817  0.0427  18.08  2.1e-05 ***
+dyear5       -0.2333  0.0409  32.48  1.2e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation structure = ar1 
+Estimated Scale Parameters:
+
+            Estimate Std.err
+(Intercept)     22.3    4.02
+  Link = identity 
+
+Estimated Correlation Parameters:
+      Estimate Std.err
+alpha    0.948  0.0265
+Number of clusters:   346  Maximum cluster size: 5 </code></pre>
+</div>
+</div>
+<p>And an anova…</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(gee.Mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of 'Wald statistic' Table
+Model: poisson, link: log
+Response: PAT
+Terms added sequentially (first to last)
+
+       Df  X2 P(&gt;|Chi|)    
+LOGR    1 368   &lt; 2e-16 ***
+LOGR1   1  23   1.9e-06 ***
+LOGR2   1  19   1.4e-05 ***
+LOGR3   1  16   5.8e-05 ***
+LOGR4   1   7   0.00708 ** 
+LOGR5   1   1   0.28590    
+dyear2  1   4   0.05740 .  
+dyear3  1  11   0.00099 ***
+dyear4  1   0   0.67359    
+dyear5  1  32   1.2e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="bkt-and-carter-signorino" class="level2">
+<h2 class="anchored" data-anchor-id="bkt-and-carter-signorino">BKT and Carter-Signorino</h2>
+<p>Load the data</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>BKT.data <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="fu">url</span>(<span class="st">"https://github.com/robertwwalker/Essex-Data/raw/main/bkt98ajps.dta"</span>))</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>Mod<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">glm</span>(dispute<span class="sc">~</span> dem<span class="sc">+</span>growth<span class="sc">+</span>allies<span class="sc">+</span>contig<span class="sc">+</span>capratio<span class="sc">+</span>trade, <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">"logit"</span>), <span class="at">data=</span>BKT.data)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Mod<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = dispute ~ dem + growth + allies + contig + capratio + 
+    trade, family = binomial("logit"), data = BKT.data)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-0.748  -0.319  -0.261  -0.152   4.096  
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -3.29e+00   7.92e-02  -41.54  &lt; 2e-16 ***
+dem         -4.97e-02   7.38e-03   -6.73  1.7e-11 ***
+growth      -2.23e-02   8.52e-03   -2.62   0.0088 ** 
+allies      -8.21e-01   8.00e-02  -10.26  &lt; 2e-16 ***
+contig       1.31e+00   7.96e-02   16.49  &lt; 2e-16 ***
+capratio    -3.07e-03   4.17e-04   -7.37  1.8e-13 ***
+trade       -6.61e+01   1.34e+01   -4.92  8.6e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 7719.2  on 20989  degrees of freedom
+Residual deviance: 6955.1  on 20983  degrees of freedom
+AIC: 6969
+
+Number of Fisher Scoring iterations: 8</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>Mod<span class="fl">.1</span>B <span class="ot">&lt;-</span> <span class="fu">glm</span>(dispute<span class="sc">~</span> dem<span class="sc">+</span>growth<span class="sc">+</span>allies<span class="sc">+</span>contig<span class="sc">+</span>capratio<span class="sc">+</span>trade<span class="sc">+</span><span class="fu">as.factor</span>(py), <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">"logit"</span>), <span class="at">data=</span>BKT.data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Mod<span class="fl">.1</span>B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = dispute ~ dem + growth + allies + contig + capratio + 
+    trade + as.factor(py), family = binomial("logit"), data = BKT.data)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-1.362  -0.225  -0.140  -0.080   3.988  
+
+Coefficients:
+                 Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)     -9.43e-01   9.28e-02  -10.16  &lt; 2e-16 ***
+dem             -5.47e-02   8.00e-03   -6.84  8.0e-12 ***
+growth          -1.15e-02   9.24e-03   -1.24  0.21492    
+allies          -4.71e-01   9.00e-02   -5.23  1.7e-07 ***
+contig           6.99e-01   8.93e-02    7.82  5.3e-15 ***
+capratio        -3.03e-03   4.17e-04   -7.28  3.3e-13 ***
+trade           -1.27e+01   1.05e+01   -1.21  0.22735    
+as.factor(py)2  -2.04e+00   1.41e-01  -14.48  &lt; 2e-16 ***
+as.factor(py)3  -2.15e+00   1.54e-01  -13.92  &lt; 2e-16 ***
+as.factor(py)4  -2.37e+00   1.74e-01  -13.64  &lt; 2e-16 ***
+as.factor(py)5  -2.62e+00   2.01e-01  -13.04  &lt; 2e-16 ***
+as.factor(py)6  -3.09e+00   2.52e-01  -12.25  &lt; 2e-16 ***
+as.factor(py)7  -3.08e+00   2.52e-01  -12.21  &lt; 2e-16 ***
+as.factor(py)8  -3.00e+00   2.46e-01  -12.23  &lt; 2e-16 ***
+as.factor(py)9  -2.95e+00   2.46e-01  -11.98  &lt; 2e-16 ***
+as.factor(py)10 -3.24e+00   2.86e-01  -11.32  &lt; 2e-16 ***
+as.factor(py)11 -3.45e+00   3.24e-01  -10.66  &lt; 2e-16 ***
+as.factor(py)12 -3.32e+00   3.10e-01  -10.72  &lt; 2e-16 ***
+as.factor(py)13 -3.92e+00   4.14e-01   -9.46  &lt; 2e-16 ***
+as.factor(py)14 -4.56e+00   5.82e-01   -7.84  4.6e-15 ***
+as.factor(py)15 -4.58e+00   5.82e-01   -7.87  3.5e-15 ***
+as.factor(py)16 -3.45e+00   3.41e-01  -10.12  &lt; 2e-16 ***
+as.factor(py)17 -4.22e+00   5.05e-01   -8.35  &lt; 2e-16 ***
+as.factor(py)18 -5.59e+00   1.00e+00   -5.57  2.5e-08 ***
+as.factor(py)19 -3.61e+00   3.85e-01   -9.36  &lt; 2e-16 ***
+as.factor(py)20 -3.95e+00   4.53e-01   -8.71  &lt; 2e-16 ***
+as.factor(py)21 -4.80e+00   7.11e-01   -6.74  1.5e-11 ***
+as.factor(py)22 -4.31e+00   5.82e-01   -7.39  1.4e-13 ***
+as.factor(py)23 -4.13e+00   5.83e-01   -7.08  1.4e-12 ***
+as.factor(py)24 -3.99e+00   5.83e-01   -6.84  7.7e-12 ***
+as.factor(py)25 -1.76e+01   3.31e+02   -0.05  0.95752    
+as.factor(py)26 -2.97e+00   4.19e-01   -7.10  1.2e-12 ***
+as.factor(py)27 -1.76e+01   3.85e+02   -0.05  0.96353    
+as.factor(py)28 -1.76e+01   3.83e+02   -0.05  0.96347    
+as.factor(py)29 -3.92e+00   7.14e-01   -5.49  3.9e-08 ***
+as.factor(py)30 -3.42e+00   5.86e-01   -5.84  5.2e-09 ***
+as.factor(py)31 -4.41e+00   1.01e+00   -4.39  1.1e-05 ***
+as.factor(py)32 -3.57e+00   7.15e-01   -4.99  6.0e-07 ***
+as.factor(py)33 -4.07e+00   1.01e+00   -4.05  5.2e-05 ***
+as.factor(py)34 -3.31e+00   7.16e-01   -4.61  3.9e-06 ***
+as.factor(py)35 -3.83e+00   1.01e+00   -3.81  0.00014 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 7719.2  on 20989  degrees of freedom
+Residual deviance: 5109.4  on 20949  degrees of freedom
+AIC: 5191
+
+Number of Fisher Scoring iterations: 17</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>Mod<span class="fl">.1</span>C <span class="ot">&lt;-</span> <span class="fu">glm</span>(dispute<span class="sc">~</span> dem<span class="sc">+</span>growth<span class="sc">+</span>allies<span class="sc">+</span>contig<span class="sc">+</span>capratio<span class="sc">+</span>trade<span class="sc">+</span>py<span class="sc">+</span>pys1<span class="sc">+</span>pys2<span class="sc">+</span>pys3, <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">"logit"</span>), <span class="at">data=</span>BKT.data)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Mod<span class="fl">.1</span>C)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = dispute ~ dem + growth + allies + contig + capratio + 
+    trade + py + pys1 + pys2 + pys3, family = binomial("logit"), 
+    data = BKT.data)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-1.349  -0.221  -0.138  -0.092   4.063  
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  8.50e-01   1.60e-01    5.31  1.1e-07 ***
+dem         -5.46e-02   7.97e-03   -6.84  7.7e-12 ***
+growth      -1.15e-02   9.20e-03   -1.25     0.21    
+allies      -4.70e-01   8.96e-02   -5.25  1.5e-07 ***
+contig       6.94e-01   8.90e-02    7.79  6.6e-15 ***
+capratio    -3.04e-03   4.17e-04   -7.29  3.0e-13 ***
+trade       -1.29e+01   1.05e+01   -1.23     0.22    
+py          -1.82e+00   1.11e-01  -16.30  &lt; 2e-16 ***
+pys1        -2.45e-01   2.61e-02   -9.37  &lt; 2e-16 ***
+pys2         7.92e-02   1.09e-02    7.24  4.5e-13 ***
+pys3        -1.09e-02   2.76e-03   -3.96  7.5e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 7719.2  on 20989  degrees of freedom
+Residual deviance: 5165.8  on 20979  degrees of freedom
+AIC: 5188
+
+Number of Fisher Scoring iterations: 8</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>Mod<span class="fl">.2</span>A <span class="ot">&lt;-</span> <span class="fu">glm</span>(dispute<span class="sc">~</span> dem<span class="sc">+</span>growth<span class="sc">+</span>allies<span class="sc">+</span>contig<span class="sc">+</span>capratio<span class="sc">+</span>trade, <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">"logit"</span>), <span class="at">subset =</span> contdisp<span class="sc">!=</span><span class="dv">1</span>, <span class="at">data=</span>BKT.data)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Mod<span class="fl">.2</span>A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = dispute ~ dem + growth + allies + contig + capratio + 
+    trade, family = binomial("logit"), data = BKT.data, subset = contdisp != 
+    1)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-0.520  -0.218  -0.169  -0.120   3.868  
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -4.33e+00   1.15e-01  -37.78  &lt; 2e-16 ***
+dem         -4.01e-02   1.01e-02   -3.99  6.7e-05 ***
+growth      -3.43e-02   1.25e-02   -2.74   0.0062 ** 
+allies      -4.80e-01   1.13e-01   -4.25  2.1e-05 ***
+contig       1.35e+00   1.21e-01   11.20  &lt; 2e-16 ***
+capratio    -1.96e-03   5.01e-04   -3.92  9.0e-05 ***
+trade       -2.11e+01   1.13e+01   -1.86   0.0623 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 3978.5  on 20447  degrees of freedom
+Residual deviance: 3693.8  on 20441  degrees of freedom
+AIC: 3708
+
+Number of Fisher Scoring iterations: 9</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>Mod<span class="fl">.2</span>B <span class="ot">&lt;-</span> <span class="fu">glm</span>(dispute<span class="sc">~</span> dem<span class="sc">+</span>growth<span class="sc">+</span>allies<span class="sc">+</span>contig<span class="sc">+</span>capratio<span class="sc">+</span>trade<span class="sc">+</span>py<span class="sc">+</span>pys1<span class="sc">+</span>pys2<span class="sc">+</span>pys3, <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">"logit"</span>), <span class="at">subset =</span> contdisp<span class="sc">!=</span><span class="dv">1</span>, <span class="at">data=</span>BKT.data)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Mod<span class="fl">.2</span>B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = dispute ~ dem + growth + allies + contig + capratio + 
+    trade + py + pys1 + pys2 + pys3, family = binomial("logit"), 
+    data = BKT.data, subset = contdisp != 1)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-0.734  -0.210  -0.135  -0.098   3.732  
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -3.956674   0.297828  -13.29  &lt; 2e-16 ***
+dem         -0.038809   0.010046   -3.86  0.00011 ***
+growth      -0.040144   0.012502   -3.21  0.00132 ** 
+allies      -0.365957   0.114272   -3.20  0.00136 ** 
+contig       0.993251   0.124133    8.00  1.2e-15 ***
+capratio    -0.002289   0.000523   -4.38  1.2e-05 ***
+trade       -3.809220   9.679795   -0.39  0.69393    
+py           0.390965   0.157920    2.48  0.01330 *  
+pys1         0.089719   0.031787    2.82  0.00477 ** 
+pys2        -0.028888   0.012634   -2.29  0.02222 *  
+pys3         0.003314   0.002974    1.11  0.26513    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 3978.5  on 20447  degrees of freedom
+Residual deviance: 3502.8  on 20437  degrees of freedom
+AIC: 3525
+
+Number of Fisher Scoring iterations: 9</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>Mod<span class="fl">.3</span>A <span class="ot">&lt;-</span> <span class="fu">glm</span>(dispute<span class="sc">~</span> dem<span class="sc">+</span>growth<span class="sc">+</span>allies<span class="sc">+</span>contig<span class="sc">+</span>capratio<span class="sc">+</span>trade<span class="sc">+</span>py<span class="sc">+</span>pys1<span class="sc">+</span>pys2<span class="sc">+</span>pys3, <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">"logit"</span>), <span class="at">subset =</span> prefail<span class="sc">&lt;</span><span class="dv">1</span>, <span class="at">data=</span>BKT.data)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Mod<span class="fl">.3</span>A)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = dispute ~ dem + growth + allies + contig + capratio + 
+    trade + py + pys1 + pys2 + pys3, family = binomial("logit"), 
+    data = BKT.data, subset = prefail &lt; 1)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-0.682  -0.159  -0.109  -0.081   3.856  
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -2.132791   0.369090   -5.78  7.5e-09 ***
+dem         -0.046143   0.013330   -3.46  0.00054 ***
+growth      -0.022954   0.017754   -1.29  0.19604    
+allies      -0.423113   0.163691   -2.58  0.00974 ** 
+contig       1.105361   0.172537    6.41  1.5e-10 ***
+capratio    -0.001916   0.000601   -3.19  0.00142 ** 
+trade       -3.553603  11.726412   -0.30  0.76186    
+py          -1.081689   0.235688   -4.59  4.4e-06 ***
+pys1        -0.183730   0.050096   -3.67  0.00024 ***
+pys2         0.069295   0.019788    3.50  0.00046 ***
+pys3        -0.013987   0.004484   -3.12  0.00181 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 2183.3  on 16990  degrees of freedom
+Residual deviance: 1928.1  on 16980  degrees of freedom
+AIC: 1950
+
+Number of Fisher Scoring iterations: 9</code></pre>
+</div>
+</div>
+<section id="carter-and-signorino" class="level3">
+<h3 class="anchored" data-anchor-id="carter-and-signorino">Carter and Signorino</h3>
+<p>Use a Taylor series to clean this up with a suggestion that no baseline hazard is more than cubic [two inflection points].</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>Mod.CS <span class="ot">&lt;-</span> <span class="fu">glm</span>(dispute<span class="sc">~</span> dem<span class="sc">+</span>growth<span class="sc">+</span>allies<span class="sc">+</span>contig<span class="sc">+</span>capratio<span class="sc">+</span>trade<span class="sc">+</span>prefail<span class="sc">+</span>py<span class="sc">+</span><span class="fu">I</span>(py<span class="sc">^</span><span class="dv">2</span>)<span class="sc">+</span><span class="fu">I</span>(py<span class="sc">^</span><span class="dv">3</span>), <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">"logit"</span>), <span class="at">data=</span>BKT.data)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Mod.CS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = dispute ~ dem + growth + allies + contig + capratio + 
+    trade + prefail + py + I(py^2) + I(py^3), family = binomial("logit"), 
+    data = BKT.data)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-2.576  -0.192  -0.128  -0.092   3.754  
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -1.14e+00   1.18e-01   -9.64  &lt; 2e-16 ***
+dem         -4.09e-02   8.23e-03   -4.97  6.7e-07 ***
+growth      -2.44e-02   9.55e-03   -2.56   0.0105 *  
+allies      -2.67e-01   9.20e-02   -2.90   0.0038 ** 
+contig       6.62e-01   9.20e-02    7.19  6.4e-13 ***
+capratio    -2.00e-03   3.71e-04   -5.40  6.6e-08 ***
+trade       -1.06e+01   1.04e+01   -1.03   0.3049    
+prefail      1.75e-01   8.96e-03   19.53  &lt; 2e-16 ***
+py          -7.48e-01   4.14e-02  -18.08  &lt; 2e-16 ***
+I(py^2)      4.22e-02   3.72e-03   11.34  &lt; 2e-16 ***
+I(py^3)     -7.18e-04   8.76e-05   -8.19  2.5e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 7719.2  on 20989  degrees of freedom
+Residual deviance: 4909.5  on 20979  degrees of freedom
+AIC: 4932
+
+Number of Fisher Scoring iterations: 8</code></pre>
+</div>
+</div>
+<p>As a technical matter, none of this is exactly equivalent to a Cox model. That requires the <code>cloglog</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>Mod.CS <span class="ot">&lt;-</span> <span class="fu">glm</span>(dispute<span class="sc">~</span> dem<span class="sc">+</span>growth<span class="sc">+</span>allies<span class="sc">+</span>contig<span class="sc">+</span>capratio<span class="sc">+</span>trade<span class="sc">+</span>prefail<span class="sc">+</span>py<span class="sc">+</span><span class="fu">I</span>(py<span class="sc">^</span><span class="dv">2</span>)<span class="sc">+</span><span class="fu">I</span>(py<span class="sc">^</span><span class="dv">3</span>), <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">"cloglog"</span>), <span class="at">data=</span>BKT.data)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Mod.CS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = dispute ~ dem + growth + allies + contig + capratio + 
+    trade + prefail + py + I(py^2) + I(py^3), family = binomial("cloglog"), 
+    data = BKT.data)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-3.396  -0.194  -0.134  -0.097   3.700  
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -1.13e+00   1.07e-01  -10.62  &lt; 2e-16 ***
+dem         -4.16e-02   7.50e-03   -5.54  2.9e-08 ***
+growth      -1.97e-02   8.00e-03   -2.47   0.0137 *  
+allies      -2.33e-01   7.99e-02   -2.92   0.0035 ** 
+contig       5.16e-01   7.86e-02    6.56  5.4e-11 ***
+capratio    -2.13e-03   3.60e-04   -5.93  3.0e-09 ***
+trade       -1.15e+01   1.01e+01   -1.13   0.2567    
+prefail      1.15e-01   6.46e-03   17.80  &lt; 2e-16 ***
+py          -7.03e-01   3.84e-02  -18.32  &lt; 2e-16 ***
+I(py^2)      3.89e-02   3.51e-03   11.07  &lt; 2e-16 ***
+I(py^3)     -6.55e-04   8.33e-05   -7.85  4.1e-15 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 7719.2  on 20989  degrees of freedom
+Residual deviance: 4944.0  on 20979  degrees of freedom
+AIC: 4966
+
+Number of Fisher Scoring iterations: 9</code></pre>
+</div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
