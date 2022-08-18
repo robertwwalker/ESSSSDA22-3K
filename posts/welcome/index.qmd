@@ -25,10 +25,10 @@ A *brief* summary for the Instructor's Presentation
 - Week 2: Panel Data
   + [Fixed and random effects and Within/Between](https://youtu.be/QKVynJ37MtE)
   + [Estimating Models, xtmixed, xtreg, etc.](https://youtu.be/rjRllkaoG_c)
-  + STADL Up!
+  + [STADL Up!](https://youtu.be/WK-e3rjAZrU)
   + [Missing data](https://youtu.be/WPiLqjCK1Ng)
   + [GLM Extensions of Panel Models](https://youtu.be/WPiLqjCK1Ng)
-  + Dynamic Panel Data
+  + [Dynamic Panel Data](https://youtu.be/WK-e3rjAZrU)
   + Causal Inference in Panel Data [TWFE/DID]
 
 # Digital Resources
