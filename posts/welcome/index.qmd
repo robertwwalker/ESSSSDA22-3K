@@ -26,8 +26,8 @@ A *brief* summary for the Instructor's Presentation
   + [Fixed and random effects and Within/Between](https://youtu.be/QKVynJ37MtE)
   + [Estimating Models, xtmixed, xtreg, etc.](https://youtu.be/rjRllkaoG_c)
   + STADL Up!
-  + Missing data
-  + GLM Extensions of Panel Models
+  + [Missing data](https://youtu.be/WPiLqjCK1Ng)
+  + [GLM Extensions of Panel Models](https://youtu.be/WPiLqjCK1Ng)
   + Dynamic Panel Data
   + Causal Inference in Panel Data [TWFE/DID]
 
