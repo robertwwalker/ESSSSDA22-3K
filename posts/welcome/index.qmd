@@ -29,7 +29,7 @@ A *brief* summary for the Instructor's Presentation
   + [Missing data](https://youtu.be/WPiLqjCK1Ng)
   + [GLM Extensions of Panel Models](https://youtu.be/WPiLqjCK1Ng)
   + [Dynamic Panel Data](https://youtu.be/WK-e3rjAZrU)
-  + Causal Inference in Panel Data [TWFE/DID]
+  + [Causal Inference in Panel Data: TWFE/DID](https://youtu.be/9i2eZoZpRiY)
 
 # Digital Resources
 
