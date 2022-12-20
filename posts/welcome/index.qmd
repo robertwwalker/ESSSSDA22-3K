@@ -10,26 +10,26 @@ categories: [news]
 
 I hope you are ready! 
 
-In the next two weeks we will set forth as comprehensive a treatment as we can in time series and panel data in ten sessions.  With coffee in hand and the computer getting ready, let's dig in!  The course [box can be accessed in archive (zip) form here](./box/3K.zip)
+In the next two weeks we will set forth as comprehensive a treatment as we can in time series and panel data in ten sessions.  With coffee in hand and the computer getting ready, let's dig in!
 
 ![](thumbnail.jpg)
 
 A *brief* summary for the Instructor's Presentation
 
-- Week 1: Time Series [Day 1](https://youtu.be/33ERJFeyEiQ)
-  + [Stationarity and Unit Roots](https://youtu.be/-Ibi3SpCBHc)
-  + [ARMA structures](https://youtu.be/-Ibi3SpCBHc)
-  + [Dynamic Linear Models and their Interpretation](https://youtu.be/lxIdDXVmZqM)
-  + [VAR and Cointegration topics](https://youtu.be/DqXBZDNT2Ig)
-  + [Equation balance and recent controversies](https://youtu.be/aCe54k-7W-I)
+- Week 1: Time Series Day 1
+  + Stationarity and Unit Roots
+  + ARMA structures
+  + Dynamic Linear Models and their Interpretation
+  + VAR and Cointegration topics
+  + Equation balance and recent controversies
 - Week 2: Panel Data
-  + [Fixed and random effects and Within/Between](https://youtu.be/QKVynJ37MtE)
-  + [Estimating Models, xtmixed, xtreg, etc.](https://youtu.be/rjRllkaoG_c)
-  + [STADL Up!](https://youtu.be/WK-e3rjAZrU)
-  + [Missing data](https://youtu.be/WPiLqjCK1Ng)
-  + [GLM Extensions of Panel Models](https://youtu.be/WPiLqjCK1Ng)
-  + [Dynamic Panel Data](https://youtu.be/WK-e3rjAZrU)
-  + [Causal Inference in Panel Data: TWFE/DID](https://youtu.be/9i2eZoZpRiY)
+  + Fixed and random effects and Within/Between
+  + Estimating Models, xtmixed, xtreg, etc.
+  + STADL Up!
+  + Missing data
+  + GLM Extensions of Panel Models
+  + Dynamic Panel Data
+  + Causal Inference in Panel Data: TWFE/DID
 
 # Digital Resources
 
